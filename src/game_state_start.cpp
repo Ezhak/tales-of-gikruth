@@ -26,7 +26,7 @@ void GameStateStart::handleInput() {
         switch (event.type) {
         // Close the window
         case sf::Event::Closed:
-            game->window.close();
+            this->game->window.close();
             break;
         // Highlight menu items
         case sf::Event::MouseMoved:
