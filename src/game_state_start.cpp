@@ -34,18 +34,17 @@ void GameStateStart::handleInput() {
             break;
         // Click on menu items
         case sf::Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left) {
+            if (event.mouseButton.button == sf::Mouse::Left)
                 this->guiSystem.at("menu").press(this->guiSystem.at("menu").getEntry(mousePos));
+            break;
+        // Release menu items
+        case sf::Event::MouseButtonReleased:
+            if (event.mouseButton.button == sf::Mouse::Left) {
                 std::string msg = this->guiSystem.at("menu").activate(mousePos);
 
                 if (msg == "load_game")
                     this->loadgame();
             }
-            break;
-        // Release menu items
-        case sf::Event::MouseButtonReleased:
-            if (event.mouseButton.button == sf::Mouse::Left)
-                this->guiSystem.at("menu").release(this->guiSystem.at("menu").getEntry(mousePos));
             break;
         // Close the window (Escape)
         case sf::Event::KeyPressed:
