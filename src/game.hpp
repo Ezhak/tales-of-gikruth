@@ -8,7 +8,6 @@
 
 #include "texture_manager.hpp"
 #include "entity.hpp"
-#include "gui.hpp"
 
 class GameState;
 
