@@ -32,10 +32,9 @@ public:
 class Gui : public sf::Transformable, public sf::Drawable {
 private:
     sf::Vector2f dimensions;
-
-public:
     std::vector<GuiEntry> entries;
 
+public:
     // Constructor
     Gui(sf::Vector2f dimensions, std::vector<GuiEntry> entries) {
         this->dimensions = dimensions;
