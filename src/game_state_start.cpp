@@ -97,9 +97,7 @@ GameStateStart::GameStateStart(Game* game) {
 
     std::vector<GuiEntry> entries{start, load, save, quit};
 
-    Gui menu = Gui(dimensions, entries);
-
-    this->guiSystem.emplace("menu", menu);
+    this->guiSystem.emplace("menu", Gui(dimensions, entries));
 
     this->guiSystem.at("menu").setPosition(pos);
     this->guiSystem.at("menu").setOrigin(181, 155);
