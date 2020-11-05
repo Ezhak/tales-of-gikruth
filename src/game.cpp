@@ -36,6 +36,7 @@ void Game::loadTextures() {
     texmgr.loadTexture("quit_press",        "assets/menu/quit_press.png");
 
     texmgr.loadTexture("menu_background",        "assets/menu/background.png");
+    texmgr.loadTexture("game_background",        "assets/game/background.png");
 }
 
 void Game::pushState(GameState* state) {

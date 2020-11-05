@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "game_state_start.hpp"
+#include "game_state_play.hpp"
 #include "game_state.hpp"
 
 void GameStateStart::draw(const float dt) {
@@ -63,7 +64,7 @@ void GameStateStart::handleInput() {
 }
 
 void GameStateStart::loadgame() {
-    // this->game->pushState(new GameStatePlay(this->game));
+    this->game->pushState(new GameStatePlay(this->game));
 
     return;
 }
