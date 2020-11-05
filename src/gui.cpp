@@ -3,10 +3,6 @@
 
 #include "gui.hpp"
 
-sf::Vector2f Gui::getSize() {
-    return sf::Vector2f(this->dimensions.x, this->dimensions.y * this->entries.size());
-}
-
 int Gui::getEntry(const sf::Vector2f mousePos) {
     // If there are no entries then outside the menu
     if(entries.size() == 0)
@@ -18,25 +14,15 @@ int Gui::getEntry(const sf::Vector2f mousePos) {
         point += this->entries[i].shape.getOrigin();
         point -= this->entries[i].shape.getPosition();
 
-        if(point.x < 0 || point.x > this->entries[i].shape.getScale().x*this->dimensions.x)
+        if(point.x < 0 || point.x > this->dimensions.x)
             continue;
-        if(point.y < 0 || point.y > this->entries[i].shape.getScale().y*this->dimensions.y)
+        if(point.y < 0 || point.y > this->dimensions.y)
             continue;
 
         return i;
     }
 
     return -1;
-}
-
-void Gui::setDimensions(sf::Vector2f dimensions)
-{
-    this->dimensions = dimensions;
-
-    for(auto& entry : entries)
-        entry.shape.setSize(dimensions);
-
-    return;
 }
 
 void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
