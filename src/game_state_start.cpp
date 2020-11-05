@@ -44,6 +44,9 @@ void GameStateStart::handleInput() {
 
                 if (msg == "load_game")
                     this->loadgame();
+
+                if (msg == "quit_game")
+                    this->game->window.close();
             }
             break;
         // Close the window (Escape)
