@@ -35,7 +35,7 @@ void Game::loadTextures() {
     texmgr.loadTexture("quit_highlight",    "assets/menu/quit_highlight.png");
     texmgr.loadTexture("quit_press",        "assets/menu/quit_press.png");
 
-    texmgr.loadTexture("background",        "assets/menu/background.png");
+    texmgr.loadTexture("menu_background",        "assets/menu/background.png");
 }
 
 void Game::pushState(GameState* state) {
@@ -91,8 +91,6 @@ Game::Game() {
         
     this->window.create(sf::VideoMode(800, 600), "Tales Of Gikruth", sf::Style::Titlebar | sf::Style::Close);
     this->window.setFramerateLimit(60);
-
-    this->background.setTexture(this->texmgr.getRef("background"));
 }
 
 Game::~Game() {

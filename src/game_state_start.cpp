@@ -7,7 +7,7 @@ void GameStateStart::draw(const float dt) {
     this->game->window.setView(this->view);
 
     this->game->window.clear(sf::Color::Black);
-    this->game->window.draw(this->game->background);
+    this->game->window.draw(this->background);
 
     for(auto gui : this->guiSystem)
         this->game->window.draw(gui.second);
@@ -74,6 +74,8 @@ GameStateStart::GameStateStart(Game* game) {
     this->view.setSize(pos);
     pos *= 0.5f;
     this->view.setCenter(pos);
+
+    this->setBackground(this->game->texmgr.getRef("menu_background"));
 
     sf::RectangleShape shape;
     sf::Vector2f dimensions(363, 70);
