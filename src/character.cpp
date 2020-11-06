@@ -1,29 +1,29 @@
 #include "character.hpp"
 
-void draw() {
+void Character::draw() {
 
 }
 
-void move() {
+void Character::move() {
 
 }
 
-void attack() {
+void Character::attack() {
 
 }
 
-void collision() {
+void Character::collision() {
 
 }
 
-void changeIdleType() {
+void Character::changeIdleType() {
 
 }
 
-void create() {
+void Character::create() {
 
 }
 
-void getShape() {
+sf::Sprite Character::getShape() {
 	return _sprite;
 }
