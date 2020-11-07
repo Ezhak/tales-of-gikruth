@@ -7,7 +7,6 @@
 class Character {
 private:
 	sf::Sprite _sprite;
-	thor::AnimationMap _animationMap;
 	thor::Animator<sf::Sprite, std::string> _animator;
 	float _hitPoints;
 	float _evasionProb;
@@ -20,6 +19,7 @@ public:
 	void collision();
 	void changeIdleType();
 	void create();
+	void addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration);
 	sf::Sprite getShape();
 };
 
