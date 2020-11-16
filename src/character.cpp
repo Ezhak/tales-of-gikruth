@@ -62,7 +62,6 @@ void Character::create() {
 	thor::Animator<sf::Sprite, std::string> animator;
 	animator.addAnimation("walk", walk, sf::seconds(1.f));
 	animator.addAnimation("idle", idle, sf::seconds(1.f));
-
 }
 
 sf::Sprite Character::getShape() {
