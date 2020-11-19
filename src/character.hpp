@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
 
+enum class movement_type { IDLE, UP, DOWN, LEFT, RIGHT };
+
 class Character {
 private:
 	sf::Sprite _sprite;
@@ -12,9 +14,10 @@ private:
 	float _evasionProb;
 	float _defensePoints;
 	float _attackPoints;
+	float _velocity;
 public:
 	void draw();
-	void move();
+	void move(movement_type direction);
 	void attack();
 	void collision();
 	void changeIdleType();

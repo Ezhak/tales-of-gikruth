@@ -1,11 +1,31 @@
 #include "character.hpp"
 
 void Character::draw() {
-
+	
 }
 
-void Character::move() {
+void Character::move(movement_type direction) {
+	if (movement_type = UP) 
+	{
+		this->_sprite.move(0.0f, -this->_velocity);
+	}
 
+	if (movement_type = DOWN)
+	{
+		this->_sprite.move(0.0f, this->_velocity);
+	}
+
+	if (movement_type = LEFT)
+	{
+		this->_sprite.move(-this->_velocity, 0.0f);
+		this->_sprite.setScale(-this->_sprite.getScale().x, this->_sprite.getScale().y);
+	}
+
+	if (movement_type = RIGHT)
+	{
+		this->_sprite.move(this->_velocity, 0.0f);
+		this->_sprite.setScale(this->_sprite.getScale().x, this->_sprite.getScale().y);
+	}
 }
 
 void Character::attack() {
