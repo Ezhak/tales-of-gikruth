@@ -14,9 +14,7 @@ public:
 	Player(Character character, sf::Vector2f position ,float velocity) {
 		
 	};
-	change_character() {
-	
-	};
+	//change_character() {};
 };
 
 #endif // PLAYER_HPP

@@ -5,23 +5,23 @@ void Character::draw() {
 }
 
 void Character::move(movement_type direction) {
-	if (direction = movement_type::UP) 
+	if (direction == movement_type::UP) 
 	{
 		this->_sprite.move(0.0f, -this->_velocity);
 	}
 
-	if (direction = movement_type::DOWN)
+	if (direction == movement_type::DOWN)
 	{
 		this->_sprite.move(0.0f, this->_velocity);
 	}
 
-	if (direction = movement_type::LEFT)
+	if (direction == movement_type::LEFT)
 	{
 		this->_sprite.move(-this->_velocity, 0.0f);
 		this->_sprite.setScale(-this->_sprite.getScale().x, this->_sprite.getScale().y);
 	}
 
-	if (direction = movement_type::RIGHT)
+	if (direction == movement_type::RIGHT)
 	{
 		this->_sprite.move(this->_velocity, 0.0f);
 		this->_sprite.setScale(this->_sprite.getScale().x, this->_sprite.getScale().y);
