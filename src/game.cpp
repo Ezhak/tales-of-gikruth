@@ -19,26 +19,26 @@ void Game::loadEntities() {
 }
 
 void Game::loadTextures() {
-    texmgr.loadTexture("start",             "assets/menu/start.png");
-    texmgr.loadTexture("start_highlight",   "assets/menu/start_highlight.png");
-    texmgr.loadTexture("start_press",       "assets/menu/start_press.png");
+    texmgr.loadTexture("start",             "../assets/menu/start.png");
+    texmgr.loadTexture("start_highlight",   "../assets/menu/start_highlight.png");
+    texmgr.loadTexture("start_press",       "../assets/menu/start_press.png");
 
-    texmgr.loadTexture("load",              "assets/menu/load.png");
-    texmgr.loadTexture("load_highlight",    "assets/menu/load_highlight.png");
-    texmgr.loadTexture("load_press",        "assets/menu/load_press.png");
+    texmgr.loadTexture("load",              "../assets/menu/load.png");
+    texmgr.loadTexture("load_highlight",    "../assets/menu/load_highlight.png");
+    texmgr.loadTexture("load_press",        "../assets/menu/load_press.png");
 
-    texmgr.loadTexture("save",              "assets/menu/save.png");
-    texmgr.loadTexture("save_highlight",    "assets/menu/save_highlight.png");
-    texmgr.loadTexture("save_press",        "assets/menu/save_press.png");
+    texmgr.loadTexture("save",              "../assets/menu/save.png");
+    texmgr.loadTexture("save_highlight",    "../assets/menu/save_highlight.png");
+    texmgr.loadTexture("save_press",        "../assets/menu/save_press.png");
 
-    texmgr.loadTexture("quit",              "assets/menu/quit.png");
-    texmgr.loadTexture("quit_highlight",    "assets/menu/quit_highlight.png");
-    texmgr.loadTexture("quit_press",        "assets/menu/quit_press.png");
+    texmgr.loadTexture("quit",              "../assets/menu/quit.png");
+    texmgr.loadTexture("quit_highlight",    "../assets/menu/quit_highlight.png");
+    texmgr.loadTexture("quit_press",        "../assets/menu/quit_press.png");
 
-    texmgr.loadTexture("menu_background",   "assets/menu/background.png");
-    texmgr.loadTexture("game_background",   "assets/game/background.png");
+    texmgr.loadTexture("menu_background",   "../assets/menu/background.png");
+    texmgr.loadTexture("game_background",   "../assets/game/background.png");
     
-    texmgr.loadTexture("player_sol",        "assets/game/sol.png");
+    texmgr.loadTexture("player_sol",        "../assets/game/sol.png");
 }
 
 void Game::pushState(GameState* state) {

@@ -354,3 +354,6 @@ MigrationBackup/
 # Project files
 build/
 *.dll
+*.lib
+/thor/include
+/sfml
