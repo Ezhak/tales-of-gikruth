@@ -6,8 +6,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+#include "character.hpp"
 #include "texture_manager.hpp"
-#include "entity.hpp"
 
 class GameState;
 
@@ -25,7 +25,7 @@ public:
 	TextureManager texmgr;
 	sf::Sprite background;
 
-	std::map<std::string, Entity> entityAtlas;
+	std::map<std::string, Character> characterAtlas;
 
 	void pushState(GameState* state);
     void popState();

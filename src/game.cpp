@@ -6,7 +6,6 @@
 #include "game.hpp"
 #include "game_state.hpp"
 #include "texture_manager.hpp"
-#include "entity.hpp"
 
 void Game::loadEntities() {
     // Animation staticAnim(0, 0, 1.0f);
