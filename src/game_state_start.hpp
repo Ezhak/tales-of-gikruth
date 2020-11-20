@@ -14,7 +14,7 @@ private:
 
     std::map<std::string, Gui> guiSystem;
 
-    void loadgame();
+    void startgame();
 
 public:
     virtual void draw(const float dt);

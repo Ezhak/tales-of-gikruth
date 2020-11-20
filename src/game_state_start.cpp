@@ -43,8 +43,8 @@ void GameStateStart::handleInput() {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 std::string msg = this->guiSystem.at("menu").activate(mousePos);
 
-                if (msg == "load_game")
-                    this->loadgame();
+                if (msg == "start_game")
+                    this->startgame();
 
                 if (msg == "quit_game")
                     this->game->window.close();
@@ -63,7 +63,7 @@ void GameStateStart::handleInput() {
     return;
 }
 
-void GameStateStart::loadgame() {
+void GameStateStart::startgame() {
     this->game->pushState(new GameStatePlay(this->game));
 
     return;
