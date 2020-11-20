@@ -38,7 +38,9 @@ void Game::loadTextures() {
     texmgr.loadTexture("menu_background",   "assets/menu/background.png");
     texmgr.loadTexture("game_background",   "assets/game/background.png");
     
-    texmgr.loadTexture("player_sol",        "assets/game/sol.png");
+    texmgr.loadTexture("map_1",             "assets/game/maps/map_1.png");
+
+    texmgr.loadTexture("player_sol",        "assets/game/characters/sol.png");
 }
 
 void Game::pushState(GameState* state) {
