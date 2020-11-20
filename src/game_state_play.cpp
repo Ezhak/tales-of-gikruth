@@ -11,7 +11,7 @@ void GameStatePlay::draw(const float dt) {
 	this->game->window.draw(this->background);
 	
     this->game->window.setView(this->gameView);
-    // this->level.draw(this->game->window);
+    this->level.draw(this->game->window);
 
 	this->game->window.setView(this->guiView);
 	for (auto gui : this->guiSystem)
@@ -57,6 +57,12 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->setBackground(this->game->texmgr.getRef("game_background"));
 
 	this->level = Level();
+	this->level.setMap(this->game->texmgr.getRef("map_1"));
+	this->level.getMap().setPosition(pos);
+	this->level.getMap().setOrigin(160, 130);
+
+	this->gameView.zoom(0.666f);
+
 	this->player = Player();
 
 	// Create gui elements

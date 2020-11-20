@@ -8,6 +8,9 @@ public:
     void draw(sf::RenderWindow& window);
     void update();
 
+    sf::Sprite& getMap();
+    void setMap(sf::Texture&);
+
     Level() { }
 };
 
