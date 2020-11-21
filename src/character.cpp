@@ -1,89 +1,76 @@
 #include "character.hpp"
 
-void Character::draw() {
-	
+void Character::update(const sf::Time dt) {
+	this->_animator.update(dt);
+	this->_animator.animate(this->_sprite);
+}
+
+void Character::draw(sf::RenderWindow& window) {
+	window.draw(this->_sprite);
+}
+
+void Character::create() {
+	// Define idle animation
+	thor::FrameAnimation idle;
+	addFrames(idle, 0, 0, 1);
+
+	// Define walk animation
+	thor::FrameAnimation walk;
+	addFrames(walk, 1, 0, 3);
+
+	// Register animations with their corresponding durations
+	this->_animator.addAnimation("walk", walk, sf::seconds(0.3f));
+	this->_animator.addAnimation("idle", idle, sf::seconds(0.7f));
+}
+
+void Character::addFrames(thor::FrameAnimation& animation, int y, int xFirst, int xLast, float duration) {
+	const int step = (xFirst < xLast) ? +1 : -1;
+	xLast += step; // so xLast is excluded in the range
+
+	for (int x = xFirst; x != xLast; x += step)
+		animation.addFrame(duration, sf::IntRect(24 * x, 22 * y, 96 / 4, 44 / 2));
+}
+
+void Character::idle() {
+	if (!this->_animator.isPlayingAnimation() ||
+			 this->_animator.getPlayingAnimation() != "idle")
+  	this->_animator.playAnimation("idle");
 }
 
 void Character::move(movement_type direction) {
-	if (direction == movement_type::UP) 
-	{
-		this->_sprite.move(0.0f, -this->_velocity);
-	}
+	if (!this->_animator.isPlayingAnimation() ||
+		   this->_animator.getPlayingAnimation() != "walk")
+		this->_animator.playAnimation("walk");
 
-	if (direction == movement_type::DOWN)
-	{
-		this->_sprite.move(0.0f, this->_velocity);
-	}
-
-	if (direction == movement_type::LEFT)
-	{
-		this->_sprite.move(-this->_velocity, 0.0f);
-		this->_sprite.setScale(-this->_sprite.getScale().x, this->_sprite.getScale().y);
-	}
-
-	if (direction == movement_type::RIGHT)
-	{
-		this->_sprite.move(this->_velocity, 0.0f);
-		this->_sprite.setScale(this->_sprite.getScale().x, this->_sprite.getScale().y);
+	switch (direction) {
+		case movement_type::UP:
+			this->_sprite.move(0.0f, -this->_velocity);
+			break;
+		case movement_type::DOWN:
+			this->_sprite.move(0.0f, this->_velocity);
+			break;
+		case movement_type::LEFT:
+			// Mirror
+			if (this->_sprite.getScale().x > 0)
+				this->_sprite.scale(-1,1);
+			this->_sprite.move(-this->_velocity, 0.0f);
+			break;
+		case movement_type::RIGHT:
+			// Unmirror
+			if (this->_sprite.getScale().x < 0)
+				this->_sprite.scale(-1,1);
+			this->_sprite.move(this->_velocity, 0.0f);
+			break;
+		default:
+			break;
 	}
 }
 
 void Character::attack() {
-
 }
 
 void Character::collision() {
-
 }
 
 void Character::changeIdleType() {
-
-}
-
-void Character::addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration) {
-	duration = 1.f;
-	const int step = (yFirst < yLast) ? +1 : -1;
-	yLast += step; // so yLast is excluded in the range
-
-	for (int y = yFirst; y != yLast; y += step)
-		animation.addFrame(duration, sf::IntRect(16 * x, 16 * y, 60 / 4, 81 / 3));
-}
-
-void Character::create() {
-
-	// Load image that contains animation steps
-	sf::Image image;
-	if (!image.loadFromFile("assets/pj.png"))
-		return;
-	image.createMaskFromColor(sf::Color::White);
-
-	// Create texture based on sf::Image
-	sf::Texture texture;
-	if (!texture.loadFromImage(image))
-		return;
-
-	// Create sprite which is animated
-	sf::Sprite sprite(texture);
-	sprite.setPosition(100.f, 100.f);
-
-	// Define walk animation
-	thor::FrameAnimation walk;
-	addFrames(walk, 0, 2, 2, 1.f);
-	addFrames(walk, 1, 2, 2, 1.f);
-	addFrames(walk, 2, 2, 2, 1.f);
-	addFrames(walk, 3, 2, 2, 1.f);
-
-	// Define static frame for stand animation
-	thor::FrameAnimation idle;
-	addFrames(idle, 0, 0, 0, 1.f);
-	addFrames(idle, 1, 0, 0, 1.f);
-
-	// Register animations with their corresponding durations
-	thor::Animator<sf::Sprite, std::string> animator;
-	animator.addAnimation("walk", walk, sf::seconds(1.f));
-	animator.addAnimation("idle", idle, sf::seconds(1.f));
-}
-
-sf::Sprite Character::getShape() {
-	return _sprite;
 }

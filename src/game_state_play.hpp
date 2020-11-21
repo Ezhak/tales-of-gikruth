@@ -8,24 +8,22 @@
 #include "game_state.hpp"
 #include "gui.hpp"
 #include "level.hpp"
-#include "player.hpp"
-
 class GameStatePlay : public GameState {
-private:
-	sf::View gameView;
-	sf::View guiView;
-    
-    Level level;
-    Player player;
-    
-    std::map<std::string, Gui> guiSystem;
+	private:
+		sf::View gameView;
+		sf::View guiView;
+			
+		Level level;
+		Character player;
+			
+		std::map<std::string, Gui> guiSystem;
 
-public:
-	virtual void draw(const float dt);
-	virtual void update(const float dt);
-	virtual void handleInput();
+	public:
+		GameStatePlay(Game* game);
 
-	GameStatePlay(Game* game);
+		virtual void handleInput();
+		virtual void update(const sf::Time dt);
+		virtual void draw(const sf::Time dt);
 };
 
 #endif // GAME_STATE_PLAY_HPP

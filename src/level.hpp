@@ -2,16 +2,14 @@
 #define LEVEL_HPP
 
 class Level {
-private:
-    sf::Sprite map;
-public:
+  private:
+    sf::Sprite _sprite;
+  public:
+    Level() {}
+    Level(sf::Sprite& sprite) { this->_sprite = sprite; }
+
     void draw(sf::RenderWindow& window);
     void update();
-
-    sf::Sprite& getMap();
-    void setMap(sf::Texture&);
-
-    Level() { }
 };
 
 #endif // LEVEL_HPP
