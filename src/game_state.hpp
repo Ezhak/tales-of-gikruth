@@ -4,18 +4,14 @@
 #include "game.hpp"
 
 class GameState {
-protected:
-	sf::Sprite background;
-public:
+  protected:
+	  sf::Sprite background;
+  public:
     Game* game;
 
-    virtual void draw(const float dt) = 0;
-    virtual void update(const float dt) = 0;
     virtual void handleInput() = 0;
-
-    void setBackground(sf::Texture& texture) {
-        this->background.setTexture(texture);
-    }
+    virtual void update(const sf::Time dt) = 0;
+    virtual void draw(const sf::Time dt) = 0;
 };
 
 #endif // GAME_STATE_HPP

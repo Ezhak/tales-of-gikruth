@@ -9,19 +9,18 @@
 #include "gui.hpp"
 
 class GameStateStart : public GameState {
-private:
+  private:
     sf::View view;
 
     std::map<std::string, Gui> guiSystem;
 
     void startgame();
-
-public:
-    virtual void draw(const float dt);
-    virtual void update(const float dt);
-    virtual void handleInput();
-
+  public:
     GameStateStart(Game* game);
+
+    virtual void handleInput();
+    virtual void update(const sf::Time dt);
+    virtual void draw(const sf::Time dt);
 };
 
 #endif // GAME_STATE_START_HPP

@@ -4,19 +4,51 @@
 #include "game_state_play.hpp"
 #include "game_state.hpp"
 
-void GameStateStart::draw(const float dt) {
-    this->game->window.setView(this->view);
+GameStateStart::GameStateStart(Game* game) {
+    this->game = game;
+    sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
+    this->view.setSize(pos);
+    pos *= 0.5f;
+    this->view.setCenter(pos);
 
-    this->game->window.clear(sf::Color::Black);
-    this->game->window.draw(this->background);
+    this->background.setTexture(this->game->texmgr.getRef("menu_background"));
 
-    for(auto gui : this->guiSystem)
-        this->game->window.draw(gui.second);
+    sf::RectangleShape shape;
+    sf::Vector2f dimensions(363, 70);
+    shape.setSize(dimensions);
 
-    return;
-}
+    GuiEntry start = GuiEntry("start_game",
+                              shape, 
+                              &this->game->texmgr.getRef("start"),
+                              &this->game->texmgr.getRef("start_highlight"),
+                              &this->game->texmgr.getRef("start_press"));
 
-void GameStateStart::update(const float dt) {
+    GuiEntry load = GuiEntry("load_game",
+                             shape,
+                             &this->game->texmgr.getRef("load"),
+                             &this->game->texmgr.getRef("load_highlight"),
+                             &this->game->texmgr.getRef("load_press"));
+
+    GuiEntry save = GuiEntry("save_game",
+                             shape,
+                             &this->game->texmgr.getRef("save"),
+                             &this->game->texmgr.getRef("save_highlight"),
+                             &this->game->texmgr.getRef("save_press"));
+
+    GuiEntry quit = GuiEntry("quit_game",
+                             shape,
+                             &this->game->texmgr.getRef("quit"),
+                             &this->game->texmgr.getRef("quit_highlight"),
+                             &this->game->texmgr.getRef("quit_press"));
+
+    std::vector<GuiEntry> entries{start, load, save, quit};
+
+    Gui gui = Gui(dimensions, entries);
+    gui.setPosition(pos);
+    gui.setOrigin(181, 155);
+    gui.show();
+
+    this->guiSystem.emplace("menu", gui);
 }
 
 void GameStateStart::handleInput() {
@@ -63,46 +95,23 @@ void GameStateStart::handleInput() {
     return;
 }
 
-void GameStateStart::startgame() {
-    this->game->pushState(new GameStatePlay(this->game));
+void GameStateStart::update(const sf::Time dt) {
+}
+
+void GameStateStart::draw(const sf::Time dt) {
+    this->game->window.setView(this->view);
+
+    this->game->window.clear(sf::Color::Black);
+    this->game->window.draw(this->background);
+
+    for(auto gui : this->guiSystem)
+        this->game->window.draw(gui.second);
 
     return;
 }
 
-GameStateStart::GameStateStart(Game* game) {
-    this->game = game;
-    sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
-    this->view.setSize(pos);
-    pos *= 0.5f;
-    this->view.setCenter(pos);
+void GameStateStart::startgame() {
+    this->game->pushState(new GameStatePlay(this->game));
 
-    this->setBackground(this->game->texmgr.getRef("menu_background"));
-
-    sf::RectangleShape shape;
-    sf::Vector2f dimensions(363, 70);
-    shape.setSize(dimensions);
-
-    GuiEntry start = GuiEntry("start_game", shape, &this->game->texmgr.getRef("start"),
-                                                   &this->game->texmgr.getRef("start_highlight"),
-                                                   &this->game->texmgr.getRef("start_press"));
-
-    GuiEntry load = GuiEntry("load_game", shape, &this->game->texmgr.getRef("load"),
-                                                 &this->game->texmgr.getRef("load_highlight"),
-                                                 &this->game->texmgr.getRef("load_press"));
-
-    GuiEntry save = GuiEntry("save_game", shape, &this->game->texmgr.getRef("save"),
-                                                 &this->game->texmgr.getRef("save_highlight"),
-                                                 &this->game->texmgr.getRef("save_press"));
-
-    GuiEntry quit = GuiEntry("quit_game", shape, &this->game->texmgr.getRef("quit"),
-                                                 &this->game->texmgr.getRef("quit_highlight"),
-                                                 &this->game->texmgr.getRef("quit_press"));
-
-    std::vector<GuiEntry> entries{start, load, save, quit};
-
-    this->guiSystem.emplace("menu", Gui(dimensions, entries));
-
-    this->guiSystem.at("menu").setPosition(pos);
-    this->guiSystem.at("menu").setOrigin(181, 155);
-    this->guiSystem.at("menu").show();
+    return;
 }

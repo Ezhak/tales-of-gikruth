@@ -7,7 +7,7 @@
 #include <cstdarg>
 
 class GuiEntry {
-public:
+  public:
     // Handles appearance of the entry
     sf::RectangleShape shape;
     sf::Texture* texHighlight;
@@ -19,26 +19,26 @@ public:
 
     GuiEntry(const std::string& message, sf::RectangleShape shape,
              sf::Texture* texNormal, sf::Texture* texHighlight, sf::Texture* texPressed) {
-        this->message = message;
-        this->shape = shape;
-        this->texHighlight = texHighlight;
-        this->texNormal = texNormal;
-        this->texPressed = texPressed;
+      this->message = message;
+      this->shape = shape;
+      this->texHighlight = texHighlight;
+      this->texNormal = texNormal;
+      this->texPressed = texPressed;
     }
 
     GuiEntry() { }
 };
 
 class Gui : public sf::Transformable, public sf::Drawable {
-private:
+  private:
     sf::Vector2f dimensions;
     std::vector<GuiEntry> entries;
 
-public:
+  public:
     // Constructor
     Gui(sf::Vector2f dimensions, std::vector<GuiEntry> entries) {
-        this->dimensions = dimensions;
-        this->entries = entries;
+      this->dimensions = dimensions;
+      this->entries = entries;
     }
 
     // Return the entry that the mouse is hovering over. Returns

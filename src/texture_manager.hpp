@@ -6,11 +6,11 @@
 #include <map>
 
 class TextureManager {
-private:
+  private:
     // Array of textures used
     std::map<std::string, sf::Texture> textures;
 
-public:
+  public:
     // Add a texture from a file
     void loadTexture(const std::string& name, const std::string &filename);
 

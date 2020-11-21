@@ -25,8 +25,7 @@ int Gui::getEntry(const sf::Vector2f mousePos) {
     return -1;
 }
 
-void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     // Draw each entry of the menu
     for(auto entry : this->entries)
         // Draw the entry
@@ -35,8 +34,7 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
     return;
 }
 
-void Gui::show()
-{
+void Gui::show() {
     float offset = 0.0f;
     // Draw each entry of the menu
     for(auto& entry : this->entries) {
