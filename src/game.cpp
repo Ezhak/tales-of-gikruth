@@ -97,7 +97,7 @@ void Game::loadTextures() {
     texmgr.loadTexture("game_background",   "assets/game/background.png");
     
     texmgr.loadTexture("map_1",             "assets/game/maps/map_1.png");
-
+    //Characters, tiny and normal enemies --> 24x24
     texmgr.loadTexture("dragon",        "assets/game/characters/dragon.png");
     texmgr.loadTexture("knight",        "assets/game/characters/knight.png");
     texmgr.loadTexture("mage",          "assets/game/characters/mage.png");
@@ -107,4 +107,7 @@ void Game::loadTextures() {
     texmgr.loadTexture("tinyorc",       "assets/game/characters/tinyorc.png");
     texmgr.loadTexture("tinyzombie",    "assets/game/characters/tinyzombie.png");
     texmgr.loadTexture("tinydemon",     "assets/game/characters/tinydemon.png");
+    //Bosses enemies --> 34x34
+    texmgr.loadTexture("bossdemon",     "assets/game/characters/bossdemon.png");
+    texmgr.loadTexture("bossorc",       "assets/game/characters/bossorc.png");
 }
