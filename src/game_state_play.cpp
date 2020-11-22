@@ -25,10 +25,17 @@ GameStatePlay::GameStatePlay(Game* game) {
 	playerSprite.setPosition(300, 275);
 	playerSprite.setOrigin(12, 22);
 
+	sf::Sprite enemyOrcSprite;
+	enemyOrcSprite.setTexture(this->game->texmgr.getRef("orc"));
+	enemyOrcSprite.setPosition(500, 275);
+	enemyOrcSprite.setOrigin(12, 22);
+
 	this->level = Level(mapSprite);
 	this->player = Character(playerSprite);
-	
+	this->enemyOrc = Enemy(enemyOrcSprite);
+
 	this->player.create();
+	this->enemyOrc.create();
 	this->gameView.zoom(0.666f);
 
 	// Create gui elements
@@ -48,6 +55,8 @@ void GameStatePlay::handleInput() {
 		this->player.move(movement_type::RIGHT);
 
 	else this->player.idle();
+
+	this->enemyOrc.idle();
 
 	sf::Event event;
 
@@ -70,6 +79,7 @@ void GameStatePlay::handleInput() {
 void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
+	this->enemyOrc.update(dt);
 
 	return;
 }
@@ -83,6 +93,7 @@ void GameStatePlay::draw(const sf::Time dt) {
   this->game->window.setView(this->gameView);
   this->level.draw(this->game->window);
 	this->player.draw(this->game->window);
+	this->enemyOrc.draw(this->game->window);
 
 	this->game->window.setView(this->guiView);
 	for (auto gui : this->guiSystem)

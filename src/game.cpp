@@ -100,5 +100,6 @@ void Game::loadTextures() {
 
     texmgr.loadTexture("dragon",        "assets/game/characters/dragon.png");
     texmgr.loadTexture("knight",        "assets/game/characters/knight.png");
-    texmgr.loadTexture("mage",        "assets/game/characters/mage.png");
+    texmgr.loadTexture("mage",          "assets/game/characters/mage.png");
+    texmgr.loadTexture("orc",           "assets/game/characters/orc.png");
 }

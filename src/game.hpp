@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "character.hpp"
+#include "enemy.hpp"
 #include "texture_manager.hpp"
 
 class GameState;

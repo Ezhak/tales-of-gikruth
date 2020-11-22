@@ -8,6 +8,7 @@
 #include "game_state.hpp"
 #include "gui.hpp"
 #include "level.hpp"
+
 class GameStatePlay : public GameState {
 	private:
 		sf::View gameView;
@@ -15,6 +16,7 @@ class GameStatePlay : public GameState {
 			
 		Level level;
 		Character player;
+		Enemy enemyOrc;
 			
 		std::map<std::string, Gui> guiSystem;
 
