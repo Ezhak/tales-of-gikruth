@@ -102,4 +102,9 @@ void Game::loadTextures() {
     texmgr.loadTexture("knight",        "assets/game/characters/knight.png");
     texmgr.loadTexture("mage",          "assets/game/characters/mage.png");
     texmgr.loadTexture("orc",           "assets/game/characters/orc.png");
+    texmgr.loadTexture("demon",         "assets/game/characters/demon.png");
+    texmgr.loadTexture("skelly",        "assets/game/characters/skelly.png");
+    texmgr.loadTexture("tinyorc",       "assets/game/characters/tinyorc.png");
+    texmgr.loadTexture("tinyzombie",    "assets/game/characters/tinyzombie.png");
+    texmgr.loadTexture("tinydemon",     "assets/game/characters/tinydemon.png");
 }
