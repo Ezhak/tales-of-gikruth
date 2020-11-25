@@ -20,6 +20,11 @@ GameStatePlay::GameStatePlay(Game* game) {
 	mapSprite.setPosition(pos);
 	mapSprite.setOrigin(160, 130);
 
+	sf::Sprite mapSprite2;
+	mapSprite2.setTexture(this->game->texmgr.getRef("map_2"));
+	mapSprite2.setPosition(pos);
+	mapSprite2.setOrigin(160, 130);
+
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(this->game->texmgr.getRef("dragon"));
 	playerSprite.setPosition(300, 275);

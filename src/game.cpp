@@ -97,6 +97,7 @@ void Game::loadTextures() {
     texmgr.loadTexture("game_background",   "assets/game/background.png");
     
     texmgr.loadTexture("map_1",             "assets/game/maps/map_1.png");
+    texmgr.loadTexture("map_2",             "assets/game/maps/map_2.png");
     //Characters, tiny and normal enemies --> 24x24
     texmgr.loadTexture("dragon",        "assets/game/characters/dragon.png");
     texmgr.loadTexture("knight",        "assets/game/characters/knight.png");
