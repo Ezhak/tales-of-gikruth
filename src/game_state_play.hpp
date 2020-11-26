@@ -8,6 +8,7 @@
 #include "game_state.hpp"
 #include "gui.hpp"
 #include "level.hpp"
+#include "TileMap.h"
 
 class GameStatePlay : public GameState {
 	private:
@@ -15,6 +16,9 @@ class GameStatePlay : public GameState {
 		sf::View guiView;
 			
 		Level level;
+		//
+		TileMap collisions;
+		//
 		Character player;
 		Enemy enemyOrc;
 			

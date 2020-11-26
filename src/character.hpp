@@ -28,8 +28,10 @@ class Character {
 		void idle();
 		void move(movement_type direction);
 		void attack();
-		void collision();
+		void collision(std::vector<sf::FloatRect>collisions);
 		void changeIdleType();
+
+		sf::Sprite getSprite() { return _sprite; };
 };
 
 #endif // CHARACTER_HPP

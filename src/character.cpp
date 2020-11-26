@@ -1,4 +1,5 @@
 #include "character.hpp"
+#include <iostream>
 
 void Character::update(const sf::Time dt) {
 	this->_animator.update(dt);
@@ -69,7 +70,10 @@ void Character::move(movement_type direction) {
 void Character::attack() {
 }
 
-void Character::collision() {
+void Character::collision(std::vector<sf::FloatRect>collisions) {
+	for (auto col : collisions) {
+		std::cout << "collision detecteds" << std::endl;
+	}
 }
 
 void Character::changeIdleType() {
