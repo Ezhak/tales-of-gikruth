@@ -35,6 +35,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 		if (collisionsArrayMap1[imap1] != 0) {
 			collisionsArrayMap1[imap1] -= 1;
 			vectorCollisions.push_back(sf::FloatRect(imap1 % 20 * 16, imap1 / 20 * 16, 16, 16));
+
 		}
 		imap1++;
 	}
@@ -46,6 +47,13 @@ GameStatePlay::GameStatePlay(Game* game) {
 	map1Collisions.setOrigin(160, 130);
 	//Lo dibuje en un lugar erroneo
 	this->game->window.draw(map1Collisions);
+	this->collisions = TileMap(map1Collisions);
+
+	for (auto col : vectorCollisions) {
+		if (this->player.getSprite().getGlobalBounds().intersects(col)) {
+			std::cout << "collision detecteds" << std::endl;
+		}
+	}
 
 	//-------
 	sf::Sprite mapSprite2;
@@ -97,35 +105,6 @@ void GameStatePlay::handleInput() {
 
     sf::Vector2f guiPos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->guiView);
 	sf::Vector2f gamePos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->gameView);
-	
-	sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
-	pos *= 0.5f;
-	int imap1 = 0;
-	std::vector<sf::FloatRect>vectorCollisions;
-	int collisionsArrayMap1[] = { 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130 };
-	for (auto x : vectorCollisions) {
-		if (collisionsArrayMap1[imap1] != 0) {
-			collisionsArrayMap1[imap1] -= 1;
-			vectorCollisions.push_back(sf::FloatRect(imap1 % 20 * 16, imap1 / 20 * 16, 16, 16));
-
-		}
-		imap1++;
-	}
-	TileMap map1Collisions;
-	if (!map1Collisions.load("assets/game/maps/map_1.png", sf::Vector2u(16, 16), collisionsArrayMap1, 20, 20)) {
-		std::cout << "Error." << std::endl;
-	}
-	map1Collisions.setPosition(pos);
-	map1Collisions.setOrigin(160, 130);
-	//Lo dibuje en un lugar erroneo
-	this->game->window.draw(map1Collisions);
-	this->collisions = TileMap(map1Collisions);
-
-	for (auto col : vectorCollisions) {
-		if (this->player.getSprite().getGlobalBounds().intersects(col)) {
-			std::cout << "collision detecteds" << std::endl;
-		}
-	}
 
 	while(this->game->window.pollEvent(event)) {
 		switch(event.type) {
