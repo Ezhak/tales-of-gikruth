@@ -35,6 +35,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 		if (collisionsArrayMap1[imap1] != 0) {
 			collisionsArrayMap1[imap1] -= 1;
 			vectorCollisions.push_back(sf::FloatRect(imap1 % 20 * 16, imap1 / 20 * 16, 16, 16));
+
 		}
 		imap1++;
 	}
@@ -46,6 +47,13 @@ GameStatePlay::GameStatePlay(Game* game) {
 	map1Collisions.setOrigin(160, 130);
 	//Lo dibuje en un lugar erroneo
 	this->game->window.draw(map1Collisions);
+	this->collisions = TileMap(map1Collisions);
+
+	for (auto col : vectorCollisions) {
+		if (this->player.getSprite().getGlobalBounds().intersects(col)) {
+			std::cout << "collision detecteds" << std::endl;
+		}
+	}
 
 	//-------
 	sf::Sprite mapSprite2;
@@ -64,7 +72,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 	enemyOrcSprite.setOrigin(12, 22);
 
 	this->level = Level(mapSprite);
-	//this->collisions = TileMap(map1Collisions);
+	this->collisions = TileMap(map1Collisions);
 	this->player = Character(playerSprite);
 	this->enemyOrc = Enemy(enemyOrcSprite);
 
@@ -97,7 +105,7 @@ void GameStatePlay::handleInput() {
 
     sf::Vector2f guiPos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->guiView);
 	sf::Vector2f gamePos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->gameView);
-	
+
 	while(this->game->window.pollEvent(event)) {
 		switch(event.type) {
 			// Close the window
