@@ -39,7 +39,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 		imap1++;
 	}
 	TileMap map1Collisions;
-	if (!map1Collisions.load("assets/game/maps/map_1.png", sf::Vector2u(16, 16), collisionsArrayMap1, 20, 20)) {
+	if (!map1Collisions.load("assets/game/maps/map_1.png", sf::Vector2u(16, 16), vectorCollisions, 20, 20)) {
 		std::cout << "Error." << std::endl;
 	}
 	map1Collisions.setPosition(pos);
