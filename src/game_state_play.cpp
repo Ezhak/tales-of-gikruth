@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "game_state.hpp"
+#include "game_state_start.hpp"
 #include "game_state_play.hpp"
 #include "level.hpp"
 #include "TileMap.h"
@@ -62,8 +63,8 @@ void GameStatePlay::handleInput() {
 
 	else this->player.idle();
 
-	if (sf::Keyboard::idKeyPressed(sf::Keyboard::Escape))
-		this->game->changeState(new GameStateStart(&game));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		this->game->changeState(new GameStateStart(game));
 	
 	this->enemyOrc.idle();
 
