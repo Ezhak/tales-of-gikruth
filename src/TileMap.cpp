@@ -44,9 +44,5 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, const int*
 
 void TileMap::update(sf::Sprite sprite)
 {
-    for (auto col : this->vectorCollisions) {
-        if (sprite.getGlobalBounds().intersects(col)) {
-            std::cout << "collision detected" << std::endl;
-        }
-    }
+   
 }
