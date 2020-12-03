@@ -71,11 +71,7 @@ void Character::attack() {
 }
 
 void Character::collision(std::vector<sf::FloatRect>collisions) {
-	for (auto col : collisions) {
-		if (_sprite.getGlobalBounds().intersects(col)) {
-			std::cout << "collision detecteds" << std::endl;
-		}
-	}
+
 }
 
 void Character::changeIdleType() {
