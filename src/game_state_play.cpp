@@ -62,6 +62,9 @@ void GameStatePlay::handleInput() {
 
 	else this->player.idle();
 
+	if (sf::Keyboard::idKeyPressed(sf::Keyboard::Escape))
+		this->game->changeState(new GameStateStart(&game));
+	
 	this->enemyOrc.idle();
 
 	sf::Event event;
