@@ -42,7 +42,3 @@ bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, const int*
     return true;
 }
 
-void TileMap::update(sf::Sprite sprite)
-{
-   
-}

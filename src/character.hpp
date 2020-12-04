@@ -28,11 +28,6 @@ class Character {
 		void idle();
 		void move(movement_type direction);
 		void attack();
-		void leftCollision();
-		void rightCollision();
-		void downCollision();
-		void upCollision();
-		void changeIdleType();
 
 		sf::Sprite getSprite() { return _sprite; };
 };

@@ -17,17 +17,13 @@ private:
         // draw the vertex array
         target.draw(m_vertices, states);
     }
-    std::vector<sf::FloatRect>vectorCollisions;
+    std::vector<sf::RectangleShape>vectorCollisions; //
     sf::VertexArray m_vertices;
     sf::Texture m_tileset;
 public:
     bool load(const std::string& tileset, sf::Vector2u tileSize, const int* tiles, unsigned int width, unsigned int height);
-    void update(sf::Sprite sprite);
-    TileMap() {
-      
-    }
-    void setVector(std::vector<sf::FloatRect> vector) { vectorCollisions = vector; };
-    std::vector<sf::FloatRect>getVector() { return vectorCollisions; };
+    void setVector(std::vector<sf::RectangleShape> vector) { vectorCollisions = vector; }; //
+    std::vector<sf::RectangleShape>getVector() { return vectorCollisions; }; //
 
 };
 

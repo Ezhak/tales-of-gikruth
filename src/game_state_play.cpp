@@ -22,25 +22,29 @@ GameStatePlay::GameStatePlay(Game* game) {
 	mapSprite.setPosition(pos);
 	mapSprite.setOrigin(160, 130);
 
+	// imap1 Is literally i iterator
 	int imap1 = 0;
-	std::vector<sf::FloatRect>vectorCol;
+	std::vector<sf::RectangleShape>vectorCol;
 	int collisionsArrayMap1[] =
 	{ 
 	130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130
 	};
+	// Asign collision shapes to draw later
 	for (auto x : collisionsArrayMap1) {
 		if (collisionsArrayMap1[imap1] != 0) {
 			collisionsArrayMap1[imap1] -= 1;
-		}
-		if (imap1 >= 240) {
-			vectorCol.push_back(sf::FloatRect((imap1) % 20 * 16, (imap1) / 20 * 16, 16, 16));
+			sf::RectangleShape colShape;
+			colShape.setFillColor(sf::Color::Blue);
+			colShape.setSize(sf::Vector2f(16.f, 16.f));
+			colShape.setPosition((imap1 % 20 * 16) + 240, (imap1 / 20 * 16) + 170); // 240 X and 170 Y
+			vectorCol.push_back(colShape);
 		}
 		imap1++;
 	}
-
+	// Draw a second layer where the collisions are
 	TileMap mapCollisions;
 	if (!mapCollisions.load("assets/tileset.png", sf::Vector2u(16, 16), collisionsArrayMap1, 20, 20)) {
-		std::cout << "Error de Tileset" << std::endl;
+		std::cout << "Tileset Error" << std::endl;
 	}
 	mapCollisions.setPosition(240,170);
 
@@ -61,7 +65,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	this->level = Level(mapSprite);
 	this->collisions = TileMap(mapCollisions);
-	this->collisions.setVector(vectorCol);
+	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
 	this->player = Character(playerSprite);
 	this->enemyOrc = Enemy(enemyOrcSprite);
 	this->player.create();
@@ -89,13 +93,6 @@ void GameStatePlay::handleInput() {
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		this->game->changeState(new GameStateStart(game));
-	
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
-		std::cout << localPosition.x << std::endl;
-		std::cout << localPosition.y << std::endl;
-	}
 
 	this->enemyOrc.idle();
 
@@ -123,21 +120,17 @@ void GameStatePlay::update(const sf::Time dt) {
 	this->enemyOrc.update(dt);
 	// Check collisions
 	for (auto col : this->collisions.getVector()) {
-		if (this->player.getSprite().getGlobalBounds().intersects(col)) {
-			std::cout << "collision detected" << std::endl;
+		if (this->player.getSprite().getGlobalBounds().intersects(col.getGlobalBounds())) {
+			// Debug: std::cout << "collision detected" << std::endl;
 			// Fixing positions by collision
-			if (this->player.getSprite().getPosition().x - 3 < col.left) {
-				this->player.leftCollision();
-			}
-			if (this->player.getSprite().getPosition().x - 3 > col.left + col.width) {
-				this->player.rightCollision();
-			}
-			if (this->player.getSprite().getPosition().y - 3 < col.top) {
-				this->player.upCollision();
-			}
-			if (this->player.getSprite().getPosition().y - 3 < col.top + col.height) {
-				this->player.downCollision();
-			}
+			if(this->player.getSprite().getGlobalBounds().top > col.getGlobalBounds().top)
+				this->player.move(movement_type::DOWN);
+			if (this->player.getSprite().getGlobalBounds().top < col.getGlobalBounds().top)
+				this->player.move(movement_type::UP);
+			if (this->player.getSprite().getGlobalBounds().left > col.getGlobalBounds().left)
+				this->player.move(movement_type::RIGHT);
+			if (this->player.getSprite().getGlobalBounds().left < col.getGlobalBounds().left)
+				this->player.move(movement_type::LEFT);
 		}
 	}
 	return;
@@ -147,8 +140,12 @@ void GameStatePlay::draw(const sf::Time dt) {
 	this->game->window.clear(sf::Color::Black);
 	this->game->window.setView(this->guiView);
 	this->game->window.draw(this->background);
-    //this->game->window.setView(this->gameView);	
+    this->game->window.setView(this->gameView);	
 	this->game->window.draw(this->collisions);
+	// Collisions drawin' to debug ^^^
+	for (auto col : this->collisions.getVector()) {
+		this->game->window.draw(col);
+	}
     this->level.draw(this->game->window);
 	this->player.draw(this->game->window);
 	this->enemyOrc.draw(this->game->window);
