@@ -70,8 +70,24 @@ void Character::move(movement_type direction) {
 void Character::attack() {
 }
 
-void Character::collision(std::vector<sf::FloatRect>collisions) {
+void Character::leftCollision() {
+	sf::Vector2f posicionActualPlayer = _sprite.getPosition();
+	_sprite.setPosition(posicionActualPlayer.x - 1, posicionActualPlayer.y);
+}
 
+void Character::rightCollision() {
+	sf::Vector2f posicionActualPlayer = _sprite.getPosition();
+	_sprite.setPosition(posicionActualPlayer.x + 1, posicionActualPlayer.y);
+}
+
+void Character::upCollision() {
+	sf::Vector2f posicionActualPlayer = _sprite.getPosition();
+	_sprite.setPosition(posicionActualPlayer.x, posicionActualPlayer.y - 1);
+}
+
+void Character::downCollision() {
+	sf::Vector2f posicionActualPlayer = _sprite.getPosition();
+	_sprite.setPosition(posicionActualPlayer.x, posicionActualPlayer.y + 1);
 }
 
 void Character::changeIdleType() {

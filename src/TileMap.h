@@ -26,6 +26,7 @@ public:
     TileMap() {
       
     }
+    void setVector(std::vector<sf::FloatRect> vector) { vectorCollisions = vector; };
     std::vector<sf::FloatRect>getVector() { return vectorCollisions; };
 
 };
