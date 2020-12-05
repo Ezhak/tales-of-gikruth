@@ -118,7 +118,7 @@ void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
-	// Check collisions
+	// Check collisions with walls
 	for (auto col : this->collisions.getVector()) {
 		if (this->player.getSprite().getGlobalBounds().intersects(col.getGlobalBounds())) {
 			// Debug: std::cout << "collision detected" << std::endl;
@@ -133,6 +133,11 @@ void GameStatePlay::update(const sf::Time dt) {
 				this->player.move(movement_type::LEFT);
 		}
 	}
+	// Check collisions with Orc Enemy
+	if (this->player.getSprite().getGlobalBounds().intersects(this->enemyOrc.getSprite().getGlobalBounds())) {
+		std::cout << "Enemy collision" << std::endl;
+	}
+
 	return;
 }
 

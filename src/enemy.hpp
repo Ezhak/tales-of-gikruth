@@ -29,6 +29,8 @@ public:
 	void move();
 	void attack();
 	void collision();
+
+	sf::Sprite getSprite() { return _sprite; };
 };
 
 #endif // ENEMY_HPP
