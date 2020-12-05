@@ -40,6 +40,3 @@ void Enemy::idle() {
 void Enemy::attack() {
 }
 
-void Enemy::collision() {
-}
-

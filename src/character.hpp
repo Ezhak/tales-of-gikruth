@@ -11,10 +11,10 @@ class Character {
 		sf::Sprite _sprite;
 		thor::Animator<sf::Sprite, std::string> _animator;
 
-		float _hitPoints;
+		float _hitPoints = 10;
 		float _evasionProb;
 		float _defensePoints;
-		float _attackPoints;
+		float _attackPoints = 2;
 		float _velocity = 1.f;
 	public:
 		Character(){}

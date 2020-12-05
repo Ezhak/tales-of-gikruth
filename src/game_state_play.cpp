@@ -116,10 +116,10 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 		futurePlayerRect.left += player->getVelocity();
 		break;
 	}
-
+	
 	//Checking collision.
 	for (auto col : this->collisions.getVector())
-		if (futurePlayerRect.intersects(col.getGlobalBounds())) 
+		if (futurePlayerRect.intersects(col.getGlobalBounds()))
 			return false;
 	// No collision found
 	return true;
@@ -163,32 +163,15 @@ void GameStatePlay::handleInput() {
 	return;
 }
 
-void GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
+bool GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
 {
-	sf::FloatRect playerRect = player->getSprite().getGlobalBounds();
-	sf::FloatRect enemyRect = enemy->getSprite().getGlobalBounds();
-
-	//Changing player dimensions.
-	//Height
-	playerRect.height -= 5;
-	playerRect.top += 5;
-	//Width
-	playerRect.width -= 4;
-	playerRect.left += 2;
-
-	//Changing enemy dimensions.
-	//Height
-	enemyRect.height -= 5;
-	enemyRect.top += 5;
-	//Width
-	enemyRect.width /= 3;
-	enemyRect.left += enemyRect.width;
-
 	// Check collisions with Orc Enemy
-	if (playerRect.intersects(enemyRect)) 
+	if (player->getSprite().getGlobalBounds().intersects(enemy->getSprite().getGlobalBounds()))
 	{
+		return true;
 		std::cout << "Enemy collision" << std::endl;
 	}
+	else return false;
 }
 
 void GameStatePlay::update(const sf::Time dt) {
@@ -206,14 +189,24 @@ void GameStatePlay::draw(const sf::Time dt) {
 	this->game->window.setView(this->guiView);
 	this->game->window.draw(this->background);
     this->game->window.setView(this->gameView);	
-	this->game->window.draw(this->collisions);
+	//this->game->window.draw(this->collisions);
 	// Collisions drawin' to debug ^^^
 	for (auto col : this->collisions.getVector()) {
 		this->game->window.draw(col);
 	}
     this->level.draw(this->game->window);
-	this->player.draw(this->game->window);
-	this->enemyOrc.draw(this->game->window);
+
+	//Checking positions to see which one is drawn first.
+	if (this->player.getSprite().getPosition().y < this->enemyOrc.getSprite().getPosition().y)
+	{
+		this->player.draw(this->game->window);
+		this->enemyOrc.draw(this->game->window);
+	}
+	else
+	{
+		this->enemyOrc.draw(this->game->window);
+		this->player.draw(this->game->window);
+	}
 
 	this->game->window.setView(this->guiView);
 	for (auto gui : this->guiSystem)
