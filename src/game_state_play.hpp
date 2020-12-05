@@ -31,6 +31,7 @@ class GameStatePlay : public GameState {
 		virtual void handleInput();
 		virtual void update(const sf::Time dt);
 		virtual void draw(const sf::Time dt);
+		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 };
 
 #endif // GAME_STATE_PLAY_HPP
