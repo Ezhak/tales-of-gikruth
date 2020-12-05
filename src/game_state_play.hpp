@@ -32,6 +32,7 @@ class GameStatePlay : public GameState {
 		virtual void update(const sf::Time dt);
 		virtual void draw(const sf::Time dt);
 		bool canItMove(movement_type type, Character* player);
+		void checkEnemyCollisions(Character* player, Enemy* enemy);
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 };
 

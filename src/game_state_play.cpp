@@ -75,7 +75,7 @@ TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector
 			sf::RectangleShape colShape;
 			colShape.setFillColor(sf::Color::Blue);
 			colShape.setSize(sf::Vector2f(16.f, 16.f));
-			colShape.setPosition((imap1 % 20 * 16) + 240, (imap1 / 20 * 16) + 170); // 240 X and 170 Y
+			colShape.setPosition((imap1 % 20 * 16) + 240.f, (imap1 / 20 * 16) + 170.f); // 240 X and 170 Y
 			(*vectorCol).push_back(colShape);
 		}
 		imap1++;
@@ -94,11 +94,11 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 {
 	sf::FloatRect futurePlayerRect = player->getSprite().getGlobalBounds();
 	//Changing the height of the player's bounds to allow it to walk up to the walls without hitting its head.
-	futurePlayerRect.height /= 2;
-	futurePlayerRect.top += futurePlayerRect.height;
+	futurePlayerRect.height /= 4;
+	futurePlayerRect.top += (futurePlayerRect.height * 3);
 	//Changing the width.
-	futurePlayerRect.width -= 4;
-	futurePlayerRect.left += 2;
+	futurePlayerRect.width /= 3;
+	futurePlayerRect.left += futurePlayerRect.width;
 
 	//Prepparing future position.
 	switch (type)
@@ -163,29 +163,41 @@ void GameStatePlay::handleInput() {
 	return;
 }
 
+void GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
+{
+	sf::FloatRect playerRect = player->getSprite().getGlobalBounds();
+	sf::FloatRect enemyRect = enemy->getSprite().getGlobalBounds();
+
+	//Changing player dimensions.
+	//Height
+	playerRect.height -= 5;
+	playerRect.top += 5;
+	//Width
+	playerRect.width -= 4;
+	playerRect.left += 2;
+
+	//Changing enemy dimensions.
+	//Height
+	enemyRect.height -= 5;
+	enemyRect.top += 5;
+	//Width
+	enemyRect.width /= 3;
+	enemyRect.left += enemyRect.width;
+
+	// Check collisions with Orc Enemy
+	if (playerRect.intersects(enemyRect)) 
+	{
+		std::cout << "Enemy collision" << std::endl;
+	}
+}
+
 void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
-	// Check collisions
-	for (auto col : this->collisions.getVector()) {
-		if (this->player.getSprite().getGlobalBounds().intersects(col.getGlobalBounds())) {
-			// Debug: std::cout << "collision detected" << std::endl;
-			// Fixing positions by collision
-			if(this->player.getSprite().getGlobalBounds().top > col.getGlobalBounds().top)
-				this->player.move(movement_type::DOWN);
-			if (this->player.getSprite().getGlobalBounds().top < col.getGlobalBounds().top)
-				this->player.move(movement_type::UP);
-			if (this->player.getSprite().getGlobalBounds().left > col.getGlobalBounds().left)
-				this->player.move(movement_type::RIGHT);
-			if (this->player.getSprite().getGlobalBounds().left < col.getGlobalBounds().left)
-				this->player.move(movement_type::LEFT);
-		}
-	}
-	// Check collisions with Orc Enemy
-	if (this->player.getSprite().getGlobalBounds().intersects(this->enemyOrc.getSprite().getGlobalBounds())) {
-		std::cout << "Enemy collision" << std::endl;
-	}
+	
+	checkEnemyCollisions(&this->player, &this->enemyOrc);
+	
 	return;
 }
 
