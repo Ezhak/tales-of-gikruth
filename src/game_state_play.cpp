@@ -90,17 +90,52 @@ TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector
 	return mapCollisions;
 }
 
+bool GameStatePlay::canItMove(movement_type type, Character *player)
+{
+	sf::FloatRect futurePlayerRect = player->getSprite().getGlobalBounds();
+	//Changing the height of the player's bounds to allow it to walk up to the walls without hitting its head.
+	futurePlayerRect.height /= 2;
+	futurePlayerRect.top += futurePlayerRect.height;
+	//Changing the width.
+	futurePlayerRect.width -= 4;
+	futurePlayerRect.left += 2;
+
+	//Prepparing future position.
+	switch (type)
+	{
+	case movement_type::UP:
+		futurePlayerRect.top -= player->getVelocity();
+		break;
+	case movement_type::DOWN:
+		futurePlayerRect.top += player->getVelocity();
+		break;
+	case movement_type::LEFT:
+		futurePlayerRect.left -= player->getVelocity();
+		break;
+	case movement_type::RIGHT:
+		futurePlayerRect.left += player->getVelocity();
+		break;
+	}
+
+	//Checking collision.
+	for (auto col : this->collisions.getVector())
+		if (futurePlayerRect.intersects(col.getGlobalBounds())) 
+			return false;
+	// No collision found
+	return true;
+}
+
 void GameStatePlay::handleInput() {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canItMove(movement_type::UP, &this->player))
 		this->player.move(movement_type::UP);
 
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && canItMove(movement_type::DOWN, &this->player))
 		this->player.move(movement_type::DOWN);
 
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && canItMove(movement_type::LEFT, &this->player))
 		this->player.move(movement_type::LEFT);
 
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && canItMove(movement_type::RIGHT, &this->player))
 		this->player.move(movement_type::RIGHT);
 
 	else this->player.idle();
@@ -132,21 +167,7 @@ void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
-	// Check collisions
-	for (auto col : this->collisions.getVector()) {
-		if (this->player.getSprite().getGlobalBounds().intersects(col.getGlobalBounds())) {
-			// Debug: std::cout << "collision detected" << std::endl;
-			// Fixing positions by collision
-			if(this->player.getSprite().getGlobalBounds().top > col.getGlobalBounds().top)
-				this->player.move(movement_type::DOWN);
-			if (this->player.getSprite().getGlobalBounds().top < col.getGlobalBounds().top)
-				this->player.move(movement_type::UP);
-			if (this->player.getSprite().getGlobalBounds().left > col.getGlobalBounds().left)
-				this->player.move(movement_type::RIGHT);
-			if (this->player.getSprite().getGlobalBounds().left < col.getGlobalBounds().left)
-				this->player.move(movement_type::LEFT);
-		}
-	}
+	
 	return;
 }
 

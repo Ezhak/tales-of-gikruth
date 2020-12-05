@@ -29,6 +29,7 @@ class Character {
 		void move(movement_type direction);
 		void attack();
 
+		float getVelocity() { return _velocity; };
 		sf::Sprite getSprite() { return _sprite; };
 };
 
