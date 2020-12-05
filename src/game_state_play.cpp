@@ -182,6 +182,10 @@ void GameStatePlay::update(const sf::Time dt) {
 				this->player.move(movement_type::LEFT);
 		}
 	}
+	// Check collisions with Orc Enemy
+	if (this->player.getSprite().getGlobalBounds().intersects(this->enemyOrc.getSprite().getGlobalBounds())) {
+		std::cout << "Enemy collision" << std::endl;
+	}
 	return;
 }
 
