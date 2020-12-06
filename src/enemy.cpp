@@ -6,7 +6,8 @@ void Enemy::update(const sf::Time dt) {
 }
 
 void Enemy::draw(sf::RenderWindow& window) {
-	window.draw(this->_sprite);
+	if (this->_hitPoints > 0)
+		window.draw(this->_sprite);
 }
 
 void Enemy::create() {
