@@ -33,6 +33,8 @@ class GameStatePlay : public GameState {
 		virtual void draw(const sf::Time dt);
 		bool canItMove(movement_type type, Character* player);
 		bool checkEnemyCollisions(Character* player, Enemy* enemy);
+		void attack(Character& player, Enemy& enemy);
+		void attack(Enemy& enemy, Character& player);
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 };
 

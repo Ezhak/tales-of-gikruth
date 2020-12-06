@@ -182,7 +182,7 @@ void GameStatePlay::update(const sf::Time dt) {
 	
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
 		std::cout << "Hit!" << std::endl;
-		this->enemyOrc.attack(this->player);
+		attack(this->enemyOrc, this->player);
 		std::cout << this->player.getHealth() << std::endl;
 	}
 	
@@ -218,4 +218,14 @@ void GameStatePlay::draw(const sf::Time dt) {
     this->game->window.draw(gui.second);
 
 	return;
+}
+//for character attack
+void GameStatePlay::attack(Character& player, Enemy& enemy)
+{
+	enemy.setHealth(player.getAttackPoints());
+}
+//for enemy attack
+void GameStatePlay::attack(Enemy& enemy, Character& player)
+{
+	player.setHealth(enemy.getAttackPoints());
 }

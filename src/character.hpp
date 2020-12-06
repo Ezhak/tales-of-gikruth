@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
-#include "enemy.hpp"
 
 enum class movement_type { IDLE, UP, DOWN, LEFT, RIGHT };
 
@@ -28,12 +27,11 @@ class Character {
 		void addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
 		void idle();
 		void move(movement_type direction);
-		void attack(Enemy enemy);
+		void setHealth(float attackPoints);
 
 		float getVelocity() { return _velocity; };
 		float getAttackPoints() { return _attackPoints; };
 		float getHealth() { return _hitPoints; };
-		float setHealth(float hitPoints) { _hitPoints -= _attackPoints; };
 		sf::Sprite getSprite() { return _sprite; };
 };
 

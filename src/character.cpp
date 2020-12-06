@@ -67,7 +67,8 @@ void Character::move(movement_type direction) {
 	}
 }
 
-void Character::attack(Enemy enemy) 
+void Character::setHealth(float attackPoints)
 {
-	enemy.setHealth(this->getAttackPoints());
+	if (this->_hitPoints > 0)
+		this->_hitPoints -= attackPoints;
 }

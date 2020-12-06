@@ -37,7 +37,8 @@ void Enemy::idle() {
 		this->_animator.playAnimation("idle");
 }
 
-void Enemy::attack(Character player) {
-	player.setHealth(this->getAttackPoints());
+void Enemy::setHealth(float attackPoints)
+{ 
+	if (this-> _hitPoints > 0)
+		this-> _hitPoints -= attackPoints;
 }
-

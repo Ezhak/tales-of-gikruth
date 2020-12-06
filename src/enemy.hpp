@@ -4,7 +4,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
-#include "character.hpp"
 
 class Enemy
 {
@@ -27,14 +26,11 @@ public:
 	void create();
 	void addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
 	void idle();
-	void move();
-	void attack(Character player);
-	void collision();
+	void setHealth(float attackPoints);
 
 	sf::Sprite getSprite() { return _sprite; };
 	float getHealth() { return _hitPoints; };
 	float getAttackPoints() { return _attackPoints; };
-	float setHealth(float hitPoints) { _hitPoints -= _attackPoints; };
 };
 
 #endif // ENEMY_HPP
