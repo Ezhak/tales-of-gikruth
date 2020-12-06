@@ -142,6 +142,12 @@ void GameStatePlay::handleInput() {
 
 	else this->player.idle();
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && checkEnemyCollisions(&this->player, &this->enemyOrc)) {
+		attack(this->player, this->enemyOrc);
+		std::cout << "Player hits enemy!" << std::endl;
+		std::cout << this->enemyOrc.getHealth() << std::endl;
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		this->game->changeState(new GameStateStart(game));
 
@@ -181,9 +187,8 @@ void GameStatePlay::update(const sf::Time dt) {
 	this->enemyOrc.update(dt);
 	
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
-		std::cout << "Hit!" << std::endl;
-		attack(this->enemyOrc, this->player);
-		std::cout << this->player.getHealth() << std::endl;
+		//attack(this->enemyOrc, this->player);
+		//Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 	
 	return;
