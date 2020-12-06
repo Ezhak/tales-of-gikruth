@@ -37,6 +37,7 @@ void Enemy::idle() {
 		this->_animator.playAnimation("idle");
 }
 
-void Enemy::attack() {
+void Enemy::attack(Character player) {
+	player.setHealth(this->getAttackPoints());
 }
 

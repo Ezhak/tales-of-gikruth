@@ -5,6 +5,8 @@
 #include "game_state_play.hpp"
 #include "level.hpp"
 #include "TileMap.h"
+#include "enemy.hpp"
+#include "character.hpp"
 
 int collisionsArrayMap1[400] =
 {
@@ -169,7 +171,6 @@ bool GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
 	if (player->getSprite().getGlobalBounds().intersects(enemy->getSprite().getGlobalBounds()))
 	{
 		return true;
-		std::cout << "Enemy collision" << std::endl;
 	}
 	else return false;
 }
@@ -179,7 +180,11 @@ void GameStatePlay::update(const sf::Time dt) {
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
 	
-	checkEnemyCollisions(&this->player, &this->enemyOrc);
+	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
+		std::cout << "Hit!" << std::endl;
+		this->enemyOrc.attack(this->player);
+		std::cout << this->player.getHealth() << std::endl;
+	}
 	
 	return;
 }

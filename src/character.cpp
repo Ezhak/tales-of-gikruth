@@ -67,7 +67,7 @@ void Character::move(movement_type direction) {
 	}
 }
 
-void Character::attack() 
+void Character::attack(Enemy enemy) 
 {
-
+	enemy.setHealth(this->getAttackPoints());
 }
