@@ -17,6 +17,7 @@ class GameStateStart : public GameState {
     void startgame();
   public:
     GameStateStart(Game* game);
+    ~GameStateStart();
 
     virtual void handleInput();
     virtual void update(const sf::Time dt);

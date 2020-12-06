@@ -8,8 +8,7 @@ void Character::update(const sf::Time dt) {
 
 void Character::draw(sf::RenderWindow& window) 
 {
-	if (_hitPoints > 0)
-		window.draw(this->_sprite);
+	window.draw(this->_sprite);
 }
 
 void Character::create() {

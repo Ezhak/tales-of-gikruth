@@ -12,12 +12,11 @@ class Character {
 		thor::Animator<sf::Sprite, std::string> _animator;
 
 		float _hitPoints = 10.f;
-		float _evasionProb;
 		float _defensePoints = 2.f;
 		float _attackPoints = 2.f;
 		float _velocity = 1.f;
 	public:
-		Character(){}
+		Character() {};
 		Character(sf::Sprite& sprite) { this->_sprite = sprite; }
 
 		void update(const sf::Time dt);

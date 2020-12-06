@@ -12,13 +12,12 @@ private:
 	thor::Animator<sf::Sprite, std::string> _animator;
 
 	float _hitPoints = 15.f;
-	float _evasionProb;
 	float _defensePoints = 3.f;
 	float _attackPoints = 4.f;
 	float _velocity = 1.f;
 public:
-	Enemy() {}
-	Enemy(sf::Sprite& sprite) { this->_sprite = sprite; }
+	Enemy() {};
+	Enemy(sf::Sprite& sprite) { this->_sprite = sprite; };
 
 	void update(const sf::Time dt);
 	void draw(sf::RenderWindow& window);

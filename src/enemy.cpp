@@ -1,5 +1,6 @@
 #include "enemy.hpp"
 
+
 void Enemy::update(const sf::Time dt) {
 	this->_animator.update(dt);
 	this->_animator.animate(this->_sprite);

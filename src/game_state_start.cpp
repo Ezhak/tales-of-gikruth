@@ -51,6 +51,11 @@ GameStateStart::GameStateStart(Game* game) {
     this->guiSystem.emplace("menu", gui);
 }
 
+GameStateStart::~GameStateStart()
+{
+
+}
+
 void GameStateStart::handleInput() {
     sf::Event event;
     sf::Vector2f mousePos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->view);

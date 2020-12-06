@@ -55,14 +55,20 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->level = Level(mapSprite);
 	this->collisions = TileMap(mapCollisions);
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
-	this->player = Character(playerSprite);
 	this->enemyOrc = Enemy(enemyOrcSprite);
+	this->player = Character(playerSprite);
 	this->player.create();
 	this->enemyOrc.create();
 	this->gameView.zoom(0.666f);
 
 	// Create gui elements
 
+}
+
+GameStatePlay::~GameStatePlay()
+{
+	this->player.~Character();
+	this->enemyOrc.~Enemy();
 }
 
 TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
@@ -128,6 +134,7 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 }
 
 void GameStatePlay::handleInput() {
+	//Movement
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canItMove(movement_type::UP, &this->player))
 		this->player.move(movement_type::UP);
 
@@ -142,14 +149,8 @@ void GameStatePlay::handleInput() {
 
 	else this->player.idle();
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && checkEnemyCollisions(&this->player, &this->enemyOrc)) {
-		attack(this->player, this->enemyOrc);
-		std::cout << "Player hits enemy!" << std::endl;
-		std::cout << this->enemyOrc.getHealth() << std::endl;
-	}
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		this->game->changeState(new GameStateStart(game));
+		this->game->changeState(new GameStateStart(this->game));
 
 	this->enemyOrc.idle();
 
@@ -166,6 +167,14 @@ void GameStatePlay::handleInput() {
 			break;
 		default: break;
 		}
+
+		//CharacterAttack
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyOrc))
+		{
+			attack(this->player, this->enemyOrc);
+			std::cout << "Player hits enemy!" << std::endl;
+			std::cout << this->enemyOrc.getHealth() << std::endl;
+		}
 	}
 
 	return;
@@ -181,6 +190,15 @@ bool GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
 	else return false;
 }
 
+bool GameStatePlay::checkHealth(float health)
+{
+	if (health <= 0)
+		//If false, character is dead.	
+		return false;
+	//If true, character is alive.
+	else return true;
+}
+
 void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
@@ -190,7 +208,6 @@ void GameStatePlay::update(const sf::Time dt) {
 		//attack(this->enemyOrc, this->player);
 		//Debug: std::cout << this->player.getHealth() << std::endl;
 	}
-	
 	return;
 }
 
