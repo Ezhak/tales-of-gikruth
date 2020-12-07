@@ -98,32 +98,32 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	sf::Sprite enemyDemonSprite;
 	enemyDemonSprite.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite.setPosition(350, 430);
+	enemyDemonSprite.setPosition(350, 420);
 	enemyDemonSprite.setOrigin(12, 22);
 
 	sf::Sprite enemyDemonSprite2;
 	enemyDemonSprite2.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite2.setPosition(350, 440);
+	enemyDemonSprite2.setPosition(350, 430);
 	enemyDemonSprite2.setOrigin(12, 22);
 
 	sf::Sprite enemySkellySprite;
 	enemySkellySprite.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite.setPosition(350, 450);
+	enemySkellySprite.setPosition(350, 440);
 	enemySkellySprite.setOrigin(12, 22);
 
 	sf::Sprite enemySkellySprite2;
 	enemySkellySprite2.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite2.setPosition(350, 460);
+	enemySkellySprite2.setPosition(350, 450);
 	enemySkellySprite2.setOrigin(12, 22);
 
 	sf::Sprite enemyTinyOrcSprite;
 	enemyTinyOrcSprite.setTexture(this->game->texmgr.getRef("tinyorc"));
-	enemyTinyOrcSprite.setPosition(350, 470);
+	enemyTinyOrcSprite.setPosition(350, 460);
 	enemyTinyOrcSprite.setOrigin(12, 22);
 
 	sf::Sprite enemyTinyDemonSprite;
 	enemyTinyDemonSprite.setTexture(this->game->texmgr.getRef("tinydemon"));
-	enemyTinyDemonSprite.setPosition(350, 480);
+	enemyTinyDemonSprite.setPosition(350, 470);
 	enemyTinyDemonSprite.setOrigin(12, 22);
 
 	// Assigns
@@ -489,6 +489,8 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemyOrc.draw(this->game->window);
 			this->enemyTinyZombie.draw(this->game->window);
 			this->enemyTinyZombie2.draw(this->game->window);
+		}
+		else {
 			this->enemyDemon.draw(this->game->window);
 			this->enemyDemon2.draw(this->game->window);
 			this->enemySkelly.draw(this->game->window);
@@ -504,6 +506,8 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemyOrc.draw(this->game->window);
 			this->enemyTinyZombie.draw(this->game->window);
 			this->enemyTinyZombie2.draw(this->game->window);
+		}
+		else {
 			this->enemyDemon.draw(this->game->window);
 			this->enemyDemon2.draw(this->game->window);
 			this->enemySkelly.draw(this->game->window);
