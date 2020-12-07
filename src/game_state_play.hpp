@@ -22,6 +22,8 @@ class GameStatePlay : public GameState {
 		//
 		Character player;
 		Enemy enemyOrc;
+		Enemy enemyTinyZombie;
+		Enemy enemyTinyZombie2;
 			
 		std::map<std::string, Gui> guiSystem;
 

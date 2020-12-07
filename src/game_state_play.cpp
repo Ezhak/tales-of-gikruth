@@ -52,13 +52,27 @@ GameStatePlay::GameStatePlay(Game* game) {
 	enemyOrcSprite.setPosition(500, 275);
 	enemyOrcSprite.setOrigin(12, 22);
 
+	sf::Sprite enemyTinyZombieSprite;
+	enemyTinyZombieSprite.setTexture(this->game->texmgr.getRef("tinyzombie"));
+	enemyTinyZombieSprite.setPosition(350, 430);
+	enemyTinyZombieSprite.setOrigin(12, 22);
+
+	sf::Sprite enemyTinyZombieSprite2;
+	enemyTinyZombieSprite2.setTexture(this->game->texmgr.getRef("tinyzombie"));
+	enemyTinyZombieSprite2.setPosition(350, 460);
+	enemyTinyZombieSprite2.setOrigin(12, 22);
+
 	this->level = Level(mapSprite);
 	this->collisions = TileMap(mapCollisions);
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
 	this->enemyOrc = Enemy(enemyOrcSprite);
+	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
+	this->enemyTinyZombie2 = Enemy(enemyTinyZombieSprite2);
 	this->player = Character(playerSprite);
 	this->player.create();
 	this->enemyOrc.create();
+	this->enemyTinyZombie.create();
+	this->enemyTinyZombie2.create();
 	this->gameView.zoom(0.666f);
 
 	// Create gui elements
@@ -69,6 +83,8 @@ GameStatePlay::~GameStatePlay()
 {
 	this->player.~Character();
 	this->enemyOrc.~Enemy();
+	this->enemyTinyZombie.~Enemy();
+	this->enemyTinyZombie2.~Enemy();
 }
 
 TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
@@ -152,7 +168,15 @@ void GameStatePlay::handleInput() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		this->game->changeState(new GameStateStart(this->game));
 
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
+		std::cout << localPosition.x << std::endl;
+		std::cout << localPosition.y << std::endl;
+	}
+
 	this->enemyOrc.idle();
+	this->enemyTinyZombie.idle();
+	this->enemyTinyZombie2.idle();
 
 	sf::Event event;
 
@@ -172,8 +196,20 @@ void GameStatePlay::handleInput() {
 		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyOrc))
 		{
 			attack(this->player, this->enemyOrc);
-			std::cout << "Player hits enemy!" << std::endl;
+			std::cout << "Player hits enemy orc!" << std::endl;
 			std::cout << this->enemyOrc.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyZombie))
+		{
+			attack(this->player, this->enemyTinyZombie);
+			std::cout << "Player hits enemy tiny zombie!" << std::endl;
+			std::cout << this->enemyTinyZombie.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyZombie2))
+		{
+			attack(this->player, this->enemyTinyZombie2);
+			std::cout << "Player hits enemy tiny zombie number two!" << std::endl;
+			std::cout << this->enemyTinyZombie2.getHealth() << std::endl;
 		}
 	}
 
@@ -182,7 +218,7 @@ void GameStatePlay::handleInput() {
 
 bool GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
 {
-	// Check collisions with Orc Enemy
+	// Check collisions with Enemy
 	if (player->getSprite().getGlobalBounds().intersects(enemy->getSprite().getGlobalBounds()))
 	{
 		return true;
@@ -203,9 +239,19 @@ void GameStatePlay::update(const sf::Time dt) {
 	// this->level.update();
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
+	this->enemyTinyZombie.update(dt);
+	this->enemyTinyZombie2.update(dt);
 	
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
 		//attack(this->enemyOrc, this->player);
+		//Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie)) {
+		//attack(this->enemyTinyZombie, this->player);
+		//Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie2)) {
+		//attack(this->enemyTinyZombie, this->player);
 		//Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 	return;
@@ -228,10 +274,14 @@ void GameStatePlay::draw(const sf::Time dt) {
 	{
 		this->player.draw(this->game->window);
 		this->enemyOrc.draw(this->game->window);
+		this->enemyTinyZombie.draw(this->game->window);
+		this->enemyTinyZombie2.draw(this->game->window);
 	}
 	else
 	{
 		this->enemyOrc.draw(this->game->window);
+		this->enemyTinyZombie.draw(this->game->window);
+		this->enemyTinyZombie2.draw(this->game->window);
 		this->player.draw(this->game->window);
 	}
 
