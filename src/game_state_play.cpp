@@ -37,11 +37,18 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	// Trigger Sprite to switch Level 1 to Level 2 
 	sf::RectangleShape trigger;
-	trigger.setFillColor(sf::Color::Blue);
+	trigger.setFillColor(sf::Color::Cyan);
 	trigger.setSize(sf::Vector2f(10.f, 3.f));
 	trigger.setPosition(287, 450);
 	trigger.setOrigin(12, 22);
 	
+	// Trigger Sprite to switch Level 2 to Level 1
+	sf::RectangleShape trigger2;
+	trigger2.setFillColor(sf::Color::Cyan);
+	trigger2.setSize(sf::Vector2f(10.f, 3.f));
+	trigger2.setPosition(527, 260);
+	trigger2.setOrigin(12, 22);
+
 	// Collisions Level 1 
 	std::vector<sf::RectangleShape>vectorCol;
 	TileMap mapCollisions = setCollisions(&collisionsArrayMap1, &vectorCol);
@@ -57,7 +64,6 @@ GameStatePlay::GameStatePlay(Game* game) {
 	TileMap mapCollisions2 = setCollisions(&collisionsArrayMap2, &vectorCol2);
 	
 	// Players and Enemies Sprites
-
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(this->game->texmgr.getRef("dragon"));
 	playerSprite.setPosition(300, 275);
@@ -80,21 +86,33 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	// Assigns
 
+	//LevelSprites
 	this->level = Level(mapSprite);
 	this->level2 = Level(mapSprite2);
+	//LevelCollisions
 	this->collisions = TileMap(mapCollisions);
 	this->collisions2 = TileMap(mapCollisions2);
+	//SettingCollisionVectors
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
 	this->collisions2.setVector(vectorCol2);
-	this->triggerMap = sf::RectangleShape(trigger);
+	//Triggers
+	this->triggerMap1 = sf::RectangleShape(trigger);
+	this->triggerMap2 = sf::RectangleShape(trigger2);
+	//Enemies
+		//Level1
 	this->enemyOrc = Enemy(enemyOrcSprite);
 	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
 	this->enemyTinyZombie2 = Enemy(enemyTinyZombieSprite2);
+	//TODO: Enemies Level2
+		//
+	//Player
 	this->player = Character(playerSprite);
+	//Creator
 	this->player.create();
 	this->enemyOrc.create();
 	this->enemyTinyZombie.create();
 	this->enemyTinyZombie2.create();
+	//Zoom
 	this->gameView.zoom(0.666f);
 
 	// Create gui elements
@@ -164,14 +182,24 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 	}
 	
 	// Checking collision.
-	for (auto col : this->collisions.getVector())
-		if (futurePlayerRect.intersects(col.getGlobalBounds()))
-			return false;
+	if (level_1_boolean)
+	{
+		for (auto col : collisions.getVector())
+			if (futurePlayerRect.intersects(col.getGlobalBounds()))
+				return false;
+	}
+	else
+	{
+		for (auto col : collisions2.getVector())
+			if (futurePlayerRect.intersects(col.getGlobalBounds()))
+				return false;
+	}
 	// No collision found
 	return true;
 }
 
 void GameStatePlay::handleInput() {
+
 	// Movement
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canItMove(movement_type::UP, &this->player))
 		this->player.move(movement_type::UP);
@@ -190,12 +218,13 @@ void GameStatePlay::handleInput() {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 		gameMenu();
 
-	/* Debug: Mouse-click position
+	//Debug: Mouse-click position
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
 		std::cout << localPosition.x << std::endl;
 		std::cout << localPosition.y << std::endl;
-	}*/
+	}
+	//
 
 	this->enemyOrc.idle();
 	this->enemyTinyZombie.idle();
@@ -286,10 +315,8 @@ void GameStatePlay::update(const sf::Time dt) {
 		// attack(this->enemyTinyZombie, this->player);
 		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
-	if (checkTriggerMap(&this->player, &this->triggerMap)) {
-		
-	}
-		
+	changeToLevel_Two(checkTriggerMap(&this->player, &this->triggerMap1));
+	changeToLevel_One(checkTriggerMap(&this->player, &this->triggerMap2));
 	return;
 }
 
@@ -300,32 +327,44 @@ void GameStatePlay::draw(const sf::Time dt) {
     this->game->window.setView(this->gameView);	
 	// Collisions drawin' to debug:
 	// this->game->window.draw(this->collisions);
-	for (auto col : this->collisions.getVector()) {
-		this->game->window.draw(col);
-	}
-    
-	if (checkTriggerMap(&this->player, &this->triggerMap)) {
+	
+   
+	if (!level_1_boolean) {
 		this->level2.draw(this->game->window);
+		//DEBUG: Show map collisions
+		//for (auto col : this->collisions2.getVector())
+		//	this->game->window.draw(col);
 	}
 	else {
 		this->level.draw(this->game->window);
+		//DEBUG: Show map collisions
+		//for (auto col : this->collisions.getVector()) 
+		//	this->game->window.draw(col);
 	}
 
 	// Debug: draw the blue trigger tile:
-	// this->game->window.draw(this->triggerMap);
+	//this->game->window.draw(this->triggerMap1);
+	//this->game->window.draw(this->triggerMap2);
+
 	// Checking positions to see which one is drawn first.
 	if (this->player.getSprite().getPosition().y < this->enemyOrc.getSprite().getPosition().y)
 	{
 		this->player.draw(this->game->window);
-		this->enemyOrc.draw(this->game->window);
-		this->enemyTinyZombie.draw(this->game->window);
-		this->enemyTinyZombie2.draw(this->game->window);
+		if (level_1_boolean)
+		{
+			this->enemyOrc.draw(this->game->window);
+			this->enemyTinyZombie.draw(this->game->window);
+			this->enemyTinyZombie2.draw(this->game->window);
+		}
 	}
 	else
 	{
-		this->enemyOrc.draw(this->game->window);
-		this->enemyTinyZombie.draw(this->game->window);
-		this->enemyTinyZombie2.draw(this->game->window);
+		if (level_1_boolean)
+		{
+			this->enemyOrc.draw(this->game->window);
+			this->enemyTinyZombie.draw(this->game->window);
+			this->enemyTinyZombie2.draw(this->game->window);
+		}
 		this->player.draw(this->game->window);
 	}
 
@@ -351,4 +390,16 @@ void GameStatePlay::gameMenu()
 	//this->game->changeState(new GameStateStart(this->game));
 	this->game->peekState();
 	this->game->changeState(new GameStateStart(this->game));
+}
+
+void GameStatePlay::changeToLevel_Two(bool trigger)
+{
+	if (!trigger) return;
+	this->level_1_boolean = false;
+}
+
+void GameStatePlay::changeToLevel_One(bool trigger)
+{
+	if (!trigger) return;
+	this->level_1_boolean = true;
 }

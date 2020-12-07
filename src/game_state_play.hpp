@@ -15,6 +15,8 @@ class GameStatePlay : public GameState {
 	private:
 		sf::View gameView;
 		sf::View guiView;
+
+		bool level_1_boolean = true;
 			
 		Level level;
 		Level level2;
@@ -22,7 +24,8 @@ class GameStatePlay : public GameState {
 		TileMap collisions;
 		TileMap collisions2;
 		//
-		sf::RectangleShape triggerMap;
+		sf::RectangleShape triggerMap1;
+		sf::RectangleShape triggerMap2;
 		//
 		Character player;
 		Enemy enemyOrc;
@@ -48,6 +51,9 @@ class GameStatePlay : public GameState {
 
 		void attack(Character& player, Enemy& enemy);
 		void attack(Enemy& enemy, Character& player);
+		void changeToLevel_Two(bool trigger);
+		void changeToLevel_One(bool trigger);
+
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 };
 
