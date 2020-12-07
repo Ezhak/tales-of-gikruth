@@ -17,8 +17,10 @@ class GameStatePlay : public GameState {
 		sf::View guiView;
 			
 		Level level;
+		Level level2;
 		//
 		TileMap collisions;
+		TileMap collisions2;
 		//
 		sf::RectangleShape triggerMap;
 		//

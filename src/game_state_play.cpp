@@ -29,25 +29,34 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	this->background.setTexture(this->game->texmgr.getRef("game_background"));
 
+	// Level 1
 	sf::Sprite mapSprite;
 	mapSprite.setTexture(this->game->texmgr.getRef("map_1"));
 	mapSprite.setPosition(pos);
 	mapSprite.setOrigin(160, 130);
-	//
+
+	// Trigger Sprite to switch Level 1 to Level 2 
 	sf::RectangleShape trigger;
 	trigger.setFillColor(sf::Color::Blue);
 	trigger.setSize(sf::Vector2f(10.f, 3.f));
 	trigger.setPosition(287, 450);
 	trigger.setOrigin(12, 22);
 	
-	// Collisions
+	// Collisions Level 1 
 	std::vector<sf::RectangleShape>vectorCol;
 	TileMap mapCollisions = setCollisions(&collisionsArrayMap1, &vectorCol);
 
+	// Level 2
 	sf::Sprite mapSprite2;
 	mapSprite2.setTexture(this->game->texmgr.getRef("map_2"));
 	mapSprite2.setPosition(pos);
 	mapSprite2.setOrigin(160, 130);
+
+	// Collisions Level 2
+	std::vector<sf::RectangleShape>vectorCol2;
+	TileMap mapCollisions2 = setCollisions(&collisionsArrayMap2, &vectorCol2);
+	
+	// Players and Enemies Sprites
 
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(this->game->texmgr.getRef("dragon"));
@@ -69,9 +78,14 @@ GameStatePlay::GameStatePlay(Game* game) {
 	enemyTinyZombieSprite2.setPosition(350, 460);
 	enemyTinyZombieSprite2.setOrigin(12, 22);
 
+	// Assigns
+
 	this->level = Level(mapSprite);
+	this->level2 = Level(mapSprite2);
 	this->collisions = TileMap(mapCollisions);
+	this->collisions2 = TileMap(mapCollisions2);
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
+	this->collisions2.setVector(vectorCol2);
 	this->triggerMap = sf::RectangleShape(trigger);
 	this->enemyOrc = Enemy(enemyOrcSprite);
 	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
@@ -272,7 +286,9 @@ void GameStatePlay::update(const sf::Time dt) {
 		// attack(this->enemyTinyZombie, this->player);
 		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
-	if (checkTriggerMap(&this->player, &this->triggerMap)) {}
+	if (checkTriggerMap(&this->player, &this->triggerMap)) {
+		
+	}
 		
 	return;
 }
@@ -287,7 +303,14 @@ void GameStatePlay::draw(const sf::Time dt) {
 	for (auto col : this->collisions.getVector()) {
 		this->game->window.draw(col);
 	}
-    this->level.draw(this->game->window);
+    
+	if (checkTriggerMap(&this->player, &this->triggerMap)) {
+		this->level2.draw(this->game->window);
+	}
+	else {
+		this->level.draw(this->game->window);
+	}
+
 	// Debug: draw the blue trigger tile:
 	// this->game->window.draw(this->triggerMap);
 	// Checking positions to see which one is drawn first.
