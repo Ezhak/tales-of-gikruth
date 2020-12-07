@@ -20,6 +20,8 @@ class GameStatePlay : public GameState {
 		//
 		TileMap collisions;
 		//
+		sf::RectangleShape triggerMap;
+		//
 		Character player;
 		Enemy enemyOrc;
 		Enemy enemyTinyZombie;
@@ -40,6 +42,7 @@ class GameStatePlay : public GameState {
 		bool canItMove(movement_type type, Character* player);
 		bool checkEnemyCollisions(Character* player, Enemy* enemy);
 		bool checkHealth(float health);
+		bool checkTriggerMap(Character* player, sf::RectangleShape* trigger);
 
 		void attack(Character& player, Enemy& enemy);
 		void attack(Enemy& enemy, Character& player);

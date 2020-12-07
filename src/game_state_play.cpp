@@ -33,7 +33,14 @@ GameStatePlay::GameStatePlay(Game* game) {
 	mapSprite.setTexture(this->game->texmgr.getRef("map_1"));
 	mapSprite.setPosition(pos);
 	mapSprite.setOrigin(160, 130);
-	//Collisions
+	//
+	sf::RectangleShape trigger;
+	trigger.setFillColor(sf::Color::Blue);
+	trigger.setSize(sf::Vector2f(10.f, 3.f));
+	trigger.setPosition(287, 450);
+	trigger.setOrigin(12, 22);
+	
+	// Collisions
 	std::vector<sf::RectangleShape>vectorCol;
 	TileMap mapCollisions = setCollisions(&collisionsArrayMap1, &vectorCol);
 
@@ -65,6 +72,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->level = Level(mapSprite);
 	this->collisions = TileMap(mapCollisions);
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
+	this->triggerMap = sf::RectangleShape(trigger);
 	this->enemyOrc = Enemy(enemyOrcSprite);
 	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
 	this->enemyTinyZombie2 = Enemy(enemyTinyZombieSprite2);
@@ -117,14 +125,14 @@ TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector
 bool GameStatePlay::canItMove(movement_type type, Character *player)
 {
 	sf::FloatRect futurePlayerRect = player->getSprite().getGlobalBounds();
-	//Changing the height of the player's bounds to allow it to walk up to the walls without hitting its head.
+	// Changing the height of the player's bounds to allow it to walk up to the walls without hitting its head.
 	futurePlayerRect.height /= 4;
 	futurePlayerRect.top += (futurePlayerRect.height * 3);
-	//Changing the width.
+	// Changing the width.
 	futurePlayerRect.width /= 3;
 	futurePlayerRect.left += futurePlayerRect.width;
 
-	//Prepparing future position.
+	// Prepparing future position.
 	switch (type)
 	{
 	case movement_type::UP:
@@ -141,7 +149,7 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 		break;
 	}
 	
-	//Checking collision.
+	// Checking collision.
 	for (auto col : this->collisions.getVector())
 		if (futurePlayerRect.intersects(col.getGlobalBounds()))
 			return false;
@@ -150,7 +158,7 @@ bool GameStatePlay::canItMove(movement_type type, Character *player)
 }
 
 void GameStatePlay::handleInput() {
-	//Movement
+	// Movement
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && canItMove(movement_type::UP, &this->player))
 		this->player.move(movement_type::UP);
 
@@ -193,7 +201,7 @@ void GameStatePlay::handleInput() {
 		default: break;
 		}
 
-		//CharacterAttack
+		// CharacterAttack
 		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyOrc))
 		{
 			attack(this->player, this->enemyOrc);
@@ -230,10 +238,19 @@ bool GameStatePlay::checkEnemyCollisions(Character *player, Enemy *enemy)
 bool GameStatePlay::checkHealth(float health)
 {
 	if (health <= 0)
-		//If false, character is dead.	
+		// If false, character is dead.	
 		return false;
-	//If true, character is alive.
+	// If true, character is alive.
 	else return true;
+}
+
+bool GameStatePlay::checkTriggerMap(Character* player, sf::RectangleShape* trigger)
+{
+	// Check collision with Trigger to switch map
+	if (player->getSprite().getGlobalBounds().intersects(trigger->getGlobalBounds())) {
+		return true;
+	}
+	else return false;
 }
 
 void GameStatePlay::update(const sf::Time dt) {
@@ -244,17 +261,19 @@ void GameStatePlay::update(const sf::Time dt) {
 	this->enemyTinyZombie2.update(dt);
 	
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
-		//attack(this->enemyOrc, this->player);
-		//Debug: std::cout << this->player.getHealth() << std::endl;
+		// attack(this->enemyOrc, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie)) {
-		//attack(this->enemyTinyZombie, this->player);
-		//Debug: std::cout << this->player.getHealth() << std::endl;
+		// attack(this->enemyTinyZombie, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie2)) {
-		//attack(this->enemyTinyZombie, this->player);
-		//Debug: std::cout << this->player.getHealth() << std::endl;
+		// attack(this->enemyTinyZombie, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
+	if (checkTriggerMap(&this->player, &this->triggerMap)) {}
+		
 	return;
 }
 
@@ -263,14 +282,15 @@ void GameStatePlay::draw(const sf::Time dt) {
 	this->game->window.setView(this->guiView);
 	this->game->window.draw(this->background);
     this->game->window.setView(this->gameView);	
-	//this->game->window.draw(this->collisions);
-	// Collisions drawin' to debug ^^^
+	// Collisions drawin' to debug:
+	// this->game->window.draw(this->collisions);
 	for (auto col : this->collisions.getVector()) {
 		this->game->window.draw(col);
 	}
     this->level.draw(this->game->window);
-
-	//Checking positions to see which one is drawn first.
+	// Debug: draw the blue trigger tile:
+	// this->game->window.draw(this->triggerMap);
+	// Checking positions to see which one is drawn first.
 	if (this->player.getSprite().getPosition().y < this->enemyOrc.getSprite().getPosition().y)
 	{
 		this->player.draw(this->game->window);
@@ -292,12 +312,12 @@ void GameStatePlay::draw(const sf::Time dt) {
 
 	return;
 }
-//for character attack
+// For character attack
 void GameStatePlay::attack(Character& player, Enemy& enemy)
 {
 	enemy.setHealth(player.getAttackPoints());
 }
-//for enemy attack
+// For enemy attack
 void GameStatePlay::attack(Enemy& enemy, Character& player)
 {
 	player.setHealth(enemy.getAttackPoints());
