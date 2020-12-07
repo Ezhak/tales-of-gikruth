@@ -166,13 +166,14 @@ void GameStatePlay::handleInput() {
 	else this->player.idle();
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		this->game->changeState(new GameStateStart(this->game));
+		gameMenu();
 
+	/* Debug: Mouse-click position
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
 		std::cout << localPosition.x << std::endl;
 		std::cout << localPosition.y << std::endl;
-	}
+	}*/
 
 	this->enemyOrc.idle();
 	this->enemyTinyZombie.idle();
@@ -300,4 +301,11 @@ void GameStatePlay::attack(Character& player, Enemy& enemy)
 void GameStatePlay::attack(Enemy& enemy, Character& player)
 {
 	player.setHealth(enemy.getAttackPoints());
+}
+
+void GameStatePlay::gameMenu()
+{
+	//this->game->changeState(new GameStateStart(this->game));
+	this->game->peekState();
+	this->game->changeState(new GameStateStart(this->game));
 }

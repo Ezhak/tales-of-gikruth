@@ -31,6 +31,8 @@ class GameStatePlay : public GameState {
 		GameStatePlay(Game* game);
 		~GameStatePlay();
 
+		void gameMenu();
+
 		virtual void handleInput();
 		virtual void update(const sf::Time dt);
 		virtual void draw(const sf::Time dt);
