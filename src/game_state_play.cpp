@@ -30,12 +30,14 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->background.setTexture(this->game->texmgr.getRef("game_background"));
 
 	// Level 1
+
 	sf::Sprite mapSprite;
 	mapSprite.setTexture(this->game->texmgr.getRef("map_1"));
 	mapSprite.setPosition(pos);
 	mapSprite.setOrigin(160, 130);
 
 	// Trigger Sprite to switch Level 1 to Level 2 
+
 	sf::RectangleShape trigger;
 	trigger.setFillColor(sf::Color::Cyan);
 	trigger.setSize(sf::Vector2f(10.f, 3.f));
@@ -43,6 +45,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 	trigger.setOrigin(12, 22);
 	
 	// Trigger Sprite to switch Level 2 to Level 1
+
 	sf::RectangleShape trigger2;
 	trigger2.setFillColor(sf::Color::Cyan);
 	trigger2.setSize(sf::Vector2f(10.f, 3.f));
@@ -50,24 +53,31 @@ GameStatePlay::GameStatePlay(Game* game) {
 	trigger2.setOrigin(12, 22);
 
 	// Collisions Level 1 
+
 	std::vector<sf::RectangleShape>vectorCol;
 	TileMap mapCollisions = setCollisions(&collisionsArrayMap1, &vectorCol);
 
 	// Level 2
+
 	sf::Sprite mapSprite2;
 	mapSprite2.setTexture(this->game->texmgr.getRef("map_2"));
 	mapSprite2.setPosition(pos);
 	mapSprite2.setOrigin(160, 130);
 
 	// Collisions Level 2
+
 	std::vector<sf::RectangleShape>vectorCol2;
 	TileMap mapCollisions2 = setCollisions(&collisionsArrayMap2, &vectorCol2);
 	
-	// Players and Enemies Sprites
+	// Players (Classes)
+
 	sf::Sprite playerSprite;
 	playerSprite.setTexture(this->game->texmgr.getRef("dragon"));
 	playerSprite.setPosition(300, 275);
 	playerSprite.setOrigin(12, 22);
+
+
+	// Enemies Sprites Level 1
 
 	sf::Sprite enemyOrcSprite;
 	enemyOrcSprite.setTexture(this->game->texmgr.getRef("orc"));
@@ -84,35 +94,84 @@ GameStatePlay::GameStatePlay(Game* game) {
 	enemyTinyZombieSprite2.setPosition(350, 460);
 	enemyTinyZombieSprite2.setOrigin(12, 22);
 
+	// Enemies Sprites Level 2
+
+	sf::Sprite enemyDemonSprite;
+	enemyDemonSprite.setTexture(this->game->texmgr.getRef("demon"));
+	enemyDemonSprite.setPosition(350, 430);
+	enemyDemonSprite.setOrigin(12, 22);
+
+	sf::Sprite enemyDemonSprite2;
+	enemyDemonSprite2.setTexture(this->game->texmgr.getRef("demon"));
+	enemyDemonSprite2.setPosition(350, 440);
+	enemyDemonSprite2.setOrigin(12, 22);
+
+	sf::Sprite enemySkellySprite;
+	enemySkellySprite.setTexture(this->game->texmgr.getRef("skelly"));
+	enemySkellySprite.setPosition(350, 450);
+	enemySkellySprite.setOrigin(12, 22);
+
+	sf::Sprite enemySkellySprite2;
+	enemySkellySprite2.setTexture(this->game->texmgr.getRef("skelly"));
+	enemySkellySprite2.setPosition(350, 460);
+	enemySkellySprite2.setOrigin(12, 22);
+
+	sf::Sprite enemyTinyOrcSprite;
+	enemyTinyOrcSprite.setTexture(this->game->texmgr.getRef("tinyorc"));
+	enemyTinyOrcSprite.setPosition(350, 470);
+	enemyTinyOrcSprite.setOrigin(12, 22);
+
+	sf::Sprite enemyTinyDemonSprite;
+	enemyTinyDemonSprite.setTexture(this->game->texmgr.getRef("tinydemon"));
+	enemyTinyDemonSprite.setPosition(350, 480);
+	enemyTinyDemonSprite.setOrigin(12, 22);
+
 	// Assigns
 
-	//LevelSprites
+	// LevelSprites
 	this->level = Level(mapSprite);
 	this->level2 = Level(mapSprite2);
-	//LevelCollisions
+	
+	// LevelCollisions
 	this->collisions = TileMap(mapCollisions);
 	this->collisions2 = TileMap(mapCollisions2);
-	//SettingCollisionVectors
+	
+	// SettingCollisionVectors
 	this->collisions.setVector(vectorCol); // Assign vectorCol to collisions vector
 	this->collisions2.setVector(vectorCol2);
-	//Triggers
+	
+	// Triggers
 	this->triggerMap1 = sf::RectangleShape(trigger);
 	this->triggerMap2 = sf::RectangleShape(trigger2);
-	//Enemies
+	
+	// Enemies
 		//Level1
 	this->enemyOrc = Enemy(enemyOrcSprite);
 	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
 	this->enemyTinyZombie2 = Enemy(enemyTinyZombieSprite2);
+	
 	//TODO: Enemies Level2
 		//
-	//Player
+	// Player
 	this->player = Character(playerSprite);
-	//Creator
+	this->enemyDemon = Enemy(enemyDemonSprite);
+	this->enemyDemon2 = Enemy(enemyDemonSprite2);
+	this->enemySkelly = Enemy(enemySkellySprite);
+	this->enemySkelly2 = Enemy(enemySkellySprite2);
+	this->enemyTinyOrc = Enemy(enemyTinyOrcSprite);
+	this->enemyTinyDemon = Enemy(enemyTinyDemonSprite);
+	// Creator
 	this->player.create();
 	this->enemyOrc.create();
 	this->enemyTinyZombie.create();
 	this->enemyTinyZombie2.create();
-	//Zoom
+	this->enemyDemon.create();
+	this->enemyDemon2.create();
+	this->enemySkelly.create();
+	this->enemySkelly2.create();
+	this->enemyTinyOrc.create();
+	this->enemyTinyDemon.create();
+	// Zoom
 	this->gameView.zoom(0.666f);
 
 	// Create gui elements
@@ -125,6 +184,12 @@ GameStatePlay::~GameStatePlay()
 	this->enemyOrc.~Enemy();
 	this->enemyTinyZombie.~Enemy();
 	this->enemyTinyZombie2.~Enemy();
+	this->enemyDemon.~Enemy();
+	this->enemyDemon2.~Enemy();
+	this->enemySkelly.~Enemy();
+	this->enemySkelly2.~Enemy();
+	this->enemyTinyOrc.~Enemy();
+	this->enemyTinyDemon.~Enemy();
 }
 
 TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
@@ -229,6 +294,12 @@ void GameStatePlay::handleInput() {
 	this->enemyOrc.idle();
 	this->enemyTinyZombie.idle();
 	this->enemyTinyZombie2.idle();
+	this->enemyDemon.idle();
+	this->enemyDemon2.idle();
+	this->enemySkelly.idle();
+	this->enemySkelly2.idle();
+	this->enemyTinyOrc.idle();
+	this->enemyTinyDemon.idle();
 
 	sf::Event event;
 
@@ -257,11 +328,41 @@ void GameStatePlay::handleInput() {
 			std::cout << "Player hits enemy tiny zombie!" << std::endl;
 			std::cout << this->enemyTinyZombie.getHealth() << std::endl;
 		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyZombie2))
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyDemon))
 		{
-			attack(this->player, this->enemyTinyZombie2);
+			attack(this->player, this->enemyDemon);
+			std::cout << "Player hits enemy Demon!" << std::endl;
+			std::cout << this->enemyDemon.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyDemon2))
+		{
+			attack(this->player, this->enemyDemon2);
+			std::cout << "Player hits enemy demon number two!" << std::endl;
+			std::cout << this->enemyDemon2.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemySkelly))
+		{
+			attack(this->player, this->enemySkelly);
+			std::cout << "Player hits enemy skelly!" << std::endl;
+			std::cout << this->enemySkelly.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemySkelly2))
+		{
+			attack(this->player, this->enemySkelly2);
 			std::cout << "Player hits enemy tiny zombie number two!" << std::endl;
-			std::cout << this->enemyTinyZombie2.getHealth() << std::endl;
+			std::cout << this->enemySkelly2.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyOrc))
+		{
+			attack(this->player, this->enemyTinyOrc);
+			std::cout << "Player hits enemy tiny orc!" << std::endl;
+			std::cout << this->enemyTinyOrc.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyDemon))
+		{
+			attack(this->player, this->enemyTinyDemon);
+			std::cout << "Player hits enemy tiny demon!" << std::endl;
+			std::cout << this->enemyTinyDemon.getHealth() << std::endl;
 		}
 	}
 
@@ -297,12 +398,20 @@ bool GameStatePlay::checkTriggerMap(Character* player, sf::RectangleShape* trigg
 }
 
 void GameStatePlay::update(const sf::Time dt) {
+
 	// this->level.update();
 	this->player.update(dt);
 	this->enemyOrc.update(dt);
 	this->enemyTinyZombie.update(dt);
 	this->enemyTinyZombie2.update(dt);
-	
+	this->enemyDemon.update(dt);
+	this->enemyDemon2.update(dt);
+	this->enemySkelly.update(dt);
+	this->enemySkelly2.update(dt);
+	this->enemyTinyOrc.update(dt);
+	this->enemyTinyDemon.update(dt);
+
+
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
 		// attack(this->enemyOrc, this->player);
 		// Debug: std::cout << this->player.getHealth() << std::endl;
@@ -312,9 +421,34 @@ void GameStatePlay::update(const sf::Time dt) {
 		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie2)) {
-		// attack(this->enemyTinyZombie, this->player);
+		// attack(this->enemyTinyZombie2, this->player);
 		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
+	if (checkEnemyCollisions(&this->player, &this->enemyDemon)) {
+		// attack(this->enemyDemon, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyDemon2)) {
+		// attack(this->enemyDemon2, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemySkelly)) {
+		// attack(this->enemySkelly, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemySkelly2)) {
+		// attack(this->enemySkelly2, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyTinyOrc)) {
+		// attack(this->enemyTinyOrc, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyTinyDemon)) {
+		// attack(this->enemyTinyDemon, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+
 	changeToLevel_Two(checkTriggerMap(&this->player, &this->triggerMap1));
 	changeToLevel_One(checkTriggerMap(&this->player, &this->triggerMap2));
 	return;
@@ -355,6 +489,12 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemyOrc.draw(this->game->window);
 			this->enemyTinyZombie.draw(this->game->window);
 			this->enemyTinyZombie2.draw(this->game->window);
+			this->enemyDemon.draw(this->game->window);
+			this->enemyDemon2.draw(this->game->window);
+			this->enemySkelly.draw(this->game->window);
+			this->enemySkelly2.draw(this->game->window);
+			this->enemyTinyOrc.draw(this->game->window);
+			this->enemyTinyDemon.draw(this->game->window);
 		}
 	}
 	else
@@ -364,6 +504,12 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemyOrc.draw(this->game->window);
 			this->enemyTinyZombie.draw(this->game->window);
 			this->enemyTinyZombie2.draw(this->game->window);
+			this->enemyDemon.draw(this->game->window);
+			this->enemyDemon2.draw(this->game->window);
+			this->enemySkelly.draw(this->game->window);
+			this->enemySkelly2.draw(this->game->window);
+			this->enemyTinyOrc.draw(this->game->window);
+			this->enemyTinyDemon.draw(this->game->window);
 		}
 		this->player.draw(this->game->window);
 	}

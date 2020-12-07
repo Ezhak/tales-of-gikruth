@@ -28,10 +28,18 @@ class GameStatePlay : public GameState {
 		sf::RectangleShape triggerMap2;
 		//
 		Character player;
+		// Level 1
 		Enemy enemyOrc;
 		Enemy enemyTinyZombie;
 		Enemy enemyTinyZombie2;
-			
+		// Level 2
+		Enemy enemyDemon;
+		Enemy enemyDemon2;
+		Enemy enemySkelly;
+		Enemy enemySkelly2;
+		Enemy enemyTinyOrc;
+		Enemy enemyTinyDemon;
+
 		std::map<std::string, Gui> guiSystem;
 
 	public:
