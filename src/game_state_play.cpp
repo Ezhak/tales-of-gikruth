@@ -257,65 +257,25 @@ void GameStatePlay::handleInput() {
 		}
 
 		// CharacterAttack
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyOrc))
+		if (level_1_boolean)
 		{
-			attack(this->player, this->enemyOrc);
-			std::cout << "Player hits enemy orc!" << std::endl;
-			std::cout << this->enemyOrc.getHealth() << std::endl;
+			for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
+				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
+				{
+					attack(this->player, enemyVectorMap1[i]);
+					std::cout << "Player hits enemy orc!" << std::endl;
+					std::cout << enemyVectorMap1[i].getHealth() << std::endl;
+				}
 		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyZombie))
+		else
 		{
-			attack(this->player, this->enemyTinyZombie);
-			std::cout << "Player hits enemy tiny zombie!" << std::endl;
-			std::cout << this->enemyTinyZombie.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyDemon))
-		{
-			attack(this->player, this->enemyDemon);
-			std::cout << "Player hits enemy Demon!" << std::endl;
-			std::cout << this->enemyDemon.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyDemon2))
-		{
-			attack(this->player, this->enemyDemon2);
-			std::cout << "Player hits enemy demon number two!" << std::endl;
-			std::cout << this->enemyDemon2.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemySkelly))
-		{
-			attack(this->player, this->enemySkelly);
-			std::cout << "Player hits enemy skelly!" << std::endl;
-			std::cout << this->enemySkelly.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemySkelly2))
-		{
-			attack(this->player, this->enemySkelly2);
-			std::cout << "Player hits enemy tiny zombie number two!" << std::endl;
-			std::cout << this->enemySkelly2.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyOrc))
-		{
-			attack(this->player, this->enemyTinyOrc);
-			std::cout << "Player hits enemy tiny orc!" << std::endl;
-			std::cout << this->enemyTinyOrc.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyTinyDemon))
-		{
-			attack(this->player, this->enemyTinyDemon);
-			std::cout << "Player hits enemy tiny demon!" << std::endl;
-			std::cout << this->enemyTinyDemon.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyBossDemon))
-		{
-			attack(this->player, this->enemyBossDemon);
-			std::cout << "Player hits enemy boss demon! BE CAREFUL" << std::endl;
-			std::cout << this->enemyBossDemon.getHealth() << std::endl;
-		}
-		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyBossOrc))
-		{
-			attack(this->player, this->enemyBossOrc);
-			std::cout << "Player hits enemy boss orc! BE CAREFUL" << std::endl;
-			std::cout << this->enemyBossOrc.getHealth() << std::endl;
+			for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
+				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
+				{
+					attack(this->player, enemyVectorMap2[i]);
+					std::cout << "Player hits enemy orc!" << std::endl;
+					std::cout << enemyVectorMap2[i].getHealth() << std::endl;
+				}
 		}
 
 	}
