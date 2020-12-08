@@ -1,5 +1,17 @@
 #include "enemy.hpp"
+#include <iostream>
 
+std::map<enemySpriteName, std::string> Enemy::enemySpritesFile 
+{
+	{enemySpriteName::tinyzombie , "tinyzombie"},
+	{enemySpriteName::tinyorc, "tinyorc"},
+	{enemySpriteName::tinydemon , "tinydemon"},
+	{enemySpriteName::skelly , "skelly"},
+	{enemySpriteName::orc , "orc"},
+	{enemySpriteName::demon , "demon"},
+	{enemySpriteName::bossorc , "bossorc"},
+	{enemySpriteName::bossdemon , "bossdemon"},
+};
 
 void Enemy::update(const sf::Time dt) {
 	this->_animator.update(dt);

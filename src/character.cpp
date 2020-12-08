@@ -1,6 +1,13 @@
 #include "character.hpp"
 #include <iostream>
 
+std::map<playerSpriteName, std::string> Character::playerSpritesFile
+{
+	{ playerSpriteName::dragon, "dragon"},
+	{ playerSpriteName::mage, "mage"},
+	{ playerSpriteName::knight, "knight"},
+};
+
 void Character::update(const sf::Time dt) {
 	this->_animator.update(dt);
 	this->_animator.animate(this->_sprite);

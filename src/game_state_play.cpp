@@ -18,6 +18,31 @@ int collisionsArrayMap2[400] =
 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 130, 0, 0, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 0, 0, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 0, 0, 0, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 0, 0, 0, 0, 0, 0, 0, 0, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130
 };
 
+std::vector<sf::Sprite> enemySpriteVector;
+std::vector<sf::Sprite> playerSpriteVector;
+
+std::vector<enemyMap> enemyMap1 =
+{
+	{ enemySpriteName::orc, sf::Vector2f(500, 275), flipped::yup },
+	{ enemySpriteName::skelly, sf::Vector2f(350, 430), flipped::nop },
+	{ enemySpriteName::skelly, sf::Vector2f(350, 460), flipped::nop },
+};
+
+std::vector<enemyMap> enemyMap2 =
+{
+	{ enemySpriteName::demon, sf::Vector2f(380, 250), flipped::yup }, 
+	{ enemySpriteName::demon, sf::Vector2f(340, 250), flipped::yup }, 
+	{ enemySpriteName::skelly, sf::Vector2f(300, 250), flipped::nop }, 
+	{ enemySpriteName::skelly, sf::Vector2f(300, 280), flipped::yup },
+	{ enemySpriteName::tinyorc, sf::Vector2f(340, 320), flipped::yup },
+	{ enemySpriteName::tinydemon, sf::Vector2f(380, 280), flipped::yup },
+	{ enemySpriteName::bossdemon, sf::Vector2f(340, 280), flipped::yup },
+	{ enemySpriteName::bossorc, sf::Vector2f(480, 250), flipped::nop },
+};
+
+std::vector<Enemy> enemyVectorMap1;
+std::vector<Enemy> enemyVectorMap2;
+
 GameStatePlay::GameStatePlay(Game* game) {
 	this->game = game;
 	sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
@@ -69,6 +94,10 @@ GameStatePlay::GameStatePlay(Game* game) {
 	std::vector<sf::RectangleShape>vectorCol2;
 	TileMap mapCollisions2 = setCollisions(&collisionsArrayMap2, &vectorCol2);
 	
+	//Set player and enemy sprite vector
+	setCharacterSpriteVector();
+	setEnemySpriteVector();
+
 	// Players (Classes)
 
 	sf::Sprite playerSprite;
@@ -78,72 +107,12 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 
 	// Enemies Sprites Level 1
-
-	sf::Sprite enemyOrcSprite;
-	enemyOrcSprite.setTexture(this->game->texmgr.getRef("orc"));
-	enemyOrcSprite.setPosition(500, 275);
-	enemyOrcSprite.setOrigin(12, 22);
-	enemyOrcSprite.setScale(-1, 1);
-
-	sf::Sprite enemyTinyZombieSprite;
-	enemyTinyZombieSprite.setTexture(this->game->texmgr.getRef("tinyzombie"));
-	enemyTinyZombieSprite.setPosition(350, 430);
-	enemyTinyZombieSprite.setOrigin(12, 22);
-
-	sf::Sprite enemyTinyZombieSprite2;
-	enemyTinyZombieSprite2.setTexture(this->game->texmgr.getRef("tinyzombie"));
-	enemyTinyZombieSprite2.setPosition(350, 460);
-	enemyTinyZombieSprite2.setOrigin(12, 22);
+	fillEnemyVector(enemyMap1, enemyVectorMap1);
 
 	// Enemies Sprites Level 2
-
-	sf::Sprite enemyDemonSprite;
-	enemyDemonSprite.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite.setPosition(380, 250);
-	enemyDemonSprite.setOrigin(12, 22);
-	enemyDemonSprite.setScale(-1, 1);
-
-	sf::Sprite enemyDemonSprite2;
-	enemyDemonSprite2.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite2.setPosition(340, 250);
-	enemyDemonSprite2.setOrigin(12, 22);
-	enemyDemonSprite2.setScale(-1, 1);
-
-	sf::Sprite enemySkellySprite;
-	enemySkellySprite.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite.setPosition(300, 250);
-	enemySkellySprite.setOrigin(12, 22);
-
-	sf::Sprite enemySkellySprite2;
-	enemySkellySprite2.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite2.setPosition(300, 280);
-	enemySkellySprite2.setOrigin(12, 22);
-
-	sf::Sprite enemyTinyOrcSprite;
-	enemyTinyOrcSprite.setTexture(this->game->texmgr.getRef("tinyorc"));
-	enemyTinyOrcSprite.setPosition(340, 320);
-	enemyTinyOrcSprite.setOrigin(12, 22);
-	enemyTinyOrcSprite.setScale(-1, 1);
-
-	sf::Sprite enemyTinyDemonSprite;
-	enemyTinyDemonSprite.setTexture(this->game->texmgr.getRef("tinydemon"));
-	enemyTinyDemonSprite.setPosition(380, 280);
-	enemyTinyDemonSprite.setOrigin(12, 22);
-	enemyTinyDemonSprite.setScale(-1, 1);
-
-	sf::Sprite enemyBossDemonSprite;
-	enemyBossDemonSprite.setTexture(this->game->texmgr.getRef("bossdemon"));
-	enemyBossDemonSprite.setPosition(340, 280);
-	enemyBossDemonSprite.setOrigin(12, 22);
-	enemyBossDemonSprite.setScale(-1, 1);
-
-	sf::Sprite enemyBossOrcSprite;
-	enemyBossOrcSprite.setTexture(this->game->texmgr.getRef("bossorc"));
-	enemyBossOrcSprite.setPosition(480, 250);
-	enemyBossOrcSprite.setOrigin(12, 22);
-
+	fillEnemyVector(enemyMap2, enemyVectorMap2);
+	
 	// Assigns
-
 	// LevelSprites
 	this->level = Level(mapSprite);
 	this->level2 = Level(mapSprite2);
@@ -160,37 +129,13 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->triggerMap1 = sf::RectangleShape(trigger);
 	this->triggerMap2 = sf::RectangleShape(trigger2);
 	
-	// Enemies
+	// Enemies TODO: DRAW VECTOR
 		//Level1
-	this->enemyOrc = Enemy(enemyOrcSprite);
-	this->enemyTinyZombie = Enemy(enemyTinyZombieSprite);
-	this->enemyTinyZombie2 = Enemy(enemyTinyZombieSprite2);
-	
-	//TODO: Enemies Level2
-		//
+		//Level2
 	// Player
 	this->player = Character(playerSprite);
-	this->enemyDemon = Enemy(enemyDemonSprite);
-	this->enemyDemon2 = Enemy(enemyDemonSprite2);
-	this->enemySkelly = Enemy(enemySkellySprite);
-	this->enemySkelly2 = Enemy(enemySkellySprite2);
-	this->enemyTinyOrc = Enemy(enemyTinyOrcSprite);
-	this->enemyTinyDemon = Enemy(enemyTinyDemonSprite);
-	this->enemyBossDemon = Enemy(enemyBossDemonSprite);
-	this->enemyBossOrc = Enemy(enemyBossOrcSprite);
 	// Creator
 	this->player.create();
-	this->enemyOrc.create();
-	this->enemyTinyZombie.create();
-	this->enemyTinyZombie2.create();
-	this->enemyDemon.create();
-	this->enemyDemon2.create();
-	this->enemySkelly.create();
-	this->enemySkelly2.create();
-	this->enemyTinyOrc.create();
-	this->enemyTinyDemon.create();
-	this->enemyBossDemon.createBoss();
-	this->enemyBossOrc.createBoss();
 	// Zoom
 	this->gameView.zoom(0.666f);
 
@@ -212,33 +157,6 @@ GameStatePlay::~GameStatePlay()
 	this->enemyTinyDemon.~Enemy();
 	this->enemyBossDemon.~Enemy();
 	this->enemyBossOrc.~Enemy();
-}
-
-TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
-{
-	// imap1 Is literally i iterator
-	int imap1 = 0;
-
-	// Asign collision shapes to draw later
-	for (auto x : *collisionsArrayMap) {
-		if ((*collisionsArrayMap)[imap1] != 0) {
-			(*collisionsArrayMap)[imap1] -= 1;
-			sf::RectangleShape colShape;
-			colShape.setFillColor(sf::Color::Blue);
-			colShape.setSize(sf::Vector2f(16.f, 16.f));
-			colShape.setPosition((imap1 % 20 * 16) + 240.f, (imap1 / 20 * 16) + 170.f); // 240 X and 170 Y
-			(*vectorCol).push_back(colShape);
-		}
-		imap1++;
-	}
-	// Draw a second layer where the collisions are
-	TileMap mapCollisions;
-	if (!mapCollisions.load("assets/tileset.png", sf::Vector2u(16, 16), *collisionsArrayMap, 20, 20)) {
-		std::cout << "Tileset Error" << std::endl;
-	}
-	mapCollisions.setPosition(240,170);
-
-	return mapCollisions;
 }
 
 bool GameStatePlay::canItMove(movement_type type, Character *player)
@@ -306,24 +224,23 @@ void GameStatePlay::handleInput() {
 		gameMenu();
 
 	//Debug: Mouse-click position
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+	/*if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		sf::Vector2i localPosition = sf::Mouse::getPosition(this->game->window);
 		std::cout << localPosition.x << std::endl;
 		std::cout << localPosition.y << std::endl;
-	}
+	}*/
 	//
 
-	this->enemyOrc.idle();
-	this->enemyTinyZombie.idle();
-	this->enemyTinyZombie2.idle();
-	this->enemyDemon.idle();
-	this->enemyDemon2.idle();
-	this->enemySkelly.idle();
-	this->enemySkelly2.idle();
-	this->enemyTinyOrc.idle();
-	this->enemyTinyDemon.idle();
-	this->enemyBossDemon.idle();
-	this->enemyBossOrc.idle();
+	if (level_1_boolean)
+	{
+		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
+			enemyVectorMap1[i].idle();
+	}
+	else
+	{
+		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
+			enemyVectorMap2[i].idle();
+	}
 
 	sf::Event event;
 
@@ -438,66 +355,34 @@ void GameStatePlay::update(const sf::Time dt) {
 
 	// this->level.update();
 	this->player.update(dt);
-	this->enemyOrc.update(dt);
-	this->enemyTinyZombie.update(dt);
-	this->enemyTinyZombie2.update(dt);
-	this->enemyDemon.update(dt);
-	this->enemyDemon2.update(dt);
-	this->enemySkelly.update(dt);
-	this->enemySkelly2.update(dt);
-	this->enemyTinyOrc.update(dt);
-	this->enemyTinyDemon.update(dt);
-	this->enemyBossDemon.update(dt);
-	this->enemyBossOrc.update(dt);
-
-
-	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
-		// attack(this->enemyOrc, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
+	if (level_1_boolean)
+	{
+		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
+		{
+			enemyVectorMap1[i].update(dt);
+			if (checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
+			{
+				//attack(&enemyVectorMap1[i], &this->player)
+				// Debug: std::cout << this->player.getHealth() << std::endl;
+			}
+		}
 	}
-	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie)) {
-		// attack(this->enemyTinyZombie, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyTinyZombie2)) {
-		// attack(this->enemyTinyZombie2, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyDemon)) {
-		// attack(this->enemyDemon, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyDemon2)) {
-		// attack(this->enemyDemon2, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemySkelly)) {
-		// attack(this->enemySkelly, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemySkelly2)) {
-		// attack(this->enemySkelly2, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyTinyOrc)) {
-		// attack(this->enemyTinyOrc, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyTinyDemon)) {
-		// attack(this->enemyTinyDemon, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyBossDemon)) {
-		// attack(this->enemyBossDemon, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
-	}
-	if (checkEnemyCollisions(&this->player, &this->enemyBossOrc)) {
-		// attack(this->enemyBossOrc, this->player);
-		// Debug: std::cout << this->player.getHealth() << std::endl;
+	else
+	{
+		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
+		{
+			enemyVectorMap2[i].update(dt);
+			if (checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
+			{
+				//attack(&enemyVectorMap1[i], &this->player)
+				// Debug: std::cout << this->player.getHealth() << std::endl;
+			}
+		}
 	}
 
 	changeToLevel_Two(checkTriggerMap(&this->player, &this->triggerMap1));
 	changeToLevel_One(checkTriggerMap(&this->player, &this->triggerMap2));
+
 	return;
 }
 
@@ -528,45 +413,20 @@ void GameStatePlay::draw(const sf::Time dt) {
 	//this->game->window.draw(this->triggerMap2);
 
 	// Checking positions to see which one is drawn first.
-	if (this->player.getSprite().getPosition().y < this->enemyOrc.getSprite().getPosition().y)
+	
+	this->player.draw(this->game->window);
+	if (level_1_boolean)
 	{
-		this->player.draw(this->game->window);
-		if (level_1_boolean)
+		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
 		{
-			this->enemyOrc.draw(this->game->window);
-			this->enemyTinyZombie.draw(this->game->window);
-			this->enemyTinyZombie2.draw(this->game->window);
-		}
-		else {
-			this->enemyDemon.draw(this->game->window);
-			this->enemyDemon2.draw(this->game->window);
-			this->enemySkelly.draw(this->game->window);
-			this->enemySkelly2.draw(this->game->window);
-			this->enemyTinyOrc.draw(this->game->window);
-			this->enemyTinyDemon.draw(this->game->window);
-			this->enemyBossDemon.draw(this->game->window);
-			this->enemyBossOrc.draw(this->game->window);
+			enemyVectorMap1[i].draw(this->game->window);
 		}
 	}
-	else
-	{
-		if (level_1_boolean)
+	else {
+		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
 		{
-			this->enemyOrc.draw(this->game->window);
-			this->enemyTinyZombie.draw(this->game->window);
-			this->enemyTinyZombie2.draw(this->game->window);
+			enemyVectorMap2[i].draw(this->game->window);
 		}
-		else {
-			this->enemyDemon.draw(this->game->window);
-			this->enemyDemon2.draw(this->game->window);
-			this->enemySkelly.draw(this->game->window);
-			this->enemySkelly2.draw(this->game->window);
-			this->enemyTinyOrc.draw(this->game->window);
-			this->enemyTinyDemon.draw(this->game->window);
-			this->enemyBossDemon.draw(this->game->window);
-			this->enemyBossOrc.draw(this->game->window);
-		}
-		this->player.draw(this->game->window);
 	}
 
 	this->game->window.setView(this->guiView);
@@ -603,4 +463,89 @@ void GameStatePlay::changeToLevel_One(bool trigger)
 {
 	if (!trigger) return;
 	this->level_1_boolean = true;
+}
+
+TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
+{
+	// imap1 Is literally i iterator
+	int imap1 = 0;
+
+	// Asign collision shapes to draw later
+	for (auto x : *collisionsArrayMap) {
+		if ((*collisionsArrayMap)[imap1] != 0) {
+			(*collisionsArrayMap)[imap1] -= 1;
+			sf::RectangleShape colShape;
+			colShape.setFillColor(sf::Color::Blue);
+			colShape.setSize(sf::Vector2f(16.f, 16.f));
+			colShape.setPosition((imap1 % 20 * 16) + 240.f, (imap1 / 20 * 16) + 170.f); // 240 X and 170 Y
+			(*vectorCol).push_back(colShape);
+		}
+		imap1++;
+	}
+	// Draw a second layer where the collisions are
+	TileMap mapCollisions;
+	if (!mapCollisions.load("assets/tileset.png", sf::Vector2u(16, 16), *collisionsArrayMap, 20, 20)) {
+		std::cout << "Tileset Error" << std::endl;
+	}
+	mapCollisions.setPosition(240,170);
+
+	return mapCollisions;
+}
+//For enemies
+sf::Sprite GameStatePlay::createSprite(enemySpriteName name)
+{
+	sf::Sprite sprite;
+	sprite.setTexture(this->game->texmgr.getRef(Enemy::enemySpritesFile[name]));
+	sprite.setOrigin(12, 22);
+
+	return sprite;
+}
+//For characters
+sf::Sprite GameStatePlay::createSprite(playerSpriteName name)
+{
+	sf::Sprite sprite;
+	sprite.setTexture(this->game->texmgr.getRef(Character::playerSpritesFile[name]));
+	sprite.setOrigin(12, 22);
+
+	return sprite;
+}
+
+void GameStatePlay::setEnemySpriteVector()
+{
+	for (unsigned i = 0; i < Enemy::enemySpritesFile.size(); i++)
+	{
+		enemySpriteVector.push_back(createSprite((enemySpriteName)i));
+	}
+}
+
+void GameStatePlay::setCharacterSpriteVector()
+{
+	for (unsigned i = 0; i < Character::playerSpritesFile.size(); i++)
+	{
+		playerSpriteVector.push_back(createSprite((playerSpriteName)i));
+	}
+}
+
+Enemy GameStatePlay::createEnemy(enemyMap map)
+{
+	sf::Sprite sprite = enemySpriteVector[(int)map.type];
+	sprite.setPosition(map.position);
+	sprite.setScale(map.flip == flipped::yup ? sf::Vector2f(-1, 1) : sf::Vector2f(1, 1));
+
+	Enemy enemy = Enemy(sprite);
+
+	if (map.type == enemySpriteName::bossdemon || map.type == enemySpriteName::bossorc)
+		enemy.createBoss();
+	else
+		enemy.create();
+
+	return enemy;
+}
+
+void GameStatePlay::fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy)
+{
+	for (unsigned i = 0; i < vectorMap.size(); i++)
+	{
+		vectorEnemy.push_back(createEnemy(vectorMap[i]));
+	}
 }

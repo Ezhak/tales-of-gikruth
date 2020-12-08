@@ -8,7 +8,7 @@ int Gui::getEntry(const sf::Vector2f mousePos) {
     if(entries.size() == 0)
         return -1;
 
-    for(int i = 0; i < this->entries.size(); ++i) {
+    for(unsigned i = 0; i < this->entries.size(); ++i) {
         // Translate point to use the entry's local coordinates
         sf::Vector2f point = mousePos;
         point += this->entries[i].shape.getOrigin();
@@ -54,7 +54,7 @@ void Gui::show() {
 
 // Highlights an entry of the menu
 void Gui::highlight(const int entry) {
-    for(int i = 0; i < entries.size(); ++i) {
+    for(unsigned i = 0; i < entries.size(); ++i) {
         if(i == entry)
             entries[i].shape.setTexture(entries[i].texHighlight);
         else
@@ -65,7 +65,7 @@ void Gui::highlight(const int entry) {
 }
 
 void Gui::press(const int entry) {
-    for(int i = 0; i < entries.size(); ++i) {
+    for(unsigned i = 0; i < entries.size(); ++i) {
         if(i == entry)
             entries[i].shape.setTexture(entries[i].texPressed);
     }
@@ -74,7 +74,7 @@ void Gui::press(const int entry) {
 }
 
 void Gui::release(const int entry) {
-    for(int i = 0; i < entries.size(); ++i) {
+    for(unsigned i = 0; i < entries.size(); ++i) {
         if(i == entry) 
             entries[i].shape.setTexture(entries[i].texHighlight);
     }

@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
 
+enum class enemySpriteName { tinyzombie, tinyorc, tinydemon, skelly, orc, demon, bossorc, bossdemon };
+
 class Enemy
 {
 private:
@@ -16,6 +18,8 @@ private:
 	float _attackPoints = 4.f;
 	float _velocity = 1.f;
 public:
+	static std::map<enemySpriteName, std::string> enemySpritesFile;
+
 	Enemy() {};
 	Enemy(sf::Sprite& sprite) { this->_sprite = sprite; };
 

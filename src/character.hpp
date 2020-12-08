@@ -5,6 +5,7 @@
 #include <Thor/Animations.hpp>
 
 enum class movement_type { IDLE, UP, DOWN, LEFT, RIGHT };
+enum class playerSpriteName { dragon, knight, mage };
 
 class Character {
 	private:
@@ -16,6 +17,8 @@ class Character {
 		float _attackPoints = 2.f;
 		float _velocity = 1.f;
 	public:
+		static std::map<playerSpriteName, std::string> playerSpritesFile;
+
 		Character() {};
 		Character(sf::Sprite& sprite) { this->_sprite = sprite; }
 

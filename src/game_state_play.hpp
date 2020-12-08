@@ -11,6 +11,15 @@
 #include "level.hpp"
 #include "TileMap.h"
 
+enum class flipped { yup, nop };
+
+struct enemyMap
+{
+	enemySpriteName type;
+	sf::Vector2f position;
+	flipped flip;
+};
+
 class GameStatePlay : public GameState {
 	private:
 		sf::View gameView;
@@ -63,8 +72,14 @@ class GameStatePlay : public GameState {
 		void attack(Enemy& enemy, Character& player);
 		void changeToLevel_Two(bool trigger);
 		void changeToLevel_One(bool trigger);
+		void setEnemySpriteVector();
+		void setCharacterSpriteVector();
+		void fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy);
 
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
+		Enemy createEnemy(enemyMap map);
+		sf::Sprite createSprite(enemySpriteName name);
+		sf::Sprite createSprite(playerSpriteName name);
 };
 
 #endif // GAME_STATE_PLAY_HPP
