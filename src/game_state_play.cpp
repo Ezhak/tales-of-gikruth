@@ -83,6 +83,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 	enemyOrcSprite.setTexture(this->game->texmgr.getRef("orc"));
 	enemyOrcSprite.setPosition(500, 275);
 	enemyOrcSprite.setOrigin(12, 22);
+	enemyOrcSprite.setScale(-1, 1);
 
 	sf::Sprite enemyTinyZombieSprite;
 	enemyTinyZombieSprite.setTexture(this->game->texmgr.getRef("tinyzombie"));
@@ -98,33 +99,48 @@ GameStatePlay::GameStatePlay(Game* game) {
 
 	sf::Sprite enemyDemonSprite;
 	enemyDemonSprite.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite.setPosition(350, 420);
+	enemyDemonSprite.setPosition(380, 250);
 	enemyDemonSprite.setOrigin(12, 22);
+	enemyDemonSprite.setScale(-1, 1);
 
 	sf::Sprite enemyDemonSprite2;
 	enemyDemonSprite2.setTexture(this->game->texmgr.getRef("demon"));
-	enemyDemonSprite2.setPosition(350, 430);
+	enemyDemonSprite2.setPosition(340, 250);
 	enemyDemonSprite2.setOrigin(12, 22);
+	enemyDemonSprite2.setScale(-1, 1);
 
 	sf::Sprite enemySkellySprite;
 	enemySkellySprite.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite.setPosition(350, 440);
+	enemySkellySprite.setPosition(300, 250);
 	enemySkellySprite.setOrigin(12, 22);
 
 	sf::Sprite enemySkellySprite2;
 	enemySkellySprite2.setTexture(this->game->texmgr.getRef("skelly"));
-	enemySkellySprite2.setPosition(350, 450);
+	enemySkellySprite2.setPosition(300, 280);
 	enemySkellySprite2.setOrigin(12, 22);
 
 	sf::Sprite enemyTinyOrcSprite;
 	enemyTinyOrcSprite.setTexture(this->game->texmgr.getRef("tinyorc"));
-	enemyTinyOrcSprite.setPosition(350, 460);
+	enemyTinyOrcSprite.setPosition(340, 320);
 	enemyTinyOrcSprite.setOrigin(12, 22);
+	enemyTinyOrcSprite.setScale(-1, 1);
 
 	sf::Sprite enemyTinyDemonSprite;
 	enemyTinyDemonSprite.setTexture(this->game->texmgr.getRef("tinydemon"));
-	enemyTinyDemonSprite.setPosition(350, 470);
+	enemyTinyDemonSprite.setPosition(380, 280);
 	enemyTinyDemonSprite.setOrigin(12, 22);
+	enemyTinyDemonSprite.setScale(-1, 1);
+
+	sf::Sprite enemyBossDemonSprite;
+	enemyBossDemonSprite.setTexture(this->game->texmgr.getRef("bossdemon"));
+	enemyBossDemonSprite.setPosition(340, 280);
+	enemyBossDemonSprite.setOrigin(12, 22);
+	enemyBossDemonSprite.setScale(-1, 1);
+
+	sf::Sprite enemyBossOrcSprite;
+	enemyBossOrcSprite.setTexture(this->game->texmgr.getRef("bossorc"));
+	enemyBossOrcSprite.setPosition(480, 250);
+	enemyBossOrcSprite.setOrigin(12, 22);
 
 	// Assigns
 
@@ -160,6 +176,8 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->enemySkelly2 = Enemy(enemySkellySprite2);
 	this->enemyTinyOrc = Enemy(enemyTinyOrcSprite);
 	this->enemyTinyDemon = Enemy(enemyTinyDemonSprite);
+	this->enemyBossDemon = Enemy(enemyBossDemonSprite);
+	this->enemyBossOrc = Enemy(enemyBossOrcSprite);
 	// Creator
 	this->player.create();
 	this->enemyOrc.create();
@@ -171,6 +189,8 @@ GameStatePlay::GameStatePlay(Game* game) {
 	this->enemySkelly2.create();
 	this->enemyTinyOrc.create();
 	this->enemyTinyDemon.create();
+	this->enemyBossDemon.createBoss();
+	this->enemyBossOrc.createBoss();
 	// Zoom
 	this->gameView.zoom(0.666f);
 
@@ -190,6 +210,8 @@ GameStatePlay::~GameStatePlay()
 	this->enemySkelly2.~Enemy();
 	this->enemyTinyOrc.~Enemy();
 	this->enemyTinyDemon.~Enemy();
+	this->enemyBossDemon.~Enemy();
+	this->enemyBossOrc.~Enemy();
 }
 
 TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)
@@ -300,6 +322,8 @@ void GameStatePlay::handleInput() {
 	this->enemySkelly2.idle();
 	this->enemyTinyOrc.idle();
 	this->enemyTinyDemon.idle();
+	this->enemyBossDemon.idle();
+	this->enemyBossOrc.idle();
 
 	sf::Event event;
 
@@ -364,6 +388,19 @@ void GameStatePlay::handleInput() {
 			std::cout << "Player hits enemy tiny demon!" << std::endl;
 			std::cout << this->enemyTinyDemon.getHealth() << std::endl;
 		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyBossDemon))
+		{
+			attack(this->player, this->enemyBossDemon);
+			std::cout << "Player hits enemy boss demon! BE CAREFUL" << std::endl;
+			std::cout << this->enemyBossDemon.getHealth() << std::endl;
+		}
+		if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &this->enemyBossOrc))
+		{
+			attack(this->player, this->enemyBossOrc);
+			std::cout << "Player hits enemy boss orc! BE CAREFUL" << std::endl;
+			std::cout << this->enemyBossOrc.getHealth() << std::endl;
+		}
+
 	}
 
 	return;
@@ -410,6 +447,8 @@ void GameStatePlay::update(const sf::Time dt) {
 	this->enemySkelly2.update(dt);
 	this->enemyTinyOrc.update(dt);
 	this->enemyTinyDemon.update(dt);
+	this->enemyBossDemon.update(dt);
+	this->enemyBossOrc.update(dt);
 
 
 	if (checkEnemyCollisions(&this->player, &this->enemyOrc)) {
@@ -446,6 +485,14 @@ void GameStatePlay::update(const sf::Time dt) {
 	}
 	if (checkEnemyCollisions(&this->player, &this->enemyTinyDemon)) {
 		// attack(this->enemyTinyDemon, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyBossDemon)) {
+		// attack(this->enemyBossDemon, this->player);
+		// Debug: std::cout << this->player.getHealth() << std::endl;
+	}
+	if (checkEnemyCollisions(&this->player, &this->enemyBossOrc)) {
+		// attack(this->enemyBossOrc, this->player);
 		// Debug: std::cout << this->player.getHealth() << std::endl;
 	}
 
@@ -497,6 +544,8 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemySkelly2.draw(this->game->window);
 			this->enemyTinyOrc.draw(this->game->window);
 			this->enemyTinyDemon.draw(this->game->window);
+			this->enemyBossDemon.draw(this->game->window);
+			this->enemyBossOrc.draw(this->game->window);
 		}
 	}
 	else
@@ -514,6 +563,8 @@ void GameStatePlay::draw(const sf::Time dt) {
 			this->enemySkelly2.draw(this->game->window);
 			this->enemyTinyOrc.draw(this->game->window);
 			this->enemyTinyDemon.draw(this->game->window);
+			this->enemyBossDemon.draw(this->game->window);
+			this->enemyBossOrc.draw(this->game->window);
 		}
 		this->player.draw(this->game->window);
 	}

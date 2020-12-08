@@ -39,6 +39,8 @@ class GameStatePlay : public GameState {
 		Enemy enemySkelly2;
 		Enemy enemyTinyOrc;
 		Enemy enemyTinyDemon;
+		Enemy enemyBossDemon;
+		Enemy enemyBossOrc;
 
 		std::map<std::string, Gui> guiSystem;
 

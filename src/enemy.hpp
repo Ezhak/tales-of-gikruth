@@ -23,7 +23,9 @@ public:
 	void draw(sf::RenderWindow& window);
 
 	void create();
+	void createBoss();
 	void addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
+	void addFramesBoss(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
 	void idle();
 	void setHealth(float attackPoints);
 

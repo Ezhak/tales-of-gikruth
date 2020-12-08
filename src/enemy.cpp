@@ -25,12 +25,34 @@ void Enemy::create() {
 	this->_animator.addAnimation("idle", idle, sf::seconds(0.7f));
 }
 
+void Enemy::createBoss() {
+	// Define idle animation
+	thor::FrameAnimation idle;
+	addFramesBoss(idle, 0, 0, 1);
+
+	// Define walk animation
+	thor::FrameAnimation walk;
+	addFramesBoss(walk, 1, 0, 3);
+
+	// Register animations with their corresponding durations
+	this->_animator.addAnimation("walk", walk, sf::seconds(0.3f));
+	this->_animator.addAnimation("idle", idle, sf::seconds(0.7f));
+}
+
 void Enemy::addFrames(thor::FrameAnimation& animation, int y, int xFirst, int xLast, float duration) {
 	const int step = (xFirst < xLast) ? +1 : -1;
 	xLast += step; // so xLast is excluded in the range
 
 	for (int x = xFirst; x != xLast; x += step)
-		animation.addFrame(duration, sf::IntRect(24 * x, 22 * y, 96 / 4, 44 / 2));
+		animation.addFrame(duration, sf::IntRect(24 * x, 22 * y, 100 / 4, 50 / 2));
+}
+
+void Enemy::addFramesBoss(thor::FrameAnimation& animation, int y, int xFirst, int xLast, float duration) {
+	const int step = (xFirst < xLast) ? +1 : -1;
+	xLast += step; // so xLast is excluded in the range
+
+	for (int x = xFirst; x != xLast; x += step)
+		animation.addFrame(duration, sf::IntRect(34 * x, 34 * y, 120 / 4, 70 / 2));
 }
 
 void Enemy::idle() {
