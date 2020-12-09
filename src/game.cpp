@@ -93,9 +93,24 @@ void Game::loadTextures() {
     texmgr.loadTexture("quit_highlight",    "assets/menu/quit_highlight.png");
     texmgr.loadTexture("quit_press",        "assets/menu/quit_press.png");
 
+    // Choose class UI
+    texmgr.loadTexture("choose_class",      "assets/menu/choose_class.png");
+
+    texmgr.loadTexture("dino_menu",              "assets/menu/dino.png");
+    texmgr.loadTexture("dino_highlight",    "assets/menu/dino_highlight.png");
+    texmgr.loadTexture("dino_press",        "assets/menu/dino_press.png");
+
+    texmgr.loadTexture("knight_menu",            "assets/menu/knight.png");
+    texmgr.loadTexture("knight_highlight",  "assets/menu/knight_highlight.png");
+    texmgr.loadTexture("knight_press",      "assets/menu/knight_press.png");
+
+    texmgr.loadTexture("mage_menu",              "assets/menu/mage.png");
+    texmgr.loadTexture("mage_highlight",    "assets/menu/mage_highlight.png");
+    texmgr.loadTexture("mage_press",        "assets/menu/mage_press.png");
+
     texmgr.loadTexture("menu_background",   "assets/menu/background.png");
     texmgr.loadTexture("game_background",   "assets/game/background.png");
-    
+    //
     texmgr.loadTexture("map_1",             "assets/game/maps/map_1.png");
     texmgr.loadTexture("map_2",             "assets/game/maps/map_2.png");
     //Characters, tiny and normal enemies --> 24x24

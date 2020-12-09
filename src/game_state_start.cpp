@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "game_state_start.hpp"
+#include "game_state_class_menu.h"
 #include "game_state_play.hpp"
 #include "game_state.hpp"
 
@@ -81,7 +82,7 @@ void GameStateStart::handleInput() {
                 std::string msg = this->guiSystem.at("menu").activate(mousePos);
 
                 if (msg == "start_game")
-                    this->startgame();
+                    this->chooseclass();
 
                 if (msg == "quit_game")
                     this->game->window.close();
@@ -101,6 +102,7 @@ void GameStateStart::handleInput() {
 }
 
 void GameStateStart::update(const sf::Time dt) {
+
 }
 
 void GameStateStart::draw(const sf::Time dt) {
@@ -115,8 +117,10 @@ void GameStateStart::draw(const sf::Time dt) {
     return;
 }
 
-void GameStateStart::startgame() {
-    this->game->pushState(new GameStatePlay(this->game));
 
-    return;
+void GameStateStart::chooseclass()
+{
+    this->game->pushState(new GameStateClassMenu(this->game));
 }
+
+
