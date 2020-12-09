@@ -43,7 +43,7 @@ std::vector<enemyMap> enemyMap2 =
 std::vector<Enemy> enemyVectorMap1;
 std::vector<Enemy> enemyVectorMap2;
 
-GameStatePlay::GameStatePlay(Game* game) {
+GameStatePlay::GameStatePlay(Game* game, std::string player) {
 	this->game = game;
 	sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
 	this->guiView.setSize(pos);
@@ -101,7 +101,7 @@ GameStatePlay::GameStatePlay(Game* game) {
 	// Players (Classes)
 
 	sf::Sprite playerSprite;
-	playerSprite.setTexture(this->game->texmgr.getRef("dragon"));
+	playerSprite.setTexture(this->game->texmgr.getRef(player));
 	playerSprite.setPosition(300, 275);
 	playerSprite.setOrigin(12, 22);
 
@@ -219,9 +219,6 @@ void GameStatePlay::handleInput() {
 		this->player.move(movement_type::RIGHT);
 
 	else this->player.idle();
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-		gameMenu();
 
 	//Debug: Mouse-click position
 	/*if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {

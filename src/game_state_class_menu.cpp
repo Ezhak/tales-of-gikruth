@@ -81,13 +81,13 @@ void GameStateClassMenu::handleInput() {
                 std::string msg = this->guiSystem.at("menu").activate(mousePos);
 
                 if (msg == "dino_menu")
-                    this->startgame();
+                    this->startgame("dragon");
 
                 if (msg == "knight_menu")
-                    this->startgame();
+                    this->startgame("knight");
 
                 if (msg == "mage_menu")
-                    this->startgame();
+                    this->startgame("mage");
 
             }
             break;
@@ -116,8 +116,8 @@ void GameStateClassMenu::draw(const sf::Time dt) {
     return;
 }
 
-void GameStateClassMenu::startgame() {
-    this->game->pushState(new GameStatePlay(this->game));
+void GameStateClassMenu::startgame(std::string player) {
+    this->game->pushState(new GameStatePlay(this->game, player));
 
     return;
 }

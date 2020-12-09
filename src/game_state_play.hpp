@@ -54,7 +54,7 @@ class GameStatePlay : public GameState {
 		std::map<std::string, Gui> guiSystem;
 
 	public:
-		GameStatePlay(Game* game);
+		GameStatePlay(Game* game, std::string player);
 		~GameStatePlay();
 
 		void gameMenu();

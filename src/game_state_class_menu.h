@@ -16,7 +16,7 @@ private:
 
     std::map<std::string, Gui> guiSystem;
 
-    void startgame();
+    void startgame(std::string player);
 
 public:
     GameStateClassMenu(Game* game);
