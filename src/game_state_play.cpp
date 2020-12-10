@@ -328,9 +328,10 @@ void GameStatePlay::update(const sf::Time dt) {
 			enemyVectorMap1[i].update(dt);
 			if (checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
 			{
-				if (timeElapsed % 120 == 0){
-				//attack(&enemyVectorMap1[i], &this->player);
-				std::cout << this->player.getHealth() << std::endl;
+				if (timeElapsed % 120 == 0)
+				{
+					attack(enemyVectorMap1[i], this->player);
+					std::cout << this->player.getHealth() << std::endl;
 				}
 			}
 		}
@@ -343,7 +344,7 @@ void GameStatePlay::update(const sf::Time dt) {
 			if (checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
 			{
 				if (timeElapsed % 120 == 0) {
-					//attack(&enemyVectorMap1[i], &this->player);
+					attack(enemyVectorMap2[i], this->player);
 					std::cout << this->player.getHealth() << std::endl;
 				}
 			}
@@ -411,12 +412,9 @@ void GameStatePlay::attack(Character& player, Enemy& enemy)
 	enemy.setHealth(player.getAttackPoints());
 }
 // For enemy attack
-void GameStatePlay::attack(std::vector<Enemy>& vectorEnemy, Character& player)
+void GameStatePlay::attack(Enemy& enemy, Character& player)
 {
-	for (unsigned i = 0; i < vectorEnemy.size(); i++)
-	{
-		player.setHealth(vectorEnemy[i].getAttackPoints());
-	}
+	player.setHealth(enemy.getAttackPoints());
 }
 
 void GameStatePlay::gameMenu()
