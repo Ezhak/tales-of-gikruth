@@ -69,7 +69,7 @@ class GameStatePlay : public GameState {
 		bool checkTriggerMap(Character* player, sf::RectangleShape* trigger);
 
 		void attack(Character& player, Enemy& enemy);
-		void attack(Enemy& enemy, Character& player);
+		void attack(std::vector<Enemy>& vectorEnemy, Character& player);
 		void changeToLevel_Two(bool trigger);
 		void changeToLevel_One(bool trigger);
 		void setEnemySpriteVector();

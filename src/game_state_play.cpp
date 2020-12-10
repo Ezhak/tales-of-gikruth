@@ -312,6 +312,15 @@ void GameStatePlay::update(const sf::Time dt) {
 
 	// this->level.update();
 	this->player.update(dt);
+
+	int timeElapsed = 0;
+
+	timeElapsed += dt.asMicroseconds();
+
+	if(timeElapsed % 120 == 0) {
+		//std::cout << "Time" << std::endl;
+	}
+
 	if (level_1_boolean)
 	{
 		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
@@ -319,20 +328,24 @@ void GameStatePlay::update(const sf::Time dt) {
 			enemyVectorMap1[i].update(dt);
 			if (checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
 			{
-				//attack(&enemyVectorMap1[i], &this->player)
-				// Debug: std::cout << this->player.getHealth() << std::endl;
+				if (timeElapsed % 120 == 0){
+				//attack(&enemyVectorMap1[i], &this->player);
+				std::cout << this->player.getHealth() << std::endl;
+				}
 			}
 		}
 	}
-	else
-	{
+	else // Level 2 Collisions Check & NPC Attack System
+ 	{
 		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
 		{
 			enemyVectorMap2[i].update(dt);
 			if (checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
 			{
-				//attack(&enemyVectorMap1[i], &this->player)
-				// Debug: std::cout << this->player.getHealth() << std::endl;
+				if (timeElapsed % 120 == 0) {
+					//attack(&enemyVectorMap1[i], &this->player);
+					std::cout << this->player.getHealth() << std::endl;
+				}
 			}
 		}
 	}
@@ -398,9 +411,12 @@ void GameStatePlay::attack(Character& player, Enemy& enemy)
 	enemy.setHealth(player.getAttackPoints());
 }
 // For enemy attack
-void GameStatePlay::attack(Enemy& enemy, Character& player)
+void GameStatePlay::attack(std::vector<Enemy>& vectorEnemy, Character& player)
 {
-	player.setHealth(enemy.getAttackPoints());
+	for (unsigned i = 0; i < vectorEnemy.size(); i++)
+	{
+		player.setHealth(vectorEnemy[i].getAttackPoints());
+	}
 }
 
 void GameStatePlay::gameMenu()
