@@ -67,14 +67,16 @@ class GameStatePlay : public GameState {
 		bool checkEnemyCollisions(Character* player, Enemy* enemy);
 		bool checkHealth(float health);
 		bool checkTriggerMap(Character* player, sf::RectangleShape* trigger);
+		bool checkEnemyWipeout(std::vector<Enemy> enemyVector);
 
 		void attack(Character& player, Enemy& enemy);
 		void attack(Enemy& enemy, Character& player);
-		void changeToLevel_Two(bool trigger);
-		void changeToLevel_One(bool trigger);
+		void changeToLevel_Two(bool trigger, bool wipeout);
+		void changeToLevel_One(bool trigger, bool wipeout);
 		void setEnemySpriteVector();
 		void setCharacterSpriteVector();
 		void fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy);
+		void changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status);
 
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 		Enemy createEnemy(enemyMap map);

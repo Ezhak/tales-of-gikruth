@@ -19,7 +19,6 @@ void Enemy::update(const sf::Time dt) {
 }
 
 void Enemy::draw(sf::RenderWindow& window) {
-	if (this->_hitPoints > 0)
 		window.draw(this->_sprite);
 }
 
@@ -77,4 +76,9 @@ void Enemy::setHealth(float attackPoints)
 { 
 	if (this-> _hitPoints > 0)
 		this-> _hitPoints -= attackPoints;
+}
+
+void Enemy::setStatus(healthStatus status)
+{
+	this->_status = status;
 }

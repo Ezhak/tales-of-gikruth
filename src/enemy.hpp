@@ -6,6 +6,7 @@
 #include <Thor/Animations.hpp>
 
 enum class enemySpriteName { tinyzombie, tinyorc, tinydemon, skelly, orc, demon, bossorc, bossdemon };
+enum class healthStatus { alive, dead };
 
 class Enemy
 {
@@ -17,6 +18,8 @@ private:
 	float _defensePoints = 3.f;
 	float _attackPoints = 4.f;
 	float _velocity = 1.f;
+
+	healthStatus _status;
 public:
 	static std::map<enemySpriteName, std::string> enemySpritesFile;
 
@@ -32,10 +35,12 @@ public:
 	void addFramesBoss(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
 	void idle();
 	void setHealth(float attackPoints);
+	void setStatus(healthStatus status);
 
 	sf::Sprite getSprite() { return _sprite; };
 	float getHealth() { return _hitPoints; };
 	float getAttackPoints() { return _attackPoints; };
+	healthStatus getHealthStatus() { return _status; };
 };
 
 #endif // ENEMY_HPP

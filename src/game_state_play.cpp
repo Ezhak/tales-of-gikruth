@@ -257,7 +257,7 @@ void GameStatePlay::handleInput() {
 		if (level_1_boolean)
 		{
 			for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
-				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
+				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap1[i]) && enemyVectorMap1[i].getHealthStatus() == healthStatus::alive)
 				{
 					attack(this->player, enemyVectorMap1[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
@@ -267,14 +267,13 @@ void GameStatePlay::handleInput() {
 		else
 		{
 			for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
-				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
+				if (event.type == sf::Event::MouseButtonPressed && checkEnemyCollisions(&this->player, &enemyVectorMap2[i]) && enemyVectorMap2[i].getHealthStatus() == healthStatus::alive)
 				{
 					attack(this->player, enemyVectorMap2[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
 					std::cout << enemyVectorMap2[i].getHealth() << std::endl;
 				}
 		}
-
 	}
 
 	return;
@@ -308,6 +307,17 @@ bool GameStatePlay::checkTriggerMap(Character* player, sf::RectangleShape* trigg
 	else return false;
 }
 
+bool GameStatePlay::checkEnemyWipeout(std::vector<Enemy> enemyVector)
+{
+	for (unsigned i = 0; i < enemyVector.size(); i++)
+	{
+		//if enemies in level are still alive, cannot leave.
+		if (enemyVector[i].getHealthStatus() == healthStatus::alive) return false;
+	}
+	//no enemies left alive.
+	return true;
+}
+
 void GameStatePlay::update(const sf::Time dt) {
 
 	// this->level.update();
@@ -315,18 +325,28 @@ void GameStatePlay::update(const sf::Time dt) {
 
 	int timeElapsed = 0;
 
-	timeElapsed += dt.asMicroseconds();
+	timeElapsed += (int)dt.asMicroseconds();
 
 	if(timeElapsed % 120 == 0) {
 		//std::cout << "Time" << std::endl;
 	}
+
+	//CheckCharacterHealth if dead, go back to start menu.
+	if (!checkHealth(this->player.getHealth()))
+	{
+		this->game->pushState(new GameStateStart(this->game));
+	}
+
+	//CheckEnemyHealth if health is below or equal to 0, changeHealthStatus to 'dead'.
+	changeHealthStatus(enemyVectorMap1, healthStatus::dead);
+	changeHealthStatus(enemyVectorMap2, healthStatus::dead);
 
 	if (level_1_boolean)
 	{
 		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
 		{
 			enemyVectorMap1[i].update(dt);
-			if (checkEnemyCollisions(&this->player, &enemyVectorMap1[i]))
+			if (checkEnemyCollisions(&this->player, &enemyVectorMap1[i]) && (enemyVectorMap1[i].getHealthStatus() == healthStatus::alive))
 			{
 				if (timeElapsed % 120 == 0)
 				{
@@ -341,7 +361,7 @@ void GameStatePlay::update(const sf::Time dt) {
 		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
 		{
 			enemyVectorMap2[i].update(dt);
-			if (checkEnemyCollisions(&this->player, &enemyVectorMap2[i]))
+			if (checkEnemyCollisions(&this->player, &enemyVectorMap2[i]) && (enemyVectorMap2[i].getHealthStatus() == healthStatus::alive))
 			{
 				if (timeElapsed % 120 == 0) {
 					attack(enemyVectorMap2[i], this->player);
@@ -351,8 +371,8 @@ void GameStatePlay::update(const sf::Time dt) {
 		}
 	}
 
-	changeToLevel_Two(checkTriggerMap(&this->player, &this->triggerMap1));
-	changeToLevel_One(checkTriggerMap(&this->player, &this->triggerMap2));
+	changeToLevel_Two(checkTriggerMap(&this->player, &this->triggerMap1), checkEnemyWipeout(enemyVectorMap1));
+	changeToLevel_One(checkTriggerMap(&this->player, &this->triggerMap2), checkEnemyWipeout(enemyVectorMap2));
 
 	return;
 }
@@ -390,13 +410,13 @@ void GameStatePlay::draw(const sf::Time dt) {
 	{
 		for (unsigned i = 0; i < enemyVectorMap1.size(); i++)
 		{
-			enemyVectorMap1[i].draw(this->game->window);
+			if (enemyVectorMap1[i].getHealthStatus() == healthStatus::alive) enemyVectorMap1[i].draw(this->game->window);
 		}
 	}
 	else {
 		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
 		{
-			enemyVectorMap2[i].draw(this->game->window);
+			if (enemyVectorMap2[i].getHealthStatus() == healthStatus::alive) enemyVectorMap2[i].draw(this->game->window);
 		}
 	}
 
@@ -424,15 +444,15 @@ void GameStatePlay::gameMenu()
 	this->game->changeState(new GameStateStart(this->game));
 }
 
-void GameStatePlay::changeToLevel_Two(bool trigger)
+void GameStatePlay::changeToLevel_Two(bool trigger, bool wipeout)
 {
-	if (!trigger) return;
+	if (!trigger || !wipeout) return;
 	this->level_1_boolean = false;
 }
 
-void GameStatePlay::changeToLevel_One(bool trigger)
+void GameStatePlay::changeToLevel_One(bool trigger, bool wipeout)
 {
-	if (!trigger) return;
+	if (!trigger || !wipeout) return;
 	this->level_1_boolean = true;
 }
 
@@ -518,5 +538,13 @@ void GameStatePlay::fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector
 	for (unsigned i = 0; i < vectorMap.size(); i++)
 	{
 		vectorEnemy.push_back(createEnemy(vectorMap[i]));
+	}
+}
+
+void GameStatePlay::changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status)
+{
+	for (unsigned i = 0; i < enemyVector.size(); i++)
+	{
+		if (!checkHealth(enemyVector[i].getHealth())) enemyVector[i].setStatus(status);
 	}
 }
