@@ -437,7 +437,7 @@ void GameStatePlay::draw(const sf::Time dt) {
 void GameStatePlay::burnDisk()
 {
 	FILE* fp;
-	fp = fopen("score.dat", "ab+");
+	fopen_s(&fp, "score.dat", "ab+");
 	if (!fp) {
 		std::cout << "File score.dat error" << std::endl;
 		fclose(fp);
