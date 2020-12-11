@@ -340,7 +340,7 @@ void GameStatePlay::update(const sf::Time dt) {
 	if (!checkHealth(this->player.getHealth()))
 	{
 		this->game->pushState(new GameStateStart(this->game));
-		this->burnDisk();
+		this->player.burnDisk();
 		std::cout << "You lose :( But your score has saved ... :)" << std::endl;
 	}
 
@@ -434,22 +434,6 @@ void GameStatePlay::draw(const sf::Time dt) {
 	return;
 }
 
-void GameStatePlay::burnDisk()
-{
-	FILE* fp;
-	fopen_s(&fp, "score.dat", "ab+");
-	if (!fp) {
-		std::cout << "File score.dat error" << std::endl;
-		fclose(fp);
-	}
-	fwrite(this, sizeof this, 1, fp);
-	if (ferror(fp)) {
-		std::cout << "File burn score.dat error" << std::endl;
-		fclose(fp);
-		return;
-	}
-	fclose(fp);
-}
 
 // For character attack
 void GameStatePlay::attack(Character& player, Enemy& enemy)
@@ -479,7 +463,7 @@ void GameStatePlay::changeToLevel_One(bool trigger, bool wipeout)
 {
 	if (!trigger || !wipeout) return;
 	this->level_1_boolean = true;
-	this->burnDisk();
+	this->player.burnDisk();
 	std::cout << "Game over! You did it well, pal :) Your score has saved." << std::endl;
 }
 

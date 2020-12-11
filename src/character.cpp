@@ -18,6 +18,41 @@ void Character::draw(sf::RenderWindow& window)
 	window.draw(this->_sprite);
 }
 
+void Character::burnDisk()
+{
+	FILE* fp;
+	fopen_s(&fp, "score.dat", "ab+");
+	if (!fp) {
+		std::cout << "File score.dat error" << std::endl;
+		fclose(fp);
+	}
+	fwrite(this, sizeof this, 1, fp);
+	if (ferror(fp)) {
+		std::cout << "File burn score.dat error" << std::endl;
+		fclose(fp);
+		return;
+	}
+	fclose(fp);
+}
+
+bool Character::readFromDisk(int position)
+{
+	int x;
+	FILE* fp;
+	fopen_s(&fp, "score.dat", "rb");
+	if (!fp) {
+		std::cout << "Error to open file score.dat" << std::endl;
+		fclose(fp);
+		return false;
+	}
+
+	fseek(fp, position * sizeof (this), 0);
+	x = fread(this, sizeof (this), 1, fp);
+	fclose(fp);
+	if (x == 1) return true;
+	return false;
+}
+
 void Character::create() {
 	// Define idle animation
 	thor::FrameAnimation idle;

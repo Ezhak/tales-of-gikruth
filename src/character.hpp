@@ -28,6 +28,9 @@ class Character {
 		void update(const sf::Time dt);
 		void draw(sf::RenderWindow& window);
 
+		void burnDisk();
+		bool readFromDisk(int position);
+
 		void create();
 		void addFrames(thor::FrameAnimation& animation, int x, int yFirst, int yLast, float duration = 1.f);
 		void idle();

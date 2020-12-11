@@ -13,13 +13,15 @@ class GameStateHighscore : public GameState
 {
 private:
     sf::View view;
-
+    std::vector<int> vectorScores;
     std::map<std::string, Gui> guiSystem;
 public:
     GameStateHighscore(Game* game);
     ~GameStateHighscore();
 
     void chooseclass();
+
+    std::vector<int> getVector() { return vectorScores; };
 
     virtual void handleInput();
     virtual void update(const sf::Time dt);

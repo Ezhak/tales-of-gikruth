@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 #include "game_state_highscore.h"
 #include "game_state_class_menu.h"
 #include "game_state_start.hpp"
@@ -22,6 +22,8 @@ GameStateHighscore::GameStateHighscore(Game* game)
 
     std::vector<GuiEntry> entries{};
 
+    Character player;
+
     Gui gui = Gui(dimensions, entries);
     gui.setPosition(pos);
     gui.setOrigin(181, 70);
@@ -41,7 +43,23 @@ void GameStateHighscore::chooseclass()
 }
 
 void GameStateHighscore::update(const sf::Time dt) {
+    int position = 0;
+    Character scoreRegister;
 
+    while (scoreRegister.readFromDisk(position) == true) {
+        this->getVector().push_back(scoreRegister.getScore());
+        std::cout << "Score character: " << scoreRegister.getScore() << std::endl;
+        std::cout << scoreRegister.getAttackPoints() << std::endl;
+        position++;
+    }
+
+    //std::reverse(this->getVector().begin(), this->getVector().end());
+
+    for (int i = 0; i < this->getVector().size(); i++)
+    {
+        std::cout << this->getVector()[i] << std::endl;
+    }
+    /**/
 }
 
 void GameStateHighscore::handleInput() {

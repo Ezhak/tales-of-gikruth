@@ -63,8 +63,6 @@ class GameStatePlay : public GameState {
 		virtual void update(const sf::Time dt);
 		virtual void draw(const sf::Time dt);
 
-		void burnDisk();
-
 		bool canItMove(movement_type type, Character* player);
 		bool checkEnemyCollisions(Character* player, Enemy* enemy);
 		bool checkHealth(float health);
