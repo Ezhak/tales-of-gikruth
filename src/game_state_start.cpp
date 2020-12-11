@@ -2,6 +2,7 @@
 
 #include "game_state_start.hpp"
 #include "game_state_class_menu.h"
+#include "game_state_highscore.h"
 #include "game_state_play.hpp"
 #include "game_state.hpp"
 
@@ -24,6 +25,13 @@ GameStateStart::GameStateStart(Game* game) {
                               &this->game->texmgr.getRef("start_highlight"),
                               &this->game->texmgr.getRef("start_press"));
 
+    GuiEntry highscore = GuiEntry("high_score",
+                              shape,
+                              &this->game->texmgr.getRef("high_score"),
+                              &this->game->texmgr.getRef("high_score_highlight"),
+                              &this->game->texmgr.getRef("high_score_press"));
+
+    /*
     GuiEntry load = GuiEntry("load_game",
                              shape,
                              &this->game->texmgr.getRef("load"),
@@ -35,14 +43,14 @@ GameStateStart::GameStateStart(Game* game) {
                              &this->game->texmgr.getRef("save"),
                              &this->game->texmgr.getRef("save_highlight"),
                              &this->game->texmgr.getRef("save_press"));
-
+    */
     GuiEntry quit = GuiEntry("quit_game",
                              shape,
                              &this->game->texmgr.getRef("quit"),
                              &this->game->texmgr.getRef("quit_highlight"),
                              &this->game->texmgr.getRef("quit_press"));
 
-    std::vector<GuiEntry> entries{start, load, save, quit};
+    std::vector<GuiEntry> entries{start, highscore , quit};
 
     Gui gui = Gui(dimensions, entries);
     gui.setPosition(pos);
@@ -84,6 +92,9 @@ void GameStateStart::handleInput() {
                 if (msg == "start_game")
                     this->chooseclass();
 
+                if (msg == "high_score")
+                    this->highscore();
+
                 if (msg == "quit_game")
                     this->game->window.close();
             }
@@ -117,6 +128,11 @@ void GameStateStart::draw(const sf::Time dt) {
     return;
 }
 
+
+void GameStateStart::highscore()
+{
+    this->game->pushState(new GameStateHighscore(this->game));
+}
 
 void GameStateStart::chooseclass()
 {

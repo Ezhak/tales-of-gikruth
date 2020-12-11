@@ -81,6 +81,10 @@ void Game::loadTextures() {
     texmgr.loadTexture("start_highlight",   "assets/menu/start_highlight.png");
     texmgr.loadTexture("start_press",       "assets/menu/start_press.png");
 
+    texmgr.loadTexture("high_score",        "assets/menu/high_score.png");
+    texmgr.loadTexture("high_score_highlight", "assets/menu/high_score_highlight.png");
+    texmgr.loadTexture("high_score_press",  "assets/menu/high_score_press.png");
+
     texmgr.loadTexture("load",              "assets/menu/load.png");
     texmgr.loadTexture("load_highlight",    "assets/menu/load_highlight.png");
     texmgr.loadTexture("load_press",        "assets/menu/load_press.png");
@@ -92,6 +96,9 @@ void Game::loadTextures() {
     texmgr.loadTexture("quit",              "assets/menu/quit.png");
     texmgr.loadTexture("quit_highlight",    "assets/menu/quit_highlight.png");
     texmgr.loadTexture("quit_press",        "assets/menu/quit_press.png");
+
+    // HighScore
+    texmgr.loadTexture("highscore_menu", "assets/menu/highscore_menu.png");
 
     // Choose class UI
     texmgr.loadTexture("choose_class",      "assets/menu/choose_class.png");
