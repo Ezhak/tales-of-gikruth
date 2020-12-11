@@ -30,11 +30,46 @@ GameStateHighscore::GameStateHighscore(Game* game)
     gui.show();
 
     this->guiSystem.emplace("menu", gui);
+    
+    //
+
+    int position = 0;
+    
+    while (player.readFromDisk(position++)) {
+        std::cout << "score: " << player.getScore() << std::endl;
+    }
+
+    //std::reverse(this->getVector().begin(), this->getVector().end());
+    /*
+    for (int i = 0; i < this->getVector().size(); i++)
+    {
+        std::cout << this->getVector()[i] << std::endl;
+    }
+    */
+
 }
 
 GameStateHighscore::~GameStateHighscore()
 {
 
+}
+
+bool GameStateHighscore::readFromDisk(int position)
+{
+    	int x;
+	FILE* fp;
+	fopen_s(&fp, "score.dat", "rb");
+	if (!fp) {
+		std::cout << "Error to open file score.dat" << std::endl;
+		fclose(fp);
+		return false;
+	}
+
+	fseek(fp, sizeof * this * position, 0);
+	x = fread(this, sizeof this, 1, fp);
+	fclose(fp);
+	if (x == 1) return true;
+	return false;
 }
 
 void GameStateHighscore::chooseclass()
@@ -43,23 +78,7 @@ void GameStateHighscore::chooseclass()
 }
 
 void GameStateHighscore::update(const sf::Time dt) {
-    int position = 0;
-    Character scoreRegister;
 
-    while (scoreRegister.readFromDisk(position) == true) {
-        this->getVector().push_back(scoreRegister.getScore());
-        std::cout << "Score character: " << scoreRegister.getScore() << std::endl;
-        std::cout << scoreRegister.getAttackPoints() << std::endl;
-        position++;
-    }
-
-    //std::reverse(this->getVector().begin(), this->getVector().end());
-
-    for (int i = 0; i < this->getVector().size(); i++)
-    {
-        std::cout << this->getVector()[i] << std::endl;
-    }
-    /**/
 }
 
 void GameStateHighscore::handleInput() {
@@ -93,6 +112,7 @@ void GameStateHighscore::draw(const sf::Time dt) {
 
     for (auto gui : this->guiSystem)
         this->game->window.draw(gui.second);
+
 
     return;
 }

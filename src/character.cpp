@@ -21,7 +21,7 @@ void Character::draw(sf::RenderWindow& window)
 void Character::burnDisk()
 {
 	FILE* fp;
-	fopen_s(&fp, "score.dat", "ab+");
+	fopen_s(&fp, "score.dat", "ab");
 	if (!fp) {
 		std::cout << "File score.dat error" << std::endl;
 		fclose(fp);
@@ -46,8 +46,8 @@ bool Character::readFromDisk(int position)
 		return false;
 	}
 
-	fseek(fp, position * sizeof (this), 0);
-	x = fread(this, sizeof (this), 1, fp);
+	fseek(fp, sizeof * this * position, 0);
+	x = fread(this, sizeof this, 1, fp);
 	fclose(fp);
 	if (x == 1) return true;
 	return false;

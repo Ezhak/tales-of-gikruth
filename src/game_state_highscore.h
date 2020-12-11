@@ -15,11 +15,17 @@ private:
     sf::View view;
     std::vector<int> vectorScores;
     std::map<std::string, Gui> guiSystem;
+
+    Character _playerScore;
 public:
     GameStateHighscore(Game* game);
     ~GameStateHighscore();
 
+    bool readFromDisk(int position);
+
     void chooseclass();
+
+    Character getCharacter() { return _playerScore; };
 
     std::vector<int> getVector() { return vectorScores; };
 

@@ -339,8 +339,8 @@ void GameStatePlay::update(const sf::Time dt) {
 	// And save your score in a file.
 	if (!checkHealth(this->player.getHealth()))
 	{
+		this->burnDisk();
 		this->game->pushState(new GameStateStart(this->game));
-		this->player.burnDisk();
 		std::cout << "You lose :( But your score has saved ... :)" << std::endl;
 	}
 
@@ -453,6 +453,41 @@ void GameStatePlay::gameMenu()
 	this->game->changeState(new GameStateStart(this->game));
 }
 
+void GameStatePlay::burnDisk()
+{
+	FILE* fp;
+	fopen_s(&fp, "score.dat", "ab");
+	if (!fp) {
+		std::cout << "File score.dat error" << std::endl;
+		fclose(fp);
+	}
+	fwrite(this, sizeof this, 1, fp);
+	if (ferror(fp)) {
+		std::cout << "File burn score.dat error" << std::endl;
+		fclose(fp);
+		return;
+	}
+	fclose(fp);
+}
+
+bool GameStatePlay::readFromDisk(int position)
+{
+	int x;
+	FILE* fp;
+	fopen_s(&fp, "score.dat", "rb");
+	if (!fp) {
+		std::cout << "Error to open file score.dat" << std::endl;
+		fclose(fp);
+		return false;
+	}
+
+	fseek(fp, sizeof * this * position, 0);
+	x = fread(this, sizeof this, 1, fp);
+	fclose(fp);
+	if (x == 1) return true;
+	return false;
+}
+
 void GameStatePlay::changeToLevel_Two(bool trigger, bool wipeout)
 {
 	if (!trigger || !wipeout) return;
@@ -462,8 +497,8 @@ void GameStatePlay::changeToLevel_Two(bool trigger, bool wipeout)
 void GameStatePlay::changeToLevel_One(bool trigger, bool wipeout)
 {
 	if (!trigger || !wipeout) return;
+	this->burnDisk();
 	this->level_1_boolean = true;
-	this->player.burnDisk();
 	std::cout << "Game over! You did it well, pal :) Your score has saved." << std::endl;
 }
 

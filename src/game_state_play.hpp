@@ -59,6 +59,9 @@ class GameStatePlay : public GameState {
 
 		void gameMenu();
 
+		void burnDisk();
+		bool readFromDisk(int position);
+			
 		virtual void handleInput();
 		virtual void update(const sf::Time dt);
 		virtual void draw(const sf::Time dt);

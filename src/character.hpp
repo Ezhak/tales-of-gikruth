@@ -12,7 +12,7 @@ class Character {
 		sf::Sprite _sprite;
 		thor::Animator<sf::Sprite, std::string> _animator;
 
-		float _hitPoints = 10.f;
+		float _hitPoints = 20.f;
 		float _defensePoints = 2.f;
 		float _attackPoints = 2.f;
 		float _velocity = 1.f;
