@@ -5,7 +5,13 @@
 #include <SFML/Graphics.hpp>
 #include <Thor/Animations.hpp>
 
-enum class potionType { healthRegen, strengthBoost, healthBoost };
+enum class potionType { healthRegen, strengthBoost, speedBoost };
+
+struct potion
+{
+	potionType type;
+	float effectValue;
+};
 
 class item
 {

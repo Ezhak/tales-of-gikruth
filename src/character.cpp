@@ -120,3 +120,18 @@ void Character::setScore()
 {
 	_score += 100;
 }
+
+void Character::addTotalStrength(float value)
+{
+	this->_defensePoints += value;
+}
+
+void Character::addHealth(float value)
+{
+	this->_hitPoints += value;
+}
+
+void Character::addVelocity(float value)
+{
+	this->_velocity += value;
+}

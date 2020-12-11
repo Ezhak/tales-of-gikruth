@@ -38,6 +38,10 @@ class Character {
 		void setHealth(float attackPoints);
 		void setScore();
 
+		void addTotalStrength(float value);
+		void addHealth(float value);
+		void addVelocity(float value);
+
 		float getVelocity() { return _velocity; };
 		float getAttackPoints() { return _attackPoints; };
 		float getHealth() { return _hitPoints; };

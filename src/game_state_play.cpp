@@ -146,17 +146,6 @@ GameStatePlay::GameStatePlay(Game* game, std::string player) {
 GameStatePlay::~GameStatePlay()
 {
 	this->player.~Character();
-	this->enemyOrc.~Enemy();
-	this->enemyTinyZombie.~Enemy();
-	this->enemyTinyZombie2.~Enemy();
-	this->enemyDemon.~Enemy();
-	this->enemyDemon2.~Enemy();
-	this->enemySkelly.~Enemy();
-	this->enemySkelly2.~Enemy();
-	this->enemyTinyOrc.~Enemy();
-	this->enemyTinyDemon.~Enemy();
-	this->enemyBossDemon.~Enemy();
-	this->enemyBossOrc.~Enemy();
 }
 
 bool GameStatePlay::canItMove(movement_type type, Character *player)
@@ -410,7 +399,6 @@ void GameStatePlay::draw(const sf::Time dt) {
 	//this->game->window.draw(this->triggerMap1);
 	//this->game->window.draw(this->triggerMap2);
 
-	// Checking positions to see which one is drawn first.
 	
 	this->player.draw(this->game->window);
 	if (level_1_boolean)
@@ -593,4 +581,24 @@ void GameStatePlay::changeHealthStatus(std::vector<Enemy> &enemyVector, healthSt
 	{
 		if (!checkHealth(enemyVector[i].getHealth())) enemyVector[i].setStatus(status);
 	}
+}
+
+void GameStatePlay::applyPotionEffects(Character& player, potion potion)
+{
+	switch (potion.type)
+	{
+	case potionType::healthRegen:
+		player.addHealth(potion.effectValue);
+		break;
+	case potionType::strengthBoost:
+		player.addTotalStrength(potion.effectValue);
+		break;
+	case potionType::speedBoost:
+		player.addVelocity(potion.effectValue);
+		break;
+	default:
+		std::cout << "Error loading potions." << std::endl;
+	}
+
+	return;
 }

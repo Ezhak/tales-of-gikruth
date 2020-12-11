@@ -10,6 +10,7 @@
 #include "gui.hpp"
 #include "level.hpp"
 #include "TileMap.h"
+#include "item.h"
 
 enum class flipped { yup, nop };
 
@@ -37,19 +38,6 @@ class GameStatePlay : public GameState {
 		sf::RectangleShape triggerMap2;
 		//
 		Character player;
-		// Level 1
-		Enemy enemyOrc;
-		Enemy enemyTinyZombie;
-		Enemy enemyTinyZombie2;
-		// Level 2
-		Enemy enemyDemon;
-		Enemy enemyDemon2;
-		Enemy enemySkelly;
-		Enemy enemySkelly2;
-		Enemy enemyTinyOrc;
-		Enemy enemyTinyDemon;
-		Enemy enemyBossDemon;
-		Enemy enemyBossOrc;
 
 		std::map<std::string, Gui> guiSystem;
 
@@ -80,7 +68,7 @@ class GameStatePlay : public GameState {
 		void setCharacterSpriteVector();
 		void fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy);
 		void changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status);
-		void applyPotionEffects();
+		void applyPotionEffects(Character& player, potion potion);
 
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 		Enemy createEnemy(enemyMap map);
