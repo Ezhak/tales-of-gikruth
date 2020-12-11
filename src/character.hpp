@@ -16,6 +16,9 @@ class Character {
 		float _defensePoints = 2.f;
 		float _attackPoints = 2.f;
 		float _velocity = 1.f;
+
+		int _score = 0;
+
 	public:
 		static std::map<playerSpriteName, std::string> playerSpritesFile;
 
@@ -30,11 +33,13 @@ class Character {
 		void idle();
 		void move(movement_type direction);
 		void setHealth(float attackPoints);
+		void setScore();
 
 		float getVelocity() { return _velocity; };
 		float getAttackPoints() { return _attackPoints; };
 		float getHealth() { return _hitPoints; };
 		sf::Sprite getSprite() { return _sprite; };
+		int getScore() { return _score; };
 };
 
 #endif // CHARACTER_HPP

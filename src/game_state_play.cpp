@@ -261,7 +261,9 @@ void GameStatePlay::handleInput() {
 				{
 					attack(this->player, enemyVectorMap1[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
+					this->player.setScore();
 					std::cout << enemyVectorMap1[i].getHealth() << std::endl;
+					std::cout << this->player.getScore() << std::endl;
 				}
 		}
 		else
@@ -271,7 +273,9 @@ void GameStatePlay::handleInput() {
 				{
 					attack(this->player, enemyVectorMap2[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
+					this->player.setScore();
 					std::cout << enemyVectorMap2[i].getHealth() << std::endl;
+					std::cout << this->player.getScore() << std::endl;
 				}
 		}
 	}
@@ -331,10 +335,13 @@ void GameStatePlay::update(const sf::Time dt) {
 		//std::cout << "Time" << std::endl;
 	}
 
-	//CheckCharacterHealth if dead, go back to start menu.
+	// CheckCharacterHealth if dead, go back to start menu.
+	// And save your score in a file.
 	if (!checkHealth(this->player.getHealth()))
 	{
 		this->game->pushState(new GameStateStart(this->game));
+		this->burnDisk();
+		std::cout << "You lose :( But your score has saved ... :)" << std::endl;
 	}
 
 	//CheckEnemyHealth if health is below or equal to 0, changeHealthStatus to 'dead'.
@@ -426,6 +433,24 @@ void GameStatePlay::draw(const sf::Time dt) {
 
 	return;
 }
+
+void GameStatePlay::burnDisk()
+{
+	FILE* fp;
+	fp = fopen("score.dat", "ab+");
+	if (!fp) {
+		std::cout << "File score.dat error" << std::endl;
+		fclose(fp);
+	}
+	fwrite(this, sizeof this, 1, fp);
+	if (ferror(fp)) {
+		std::cout << "File burn score.dat error" << std::endl;
+		fclose(fp);
+		return;
+	}
+	fclose(fp);
+}
+
 // For character attack
 void GameStatePlay::attack(Character& player, Enemy& enemy)
 {
@@ -454,6 +479,8 @@ void GameStatePlay::changeToLevel_One(bool trigger, bool wipeout)
 {
 	if (!trigger || !wipeout) return;
 	this->level_1_boolean = true;
+	this->burnDisk();
+	std::cout << "Game over! You did it well, pal :) Your score has saved." << std::endl;
 }
 
 TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector<sf::RectangleShape>*vectorCol)

@@ -80,3 +80,8 @@ void Character::setHealth(float attackPoints)
 	if (this->_hitPoints > 0)
 		this->_hitPoints -= attackPoints;
 }
+
+void Character::setScore()
+{
+	_score += 100;
+}
