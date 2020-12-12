@@ -22,6 +22,24 @@ GameStateHighscore::GameStateHighscore(Game* game)
 
     std::vector<GuiEntry> entries{};
 
+    sf::Font font;
+
+    if (!font.loadFromFile("assets/menu/fuente.ttf"))
+    {
+        std::cout << "Font load error" << std::endl;
+    }
+
+    sf::Text scoreText;
+
+    scoreText.setFont(font);
+    scoreText.setString("Testing");
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::Red);
+
+    this->text = scoreText;
+    this->font = font;
+
+    //
     Character player;
 
     Gui gui = Gui(dimensions, entries);
@@ -108,11 +126,12 @@ void GameStateHighscore::draw(const sf::Time dt) {
     this->game->window.setView(this->view);
 
     this->game->window.clear(sf::Color::Black);
+    //this->game->window.draw(this->text);
+
     this->game->window.draw(this->background);
 
     for (auto gui : this->guiSystem)
         this->game->window.draw(gui.second);
-
 
     return;
 }

@@ -15,7 +15,8 @@ private:
     sf::View view;
     std::vector<int> vectorScores;
     std::map<std::string, Gui> guiSystem;
-
+    sf::Font font;
+    sf::Text text;
     Character _playerScore;
 public:
     GameStateHighscore(Game* game);
