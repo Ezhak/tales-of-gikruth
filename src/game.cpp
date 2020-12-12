@@ -133,4 +133,9 @@ void Game::loadTextures() {
     //Bosses enemies --> 34x34
     texmgr.loadTexture("bossdemon",     "assets/game/characters/bossdemon.png");
     texmgr.loadTexture("bossorc",       "assets/game/characters/bossorc.png");
+    //
+    //items
+    texmgr.loadTexture("health_potion",     "assets/game/items/health_potion.png");
+    texmgr.loadTexture("strength_potion",   "assets/game/items/strength_potion.png");
+    texmgr.loadTexture("speed_potion",      "assets/game/items/speed_potion.png");
 }

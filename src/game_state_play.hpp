@@ -64,16 +64,22 @@ class GameStatePlay : public GameState {
 		void attack(Enemy& enemy, Character& player);
 		void changeToLevel_Two(bool trigger, bool wipeout);
 		void changeToLevel_One(bool trigger, bool wipeout);
-		void setEnemySpriteVector();
-		void setCharacterSpriteVector();
+
 		void fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy);
 		void changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status);
 		void applyPotionEffects(Character& player, potion potion);
+		void dropPotion(Enemy enemy);
+		//Vector setters
+		void setEnemySpriteVector();
+		void setCharacterSpriteVector();
+		void setItemSpriteVector();
 
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 		Enemy createEnemy(enemyMap map);
+		//sprite creators
 		sf::Sprite createSprite(enemySpriteName name);
 		sf::Sprite createSprite(playerSpriteName name);
+		sf::Sprite createSprite(potionType name);
 };
 
 #endif // GAME_STATE_PLAY_HPP

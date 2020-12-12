@@ -20,6 +20,7 @@ int collisionsArrayMap2[400] =
 
 std::vector<sf::Sprite> enemySpriteVector;
 std::vector<sf::Sprite> playerSpriteVector;
+std::vector<sf::Sprite> itemSpriteVector;
 
 std::vector<enemyMap> enemyMap1 =
 {
@@ -42,6 +43,16 @@ std::vector<enemyMap> enemyMap2 =
 
 std::vector<Enemy> enemyVectorMap1;
 std::vector<Enemy> enemyVectorMap2;
+
+std::vector<potion> potions =
+{
+	{ potionType::healthRegen, 3.f },
+	{ potionType::healthRegen, 5.f },
+	{ potionType::strengthBoost, 2.f },
+	{ potionType::strengthBoost, 3.f },
+	{ potionType::speedBoost, 0.2f },
+	{ potionType::speedBoost, 0.5f },
+};
 
 GameStatePlay::GameStatePlay(Game* game, std::string player) {
 	this->game = game;
@@ -516,6 +527,8 @@ TileMap GameStatePlay::setCollisions(int (*collisionsArrayMap)[400], std::vector
 
 	return mapCollisions;
 }
+
+///////////////Sprite creators
 //For enemies
 sf::Sprite GameStatePlay::createSprite(enemySpriteName name)
 {
@@ -534,7 +547,18 @@ sf::Sprite GameStatePlay::createSprite(playerSpriteName name)
 
 	return sprite;
 }
+//For items
+sf::Sprite GameStatePlay::createSprite(potionType name)
+{
+	sf::Sprite sprite;
+	sprite.setTexture(this->game->texmgr.getRef(item::itemSpriteFile[name]));
+	sprite.setOrigin(12, 22);
 
+	return sprite;
+}
+
+///////////////Vector setters
+//for enemies
 void GameStatePlay::setEnemySpriteVector()
 {
 	for (unsigned i = 0; i < Enemy::enemySpritesFile.size(); i++)
@@ -542,7 +566,7 @@ void GameStatePlay::setEnemySpriteVector()
 		enemySpriteVector.push_back(createSprite((enemySpriteName)i));
 	}
 }
-
+//for characters
 void GameStatePlay::setCharacterSpriteVector()
 {
 	for (unsigned i = 0; i < Character::playerSpritesFile.size(); i++)
@@ -550,6 +574,15 @@ void GameStatePlay::setCharacterSpriteVector()
 		playerSpriteVector.push_back(createSprite((playerSpriteName)i));
 	}
 }
+//for items
+void GameStatePlay::setItemSpriteVector()
+{
+	for (unsigned i = 0; i < item::itemSpriteFile.size(); i++)
+	{
+		itemSpriteVector.push_back(createSprite((potionType)i));
+	}
+}
+
 
 Enemy GameStatePlay::createEnemy(enemyMap map)
 {
@@ -601,4 +634,9 @@ void GameStatePlay::applyPotionEffects(Character& player, potion potion)
 	}
 
 	return;
+}
+
+void GameStatePlay::dropPotion(Enemy enemy)
+{
+	
 }

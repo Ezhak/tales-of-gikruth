@@ -24,10 +24,15 @@ private:
 	int totalHealthBoost;
 
 public:
-	item();
-	~item();
+	static std::map<potionType, std::string> itemSpriteFile;
 
+	item() {};
+	item(sf::Sprite sprite) { this->_sprite = sprite; };
+
+	void update(const sf::Time dt);
 	void create();
+	void addFrames(thor::FrameAnimation& animation, int y, int xFirst, int xLast, float duration);
+	void playIdle();
 	void draw(sf::RenderWindow& window);
 
 	sf::Sprite returnSprite() { return _sprite; };
