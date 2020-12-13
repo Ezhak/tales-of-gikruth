@@ -262,8 +262,8 @@ void GameStatePlay::handleInput() {
 					attack(this->player, enemyVectorMap1[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
 					this->player.setScore();
-					std::cout << enemyVectorMap1[i].getHealth() << std::endl;
-					std::cout << this->player.getScore() << std::endl;
+					std::cout << "Enemy Health: " << enemyVectorMap1[i].getHealth() << std::endl;
+					std::cout << "Score: " << this->player.getScore() << std::endl;
 				}
 		}
 		else
@@ -274,8 +274,8 @@ void GameStatePlay::handleInput() {
 					attack(this->player, enemyVectorMap2[i]);
 					std::cout << "Player hits enemy orc!" << std::endl;
 					this->player.setScore();
-					std::cout << enemyVectorMap2[i].getHealth() << std::endl;
-					std::cout << this->player.getScore() << std::endl;
+					std::cout << "Enemy Health: " << enemyVectorMap2[i].getHealth() << std::endl;
+					std::cout << "Score: " << this->player.getScore() << std::endl;
 				}
 		}
 	}
@@ -358,7 +358,7 @@ void GameStatePlay::update(const sf::Time dt) {
 				if (timeElapsed % 120 == 0)
 				{
 					attack(enemyVectorMap1[i], this->player);
-					std::cout << this->player.getHealth() << std::endl;
+					std::cout << "Your Life: " << this->player.getHealth() << std::endl;
 				}
 			}
 		}
@@ -372,7 +372,7 @@ void GameStatePlay::update(const sf::Time dt) {
 			{
 				if (timeElapsed % 120 == 0) {
 					attack(enemyVectorMap2[i], this->player);
-					std::cout << this->player.getHealth() << std::endl;
+					std::cout << "Your Life: " << this->player.getHealth() << std::endl;
 				}
 			}
 		}
