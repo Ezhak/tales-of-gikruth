@@ -6,12 +6,7 @@
 #include <Thor/Animations.hpp>
 
 enum class potionType { healthRegen, strengthBoost, speedBoost };
-
-struct potion
-{
-	potionType type;
-	float effectValue;
-};
+enum class pickUpState { pickedUp, notPickedUp };
 
 class item
 {
@@ -19,9 +14,9 @@ private:
 	sf::Sprite _sprite;
 	thor::Animator<sf::Sprite, std::string> _animator;
 
-	int healthRegen;
-	int strengthBoost;
-	int totalHealthBoost;
+	potionType type;
+	float effectValue;
+	float dropChance;
 
 public:
 	static std::map<potionType, std::string> itemSpriteFile;
@@ -35,7 +30,13 @@ public:
 	void playIdle();
 	void draw(sf::RenderWindow& window);
 
-	sf::Sprite returnSprite() { return _sprite; };
+	void setEffectValue(float value) { this->effectValue = value; }
+	void setDropChance(float value) { this->dropChance = value; }
+
+	sf::Sprite returnSprite() { return this->_sprite; }
+	potionType getType() { return this->type; }
+	float getEffectValue() { return this->effectValue; }
+	float getDropChance() { return this->dropChance; }
 };
 
 #endif ITEM_HPP

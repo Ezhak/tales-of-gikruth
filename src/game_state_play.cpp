@@ -43,18 +43,12 @@ std::vector<enemyMap> enemyMap2 =
 
 std::vector<Enemy> enemyVectorMap1;
 std::vector<Enemy> enemyVectorMap2;
+std::vector<item> itemVectorMap1;
+std::vector<item> itemVectorMap2;
 
-std::vector<potion> potions =
-{
-	{ potionType::healthRegen, 3.f },
-	{ potionType::healthRegen, 5.f },
-	{ potionType::strengthBoost, 2.f },
-	{ potionType::strengthBoost, 3.f },
-	{ potionType::speedBoost, 0.2f },
-	{ potionType::speedBoost, 0.5f },
-};
 
 GameStatePlay::GameStatePlay(Game* game, std::string player) {
+	srand((int)time(NULL)); //Used for generating random numbers.
 	this->game = game;
 	sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
 	this->guiView.setSize(pos);
@@ -108,6 +102,7 @@ GameStatePlay::GameStatePlay(Game* game, std::string player) {
 	//Set player and enemy sprite vector
 	setCharacterSpriteVector();
 	setEnemySpriteVector();
+	setItemSpriteVector();
 
 	// Players (Classes)
 
@@ -140,9 +135,6 @@ GameStatePlay::GameStatePlay(Game* game, std::string player) {
 	this->triggerMap1 = sf::RectangleShape(trigger);
 	this->triggerMap2 = sf::RectangleShape(trigger2);
 	
-	// Enemies TODO: DRAW VECTOR
-		//Level1
-		//Level2
 	// Player
 	this->player = Character(playerSprite);
 	// Creator
@@ -341,12 +333,15 @@ void GameStatePlay::update(const sf::Time dt) {
 	{
 		this->burnDisk();
 		this->game->pushState(new GameStateStart(this->game));
+
+		itemVectorMap1.clear();
+		itemVectorMap2.clear();
 		std::cout << "You lose :( But your score has saved ... :)" << std::endl;
 	}
 
 	//CheckEnemyHealth if health is below or equal to 0, changeHealthStatus to 'dead'.
-	changeHealthStatus(enemyVectorMap1, healthStatus::dead);
-	changeHealthStatus(enemyVectorMap2, healthStatus::dead);
+	changeHealthStatusToDead(enemyVectorMap1);
+	changeHealthStatusToDead(enemyVectorMap2);
 
 	if (level_1_boolean)
 	{
@@ -362,6 +357,12 @@ void GameStatePlay::update(const sf::Time dt) {
 				}
 			}
 		}
+		for (unsigned i = 0; i < itemVectorMap1.size(); i++)
+		{
+			itemVectorMap1[i].update(dt);
+			//fix::
+			if (this->player.getSprite().getGlobalBounds().intersects(itemVectorMap1[i].returnSprite().getGlobalBounds())) applyPotionEffects(&this->player, itemVectorMap1[i]);
+		}
 	}
 	else // Level 2 Collisions Check & NPC Attack System
  	{
@@ -375,6 +376,13 @@ void GameStatePlay::update(const sf::Time dt) {
 					std::cout << "Your Life: " << this->player.getHealth() << std::endl;
 				}
 			}
+		}
+		
+		for (unsigned i = 0; i < itemVectorMap2.size(); i++)
+		{
+			itemVectorMap2[i].update(dt);
+			//fix::
+			if (this->player.getSprite().getGlobalBounds().intersects(itemVectorMap2[i].returnSprite().getGlobalBounds())) applyPotionEffects(&this->player, itemVectorMap2[i]);
 		}
 	}
 
@@ -418,11 +426,19 @@ void GameStatePlay::draw(const sf::Time dt) {
 		{
 			if (enemyVectorMap1[i].getHealthStatus() == healthStatus::alive) enemyVectorMap1[i].draw(this->game->window);
 		}
+		for (unsigned i = 0; i < itemVectorMap1.size(); i++)
+		{
+			itemVectorMap1[i].draw(this->game->window);
+		}
 	}
 	else {
 		for (unsigned i = 0; i < enemyVectorMap2.size(); i++)
 		{
 			if (enemyVectorMap2[i].getHealthStatus() == healthStatus::alive) enemyVectorMap2[i].draw(this->game->window);
+		}
+		for (unsigned i = 0; i < itemVectorMap2.size(); i++)
+		{
+			itemVectorMap2[i].draw(this->game->window);
 		}
 	}
 
@@ -600,6 +616,39 @@ Enemy GameStatePlay::createEnemy(enemyMap map)
 	return enemy;
 }
 
+item GameStatePlay::createItem(potionType type, sf::Vector2f position)
+{
+	sf::Sprite sprite = itemSpriteVector[(int)type];
+	sprite.setPosition(position);
+	item potion = item(sprite);
+
+	int random;
+
+	switch (type)
+	{
+	case potionType::healthRegen:
+		random = rand() % 2 + 3;
+		potion.setEffectValue((float)random);
+		break;
+	case potionType::strengthBoost:
+		random = rand() % 3 + 2;
+		potion.setEffectValue((float)random);
+		break;
+	case potionType::speedBoost:
+		random = rand() % 2 + 3;
+		random /= 10;
+		potion.setEffectValue((float)random);
+		break;
+	default:
+		std::cout << "Error, couldn't set potion->EffectValue.\n";
+	}
+	
+	potion.setDropChance(0.5f);
+	potion.create();
+
+	return potion;
+}
+
 void GameStatePlay::fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy)
 {
 	for (unsigned i = 0; i < vectorMap.size(); i++)
@@ -608,26 +657,30 @@ void GameStatePlay::fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector
 	}
 }
 
-void GameStatePlay::changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status)
+void GameStatePlay::changeHealthStatusToDead(std::vector<Enemy> &enemyVector)
 {
 	for (unsigned i = 0; i < enemyVector.size(); i++)
 	{
-		if (!checkHealth(enemyVector[i].getHealth())) enemyVector[i].setStatus(status);
+		if (!checkHealth(enemyVector[i].getHealth()) && enemyVector[i].getHealthStatus() == healthStatus::alive)
+		{
+			enemyVector[i].setStatus(healthStatus::dead);
+			dropItem(enemyVector[i]);
+		}
 	}
 }
 
-void GameStatePlay::applyPotionEffects(Character& player, potion potion)
+void GameStatePlay::applyPotionEffects(Character* player, item potion)
 {
-	switch (potion.type)
+	switch (potion.getType())
 	{
 	case potionType::healthRegen:
-		player.addHealth(potion.effectValue);
+		player->addHealth(potion.getEffectValue());
 		break;
 	case potionType::strengthBoost:
-		player.addTotalStrength(potion.effectValue);
+		player->addTotalStrength(potion.getEffectValue());
 		break;
 	case potionType::speedBoost:
-		player.addVelocity(potion.effectValue);
+		player->addVelocity(potion.getEffectValue());
 		break;
 	default:
 		std::cout << "Error loading potions." << std::endl;
@@ -636,7 +689,33 @@ void GameStatePlay::applyPotionEffects(Character& player, potion potion)
 	return;
 }
 
-void GameStatePlay::dropPotion(Enemy enemy)
+void GameStatePlay::dropItem(Enemy enemy)
 {
-	
+	int typeRand = rand() % 3;
+	potionType type;
+	switch (typeRand)
+	{
+	case 0:
+		type = potionType::healthRegen;
+		break;
+	case 1:
+		type = potionType::strengthBoost;
+		break;
+	case 2:
+		type = potionType::speedBoost;
+		break;
+	default:
+		std::cout << "Error dropping item.\n";
+	}
+
+	item potion = createItem(type, enemy.getSprite().getPosition());
+
+	int drop = ((rand() % 100 + 1) / 100);
+	if (drop < potion.getDropChance())
+	{
+		if (level_1_boolean)
+			itemVectorMap1.push_back(potion);
+		else
+			itemVectorMap2.push_back(potion);
+	}
 }

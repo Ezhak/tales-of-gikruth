@@ -66,9 +66,9 @@ class GameStatePlay : public GameState {
 		void changeToLevel_One(bool trigger, bool wipeout);
 
 		void fillEnemyVector(std::vector<enemyMap> vectorMap, std::vector<Enemy> &vectorEnemy);
-		void changeHealthStatus(std::vector<Enemy> &enemyVector, healthStatus status);
-		void applyPotionEffects(Character& player, potion potion);
-		void dropPotion(Enemy enemy);
+		void changeHealthStatusToDead(std::vector<Enemy>& enemyVector);
+		void applyPotionEffects(Character* player, item potion);
+		void dropItem(Enemy enemy);
 		//Vector setters
 		void setEnemySpriteVector();
 		void setCharacterSpriteVector();
@@ -76,6 +76,7 @@ class GameStatePlay : public GameState {
 
 		TileMap setCollisions(int(*collisionsArrayMap)[400], std::vector<sf::RectangleShape>* vectorCol);
 		Enemy createEnemy(enemyMap map);
+		item createItem(potionType type, sf::Vector2f position);
 		//sprite creators
 		sf::Sprite createSprite(enemySpriteName name);
 		sf::Sprite createSprite(playerSpriteName name);
