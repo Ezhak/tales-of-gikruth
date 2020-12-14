@@ -30,12 +30,6 @@ public:
 
     std::vector<int> getVector() { return vectorScores; };
 
-    void setFont(sf::Font font) { font = font; };
-    void setText(sf::Text text) { text = text; };
-    sf::Font getFont() { return font; };
-    sf::Text getText() { return text; };
-
-
     virtual void handleInput();
     virtual void update(const sf::Time dt);
     virtual void draw(const sf::Time dt);

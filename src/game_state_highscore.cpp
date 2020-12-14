@@ -28,11 +28,10 @@ GameStateHighscore::GameStateHighscore(Game* game)
 	this->text.setFont(this->font);
 	this->text.setString("Testing");
 	this->text.setCharacterSize(30);
-	this->text.setFillColor(sf::Color::Red);
+	this->text.setFillColor(sf::Color::Yellow);
 	this->text.setPosition(220, 210);
 
 	//
-	Character player;
 
 	Gui gui = Gui(dimensions, entries);
 	gui.setPosition(pos);
@@ -42,13 +41,19 @@ GameStateHighscore::GameStateHighscore(Game* game)
 	this->guiSystem.emplace("menu", gui);
 
 	//
-
 	int position = 0;
-
-	while (player.readFromDisk(position++)) {
-		std::cout << "score: " << player.getScore() << std::endl;
+	while (this->getCharacter().readFromDisk(position)) {
+		std::cout << this->getCharacter().getScore() << std::endl;
+		position++;
 	}
 
+	/*
+	while (this->_playerScore.readFromDisk(position)) {
+		std::cout << "score: " << this->_playerScore.getScore() << std::endl;
+		position++;
+	}
+	*/
+	
 	//std::reverse(this->getVector().begin(), this->getVector().end());
 	/*
 	for (int i = 0; i < this->getVector().size(); i++)
@@ -56,7 +61,6 @@ GameStateHighscore::GameStateHighscore(Game* game)
 		std::cout << this->getVector()[i] << std::endl;
 	}
 	*/
-
 }
 
 GameStateHighscore::~GameStateHighscore()
