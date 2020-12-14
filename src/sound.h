@@ -17,4 +17,4 @@ class Sound {
 		sf::Sound getSound() { return _fxSound; };
 };
 
-#endif SOUND_HPP
+#endif // SOUND_HPP

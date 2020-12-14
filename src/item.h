@@ -38,4 +38,4 @@ public:
 	sf::Sprite returnSprite() { return _sprite; };
 };
 
-#endif ITEM_HPP
+#endif // ITEM_HPP
