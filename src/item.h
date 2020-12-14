@@ -39,4 +39,4 @@ public:
 	float getDropChance() { return this->dropChance; }
 };
 
-#endif ITEM_HPP
+#endif // ITEM_HPP

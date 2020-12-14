@@ -16,4 +16,4 @@ public:
 	void setMusicVolume(float vol) { _music.setVolume(vol); };
 };
 
-#endif MUSIC_HPP
+#endif // MUSIC_HPP
