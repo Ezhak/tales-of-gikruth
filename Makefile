@@ -10,7 +10,7 @@ SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g -std=c++17 -Wall --debug
-LIB := -lsfml-graphics -lsfml-system -lsfml-window -lthor
+LIB := -lsfml-audio -lsfml-graphics -lsfml-system -lsfml-window -lthor
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."

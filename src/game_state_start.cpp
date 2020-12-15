@@ -1,117 +1,136 @@
 #include <SFML/Graphics.hpp>
 
-#include "game_state_start.hpp"
-#include "game_state_play.hpp"
 #include "game_state.hpp"
+#include "game_state_class_menu.hpp"
+#include "game_state_play.hpp"
+#include "game_state_start.hpp"
 
-GameStateStart::GameStateStart(Game* game) {
-    this->game = game;
-    sf::Vector2f pos = sf::Vector2f(this->game->window.getSize());
-    this->view.setSize(pos);
-    pos *= 0.5f;
-    this->view.setCenter(pos);
+GameStateStart::GameStateStart(Game* game)
+{
+  this->game = game;
+  sf::Vector2f position = sf::Vector2f(this->game->window.getSize());
+  this->view.setSize(position);
+  position *= 0.5f;
+  this->view.setCenter(position);
 
-    this->background.setTexture(this->game->texmgr.getRef("menu_background"));
+  this->background.setTexture(this->game->texmgr.getRef("menu_background"));
 
-    sf::RectangleShape shape;
-    sf::Vector2f dimensions(363, 70);
-    shape.setSize(dimensions);
+  sf::RectangleShape shape;
+  sf::Vector2f dimensions(363, 70);
+  shape.setSize(dimensions);
 
-    GuiEntry start = GuiEntry("start_game",
-                              shape, 
-                              &this->game->texmgr.getRef("start"),
-                              &this->game->texmgr.getRef("start_highlight"),
-                              &this->game->texmgr.getRef("start_press"));
+  GuiEntry start = GuiEntry("start_game",
+                            shape, 
+                            &this->game->texmgr.getRef("start"),
+                            &this->game->texmgr.getRef("start_highlight"),
+                            &this->game->texmgr.getRef("start_press"));
 
-    GuiEntry load = GuiEntry("load_game",
-                             shape,
-                             &this->game->texmgr.getRef("load"),
-                             &this->game->texmgr.getRef("load_highlight"),
-                             &this->game->texmgr.getRef("load_press"));
+  GuiEntry hiscore = GuiEntry("hiscores",
+                            shape,
+                            &this->game->texmgr.getRef("hiscores"),
+                            &this->game->texmgr.getRef("hiscores_highlight"),
+                            &this->game->texmgr.getRef("hiscores_press"));
 
-    GuiEntry save = GuiEntry("save_game",
-                             shape,
-                             &this->game->texmgr.getRef("save"),
-                             &this->game->texmgr.getRef("save_highlight"),
-                             &this->game->texmgr.getRef("save_press"));
+  GuiEntry quit = GuiEntry("quit_game",
+                            shape,
+                            &this->game->texmgr.getRef("quit"),
+                            &this->game->texmgr.getRef("quit_highlight"),
+                            &this->game->texmgr.getRef("quit_press"));
 
-    GuiEntry quit = GuiEntry("quit_game",
-                             shape,
-                             &this->game->texmgr.getRef("quit"),
-                             &this->game->texmgr.getRef("quit_highlight"),
-                             &this->game->texmgr.getRef("quit_press"));
+  std::vector<GuiEntry> entries{start, hiscore, quit};
 
-    std::vector<GuiEntry> entries{start, load, save, quit};
+  Gui gui = Gui(dimensions, entries);
+  gui.setPosition(position);
+  gui.setOrigin(181, 155);
+  gui.show();
 
-    Gui gui = Gui(dimensions, entries);
-    gui.setPosition(pos);
-    gui.setOrigin(181, 155);
-    gui.show();
+  this->guiSystem.emplace("menu", gui);
 
-    this->guiSystem.emplace("menu", gui);
+  this->startTheme.openFromFile("assets/music/menu.wav");
+  this->startTheme.setLoop(true);
+  this->startTheme.play();
+
+  this->clickSoundBuffer.loadFromFile("assets/sound/click.wav");
 }
 
-void GameStateStart::handleInput() {
-    sf::Event event;
-    sf::Vector2f mousePos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->view);
+void GameStateStart::draw(const sf::Time dt)
+{
+  this->game->window.setView(this->view);
 
-    while (this->game->window.pollEvent(event)) {
-        switch (event.type) {
-        // Close the window
-        case sf::Event::Closed:
-            this->game->window.close();
-            break;
-        // Highlight menu items
-        case sf::Event::MouseMoved:
-            this->guiSystem.at("menu").highlight(this->guiSystem.at("menu").getEntry(mousePos));
-            break;
-        // Click on menu items
-        case sf::Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left)
-                this->guiSystem.at("menu").press(this->guiSystem.at("menu").getEntry(mousePos));
-            break;
-        // Release menu items
-        case sf::Event::MouseButtonReleased:
-            if (event.mouseButton.button == sf::Mouse::Left) {
-                std::string msg = this->guiSystem.at("menu").activate(mousePos);
+  this->game->window.clear(sf::Color::Black);
+  this->game->window.draw(this->background);
 
-                if (msg == "start_game")
-                    this->startgame();
+  for(auto gui : this->guiSystem)
+    this->game->window.draw(gui.second);
 
-                if (msg == "quit_game")
-                    this->game->window.close();
-            }
-            break;
-        // Close the window (Escape)
-        case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Escape)
-                this->game->window.close();
-            break;
-        default:
-            break;
+  return;
+}
+
+void GameStateStart::handleInput()
+{
+  sf::Event event;
+  sf::Vector2f mousePos = this->game->window.mapPixelToCoords(sf::Mouse::getPosition(this->game->window), this->view);
+
+  while (this->game->window.pollEvent(event)) {
+    switch (event.type) {
+    // close the window
+    case sf::Event::Closed:
+      this->game->window.close();
+      break;
+    // highlight menu items
+    case sf::Event::MouseMoved:
+      this->guiSystem.at("menu").highlight(this->guiSystem.at("menu").getEntry(mousePos));
+      break;
+    // click on menu items
+    case sf::Event::MouseButtonPressed:
+      if (event.mouseButton.button == sf::Mouse::Left)
+        this->guiSystem.at("menu").press(this->guiSystem.at("menu").getEntry(mousePos));
+      break;
+    // release menu items
+    case sf::Event::MouseButtonReleased:
+      if (event.mouseButton.button == sf::Mouse::Left) {
+        this->sound.setBuffer(this->clickSoundBuffer);
+        std::string msg = this->guiSystem.at("menu").activate(mousePos);
+
+        if (msg == "start_game") {
+          this->sound.play();
+          this->startgame();
         }
+
+        else if (msg == "hiscores") {
+          this->sound.play();
+          this->hiscores();
+        }
+
+        else if (msg == "quit_game") {
+          this->sound.play();
+          this->game->window.close();
+        }
+      }
+      break;
+    // close the window (Escape)
+    case sf::Event::KeyPressed:
+        if (event.key.code == sf::Keyboard::Escape)
+            this->game->window.close();
+        break;
+    default:
+        break;
     }
+  }
 
-    return;
+  return;
 }
 
-void GameStateStart::update(const sf::Time dt) {
+void GameStateStart::update(const sf::Time dt)
+{
 }
 
-void GameStateStart::draw(const sf::Time dt) {
-    this->game->window.setView(this->view);
+void GameStateStart::hiscores() {
 
-    this->game->window.clear(sf::Color::Black);
-    this->game->window.draw(this->background);
-
-    for(auto gui : this->guiSystem)
-        this->game->window.draw(gui.second);
-
-    return;
 }
 
 void GameStateStart::startgame() {
-    this->game->pushState(new GameStatePlay(this->game));
+  this->game->pushState(new GameStateClassMenu(this->game, &this->startTheme));
 
-    return;
+  return;
 }

@@ -1,40 +1,44 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include <stack>
 #include <map>
-#include <string>
 #include <SFML/Graphics.hpp>
+#include <stack>
+#include <string>
+#include <Thor/Animations.hpp>
 
+#include "boss.hpp"
 #include "character.hpp"
+#include "enemy.hpp"
+#include "potion.hpp"
 #include "texture_manager.hpp"
 
 class GameState;
 
 class Game {
-	private:
-		void loadEntities();
-		void loadTextures();
-	public:
-  	Game();
-  	~Game();
+  public:
+    Game();
+    ~Game();
 
-		const static int tileSize = 16;
+    void changeState(GameState* state);
+    void gameLoop();
+    GameState* peekState();
+    void popState();
+    void pushState(GameState* state);
 
-		std::stack<GameState*> states;
+    std::map<std::string, Character> characterAtlas;
+    sf::Sprite background;
+    std::map<std::string, Boss> bossAtlas;
+    std::map<std::string, Enemy> enemyAtlas;
+    std::map<std::string, Potion> potionAtlas;
+    std::map<std::string, sf::Sprite> mapAtlas;
+    TextureManager texmgr;
+    sf::RenderWindow window;
+  private:
+    void loadEntities();
+    void loadTextures();
 
-		sf::RenderWindow window;
-		TextureManager texmgr;
-		sf::Sprite background;
-
-		std::map<std::string, Character> characterAtlas;
-
-		void pushState(GameState* state);
-  	void popState();
-  	void changeState(GameState* state);
-  	GameState* peekState();
-
-  	void gameLoop();
+    std::stack<GameState*> states;
 };
 
 #endif // GAME_HPP

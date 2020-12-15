@@ -1,11 +1,11 @@
 #include "game.hpp"
 #include "game_state_start.hpp"
 
-int main() {
-    Game game;
+int main()
+{
+  Game game;
+  game.pushState(new GameStateStart(&game));
+  game.gameLoop();
 
-    game.pushState(new GameStateStart(&game));
-    game.gameLoop();
-
-    return 0;
+  return 0;
 }
